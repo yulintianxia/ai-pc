@@ -1,4 +1,5 @@
 /// <reference types="vite/client" />
+/// 对环境变量或者vue的变量进行扩展
 declare module "*.vue" {
     import type { DefineComponent } from "vue";
     const vueComponent: DefineComponent<{}, {}, any>;
