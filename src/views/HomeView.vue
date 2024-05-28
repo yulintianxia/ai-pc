@@ -1,74 +1,62 @@
-<script setup lang="ts">
-import { reactive, toRefs } from "vue";
-import MenuList from "@/components/Menu.vue";
-const state = reactive({
-  circleUrl:
-    "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-});
+<script setup lang='ts'>
+import { ref } from 'vue'
 
 
-const { circleUrl } = toRefs(state);
+// 组件注册
+import Header from '@/components/Header.vue'
 
-const handleCommand = ()=>{
-  console.log('123');
+import Aside from '@/components/Aside.vue'
+
+
+
+const asideSettings = ref({
+    isCollapse:true,
+    width:'200'
+})
+
+// 给子组件绑定事件，通过子组件emit从而改变父组件的值
+const changeAside = ()=>{
+   asideSettings.value.isCollapse = !asideSettings.value.isCollapse
+   if(asideSettings.value.isCollapse){
+    asideSettings.value.width = "64"
+   }else{
+    asideSettings.value.width = "200"
+   }
 }
+
+
 
 </script>
-
 <template>
-  <div class="common-layout">
-    <el-container class="el-container-hg">
-      <el-header class="el-header-padding">
-        <div class="layout-header">
-          <div class="avatar">
-            <el-avatar :size="40" :src="circleUrl" />
-            <el-dropdown @command="handleCommand">
-              <span class="el-dropdown-link">小红
-              </span>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item>退出登录</el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </div>
+  <el-container style="min-height: 100vh;min-width: 100vw;overflow: hidden;">
+    <Aside :collapse="asideSettings.isCollapse" :width="asideSettings.width"></Aside>
+    <el-container style="height: 100vh;width:100%;display: flex;flex-direction: column;">
+      <Header :isCollapse="asideSettings.isCollapse"  @changeAside="changeAside"></Header>
+      <el-main>
+        <div>
+         <el-card>
+          <h1>文本内容</h1>
+         </el-card>
         </div>
-      </el-header>
-      <el-container>
-        <el-aside class="side" width="200px">
-          <menu-list></menu-list>
-        </el-aside>
-        <el-main>主体内容</el-main>
-      </el-container>
+      </el-main>
     </el-container>
-  </div>
+  </el-container>
 </template>
-<style scoped lang="scss">
-.layout-header {
-  background-color: rgb(67, 74, 80);
-  color: black;
-  height: 100%;
+
+
+<style scoped lang='scss'>
+
+body{
+  background-color: #eee;
+  max-width: 100vw;
+  overflow: hidden;
 }
-.common-layout {
+
+.el-main {
   width: 100%;
-  height: 100vh;
-}
-.el-header-padding {
   padding: 0;
-}
-.el-container-hg {
   height: 100vh;
+  overflow-x: hidden;
 }
-.avatar {
-  width: 100px;
-  display: flex;
-  align-items: center;
-  float: right;
-  margin-right: 30px;
-  margin-top:10px;
-}
-.el-dropdown-link {
-  color:white;
-  margin-left:30px;
-}
+
 </style>

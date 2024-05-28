@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
@@ -70,7 +70,7 @@ nav a:first-of-type {
 } */
 
 #app {
-  width:100vw;
-  height:100vh;
+  width: 100vw;
+  height: 100vh;
 }
 </style>
