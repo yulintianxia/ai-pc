@@ -37,3 +37,13 @@ a,
   width:100vw;
   height: 100vh;
 }
+
+
+// 自定义的样式
+.form .el-input {
+  --el-input-width: 220px;
+}
+
+.form .el-select {
+  --el-select-width: 220px;
+}

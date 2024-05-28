@@ -1,12 +1,8 @@
 <script setup lang='ts'>
 import { ref } from 'vue'
-
-
 // 组件注册
 import Header from '@/components/Header.vue'
-
 import Aside from '@/components/Aside.vue'
-
 
 
 const asideSettings = ref({
@@ -24,8 +20,6 @@ const changeAside = ()=>{
    }
 }
 
-
-
 </script>
 <template>
   <el-container style="min-height: 100vh;min-width: 100vw;overflow: hidden;">
@@ -34,11 +28,12 @@ const changeAside = ()=>{
       <Header :isCollapse="asideSettings.isCollapse"  @changeAside="changeAside"></Header>
       <el-main>
         <div>
-         <el-card>
-          <h1>文本内容</h1>
-         </el-card>
+          <h3 class='title'>文本内容</h3>
+         <el-divider></el-divider>
         </div>
-        <slot></slot>
+         <div class='main-container'>
+          <slot></slot>
+         </div>
       </el-main>
     </el-container>
   </el-container>
@@ -59,5 +54,10 @@ body{
   height: 100vh;
   overflow-x: hidden;
 }
-
+.title {
+  margin:20px 10px;
+}
+.main-container {
+  margin:20px 10px;
+}
 </style>
