@@ -2,7 +2,7 @@
     <home-title></home-title>
 </template>
 
-<script setup>
+<script setup lang='ts'>
 import { ref,  } from 'vue';
 import  HomeTitle from './HomeTitle.vue';
 
