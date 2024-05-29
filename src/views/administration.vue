@@ -59,6 +59,9 @@
         </el-form>
       </el-header>
       <el-main>
+        <div class='table-action'>
+           <el-button type="primary" @click="cleanBtn">字符清洗</el-button>
+        </div>
         <el-table
           ref="singleTableRef"
           :data="tableData"
@@ -108,7 +111,7 @@
           </el-table-column>
         </el-table>
       </el-main>
-
+        
     </el-container>
     <el-footer>
       <el-pagination
@@ -165,5 +168,9 @@ const editRow = () => {};
 .table-container {
   padding: 10px;
   margin-top: 20px;
+}
+.table-action {
+   margin-top:20px;
+   margin-left:20px;
 }
 </style>
