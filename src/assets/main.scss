@@ -47,3 +47,9 @@ a,
 .form .el-select {
   --el-select-width: 220px;
 }
+
+
+.main-dialog {
+  position:absolute;
+  transition:transform(-50%, -50%);
+}

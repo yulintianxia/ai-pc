@@ -24,7 +24,6 @@ const iconColor = ref("color:#F8FAFB");
             <el-icon>
               <Menu /> </el-icon><span>长尾词</span>
           </template>
-          <el-menu-item index="/generateWord">长尾词生成</el-menu-item>
           <el-menu-item index="/administration">长尾词管理</el-menu-item>
           <el-menu-item index="/lexicon">词库管理</el-menu-item>
         </el-sub-menu>
