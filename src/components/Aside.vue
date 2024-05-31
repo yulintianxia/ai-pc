@@ -37,6 +37,15 @@ const iconColor = ref("color:#F8FAFB");
           <el-menu-item index="/taskManagement">任务管理</el-menu-item>
           <el-menu-item index="/articleManagement">任务管理</el-menu-item>
         </el-sub-menu>
+        <el-sub-menu index="3">
+          <template #title>
+            <el-icon>
+              <Message /> </el-icon
+            ><span>设置</span>
+          </template>
+          <el-menu-item index="/modeSettings">模型设置</el-menu-item>
+          <el-menu-item index="/webSettings">网站设置</el-menu-item>
+        </el-sub-menu>
       </el-menu>
     </el-scrollbar>
   </el-aside>
