@@ -3,7 +3,7 @@ import { ref } from 'vue'
 // 组件注册
 import Header from '@/components/Header.vue'
 import Aside from '@/components/Aside.vue'
-
+import { RouterLink, RouterView } from "vue-router";
 
 const asideSettings = ref({
     isCollapse:true,
@@ -28,11 +28,10 @@ const changeAside = ()=>{
       <Header :isCollapse="asideSettings.isCollapse"  @changeAside="changeAside"></Header>
       <el-main>
         <div>
-          <h3 class='title'>文本内容</h3>
          <el-divider></el-divider>
         </div>
          <div class='main-container'>
-          <slot></slot>
+            <RouterView />
          </div>
       </el-main>
     </el-container>

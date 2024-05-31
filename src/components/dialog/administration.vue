@@ -14,8 +14,9 @@
         <el-form-item label="上传文件" prop="imgUrl">
           <el-upload
             class="avatar-uploader"
-            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
             :show-file-list="false"
+            :http-request="customRequest"
+            action="string"
           >
             <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar" />
             <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
@@ -37,6 +38,7 @@
 import { ref } from "vue";
 import type { ComponentSize, FormInstance, FormRules } from "element-plus";
 import RuleForm from "@/types/administration.interface.ts";
+import { upfileAPI } from "@/utils/api.ts";
 let show = ref(false);
 let form = ref({
   name: "",
@@ -57,6 +59,16 @@ const rules = ref<FormRules<RuleForm>>({
   imgUrl: [{ required: true }],
 });
 
+const customRequest = async(file:File)=>{
+  let formData = new FormData()
+    formData.append('up_file', file.file)
+   let resp = await upfileAPI(formData);
+   console.log('resp', resp);
+   if (resp[0].file_url) {
+    form.value.imageUrl = resp[0].file_url;
+   }
+
+}
 
 const dialog = ref('dialog');
 
@@ -72,7 +84,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate((valid, fields) => {
     if (valid) {
-        
+         
     } else {
       console.log('error submit!', fields)
     }

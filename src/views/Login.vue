@@ -1,35 +1,54 @@
 <script lang="ts" setup>
 import Background from "@/assets/imgs/background.jpeg";
+import type { ComponentSize, FormInstance, FormRules } from "element-plus";
+import { loginAPI } from "@/utils/api.ts";
+import { useRouter, useRoute} from 'vue-router';
+const router = useRouter();
 import { ref } from "vue";
 let loginForm = ref({
-  username: "",
+  phone_num: "",
   password: "",
 });
-const loginRules = ref({
-  username: [{ required: true, trigger: "blur", message: "用户名不能为空" }],
-  password: [{ required: true, trigger: "blur", message: "密码不能为空" }],
-  code: [{ required: true, trigger: "change", message: "验证码不能为空" }],
+const form = ref();
+const loginRules = ref<FormRules<RuleForm>>({
+  phone_num: [{ required: true, message: "账号不能为空" }],
+  password: [{ required: true, message: "密码不能为空" }],
 });
+
 let loading = ref(false);
-let  redirect = ref(undefined);
+let redirect = ref(undefined);
 
-const getCode = ()=>{
+/* 账号登录() */
+const submitForm = async (formEl: FormInstance | undefined) => {
+  console.log("formEl", formEl);
+  if (!formEl) return;
+  await formEl.validate(async (valid, fields) => {
+    console.log("valid", valid);
+    if (valid) {
+      const { phone_num, password } = loginForm.value;
+      let data = {
+        phone_num,
+        password,
+      };
+      let response = await loginAPI(data);
+      let token = response[0].token;
+      localStorage.setItem('token', token);
+      router.push({
+        path:'/administration'
+      })
 
-}
-const handleLogin = ()=>{
 
-}
-
-const point =()=>{
-
-}
-
+    } else {
+      console.log("error submit!", fields);
+    }
+  });
+};
 </script>
 
 <template>
-  <div class="login" >
+  <div class="login">
     <el-form
-      ref="loginForm"
+      ref="form"
       :model="loginForm"
       :rules="loginRules"
       label-position="left"
@@ -37,9 +56,9 @@ const point =()=>{
       class="login-form"
     >
       <h3 class="title">后台管理系统</h3>
-      <el-form-item prop="username">
+      <el-form-item prop="phone_num">
         <el-input
-          v-model="loginForm.username"
+          v-model="loginForm.phone_num"
           type="text"
           auto-complete="off"
           placeholder="账号"
@@ -57,7 +76,7 @@ const point =()=>{
           type="password"
           auto-complete="off"
           placeholder="密码"
-          @keyup.enter.native="handleLogin"
+          @keyup.enter.native="submitForm(form)"
         >
           <svg-icon
             slot="prefix"
@@ -81,7 +100,7 @@ const point =()=>{
           size="medium"
           type="primary"
           style="width: 100%"
-          @click.native.prevent="handleLogin"
+          @click.native.prevent="submitForm(form)"
         >
           <span v-if="!loading">登 录</span>
           <span v-else>登 录 中...</span>
@@ -96,11 +115,11 @@ const point =()=>{
   display: flex;
   justify-content: center;
   height: 100vh;
-  background-size: cover;  
-  align-items:center;
-  width:100vw;
+  background-size: cover;
+  align-items: center;
+  width: 100vw;
   // position:absolute;
-  background:url('../assets/imgs/background.jpeg');
+  background: url("../assets/imgs/background.jpeg");
 }
 .title {
   margin: 0 auto 30px auto;

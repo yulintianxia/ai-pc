@@ -10,7 +10,7 @@
         >
           <el-form-item label="名字">
             <el-input
-              v-model="formInline.keyword"
+              v-model="formInline.file_name"
               placeholder="请输入长尾词名字"
               clearable
             />
@@ -41,17 +41,21 @@
           border
           class="table-container"
         >
-          <el-table-column type="index" width="50" />
-          <el-table-column property="name" label="名字" />
-          <el-table-column property="address" label="excel名字" />
-          <el-table-column property="address" label="导入时间" width="180" />
+          <el-table-column type="index" width="50" abel="序号" />
+          <el-table-column property="file_name" label="名字" />
+          <el-table-column property="file_path" label="excel名字" />
+          <el-table-column
+            property="create_time"
+            label="导入时间"
+            width="180"
+          />
           <el-table-column fixed="right" label="操作" width="120">
             <template #default="scope">
               <el-button
                 link
                 type="danger"
                 size="small"
-                @click.prevent="deleteRow(scope.$index)"
+                @click.prevent="deleteRow(scope.row.file_id)"
               >
                 删除
               </el-button>
@@ -62,47 +66,84 @@
     </el-container>
     <el-footer>
       <el-pagination
-        v-model:current-page="currentPage"
-        v-model:page-size="pageSize4"
-        :page-sizes="[100, 200, 300, 400]"
+        v-model:current-page="formInline.pageNum"
+        v-model:page-size="formInline.pageSize"
+        :page-sizes="[10, 20, 30, 40]"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        :total="total"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       />
     </el-footer>
   </div>
-  <main-dialog ref='dialog' class='main-dialog'></main-dialog>
+  <main-dialog ref="dialog" class="main-dialog"></main-dialog>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
 import { stateOptions } from "@/assets/ts/configOptions.ts";
-import MainDialog  from '@/components/dialog/administration.vue';
+import MainDialog from "@/components/dialog/administration.vue";
+import { administrationDel, administrationList } from "@/utils/api.ts";
+import { ElMessage } from "element-plus";
+const dialog = ref("dialog");
 
-const dialog = ref('dialog');
+const tableData = ref([]);
 
 let formInline = ref({
-  keyword: "",
+  file_name: "",
   date: "",
+  pageSize: 10,
+  pageNum: 1,
 });
 
-/* 分页 */
-const currentPage = ref(1);
+const total = ref(0);
 
-// 分页页数
-const pages = ref(1);
+const handleSizeChange = () => {
+  search()
+};
 
-const handleSizeChange = () => {};
-
-const handleCurrentChange = () => {};
+const handleCurrentChange = () => {
+  search()
+};
 
 /* 新增 */
 const addRow = () => {
-  console.log('dialog', dialog);
+  console.log("dialog", dialog);
   dialog.value.dialogShow();
-
 };
+
+/* 删除操作 */
+const deleteRow = async (file_id: number) => {
+  let params = {
+    file_id
+  }
+  let data = await administrationDel(params);
+  console.log('data',data);
+  if (data) {
+    ElMessage({
+      message: "删除成功",
+      type: "success",
+    });
+  }
+};
+
+const search = async () => {
+  const { file_name, date, pageSize, pageNum } = formInline.value;
+  let data = {
+    file_name,
+    date,
+    pageSize,
+    pageNum,
+  };
+  let resp = await administrationList(data);
+  if (resp?.data_list) {
+    tableData.value = resp?.data_list || [];
+    total.value = resp.total;
+  }
+};
+
+search();
+
 </script>
 <style lang="scss">
 .table-container {
@@ -116,5 +157,4 @@ const addRow = () => {
 .header-container {
   margin-top: -10px;
 }
-
 </style>

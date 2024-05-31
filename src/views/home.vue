@@ -1,5 +1,5 @@
 <template>
-  <div>这是home主页</div>
+  <div>欢迎使用</div>
 </template>
 
 <script setup lang='ts'>
