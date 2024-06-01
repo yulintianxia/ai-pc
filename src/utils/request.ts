@@ -21,6 +21,7 @@ request.interceptors.request.use(
     //添加请求头
     //config.headers["Authorization"]="Bearer "+ token
     // }
+    console.log('config',config);
     let token = localStorage.getItem("token");
     if (token) {
       config.headers["Authorization"] = "Bearer " + token;

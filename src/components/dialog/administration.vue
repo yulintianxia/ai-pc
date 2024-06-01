@@ -8,8 +8,12 @@
         label-width="auto"
         style="max-width: 600px"
       >
-        <el-form-item label="名字" prop="name">
-          <el-input v-model="form.name" maxLength='100' placeholder="请输入长尾词名字" />
+        <el-form-item label="名字" prop="file_word_name">
+          <el-input
+            v-model="form.file_word_name"
+            maxLength="100"
+            placeholder="请输入长尾词名字"
+          />
         </el-form-item>
         <el-form-item label="上传文件" prop="imgUrl">
           <el-upload
@@ -26,7 +30,8 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="reset(ruleForm)">取消</el-button>
-          <el-button type="primary" @click="submitForm(ruleForm)">提交
+          <el-button type="primary" @click="submitForm(ruleForm)"
+            >提交
           </el-button>
         </div>
       </template>
@@ -41,9 +46,12 @@ import RuleForm from "@/types/administration.interface.ts";
 import { upfileAPI } from "@/utils/api.ts";
 let show = ref(false);
 let form = ref({
-  name: "",
+  file_word_name: "",
   imgUrl: "",
+  file: "",
 });
+
+const emits = defineEmits(["search"]);
 
 const ruleForm = ref<FormInstance>();
 const dialogShow = () => {
@@ -55,46 +63,48 @@ const dialogHide = () => {
 };
 
 const rules = ref<FormRules<RuleForm>>({
-  name: [{ required: true, message: "请填写名字" }],
+  file_word_name: [{ required: true, message: "请填写名字" }],
   imgUrl: [{ required: true }],
 });
 
-const customRequest = async(file:File)=>{
-  let formData = new FormData()
-    formData.append('up_file', file.file)
-   let resp = await upfileAPI(formData);
-   console.log('resp', resp);
-   if (resp[0].file_url) {
-    form.value.imageUrl = resp[0].file_url;
-   }
+/* 假的上传只是展示文件的链接 */
+const customRequest = async (file: File) => {
+  let fileUrl = URL.createObjectURL(file.file);
+  console.log("fileUrl", fileUrl);
+  form.value.imgUrl = fileUrl;
+  form.value.file = file.file;
+};
 
-}
-
-const dialog = ref('dialog');
+const dialog = ref("dialog");
 
 /* 新增 */
 const addRow = () => {
-  console.log('dialog', dialog);
+  console.log("dialog", dialog);
   dialog.value.dialogShow();
-
 };
 
 const submitForm = async (formEl: FormInstance | undefined) => {
-    console.log('formEl',formEl);
-  if (!formEl) return
-  await formEl.validate((valid, fields) => {
+  console.log("formEl", formEl);
+  if (!formEl) return;
+  await formEl.validate(async (valid, fields) => {
     if (valid) {
-         
+      let formData = new FormData();
+      formData.append("up_file", form.value.file);
+      formData.append("file_word_name", form.value.file_word_name);
+      let resp = await upfileAPI(formData);
+      URL.revokeObjectURL(form.value.imgUrl); // 释放url
+      reset(formEl);
+      emits("search");
     } else {
-      console.log('error submit!', fields)
+      console.log("error submit!", fields);
     }
-  })
-}
+  });
+};
 /* 重置 */
-const reset = (formEl: FormInstance | undefined)=>{
-    formEl.resetFields();
-    dialogHide();
-}
+const reset = (formEl: FormInstance | undefined) => {
+  formEl.resetFields();
+  dialogHide();
+};
 
 defineExpose({
   dialogShow,

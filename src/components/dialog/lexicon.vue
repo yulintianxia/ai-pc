@@ -1,6 +1,6 @@
 <template>
   <teleport to="body">
-    <el-dialog v-model="show" title="新增词库" width="500">
+    <el-dialog v-model="show" title="新增词库" width="550">
       <el-form
         :model="form"
         ref="ruleForm"
@@ -10,14 +10,14 @@
       >
         <el-form-item
           label="名字"
-          prop="name"
+          prop="key_word_lib_name"
           :rules="{
             required: true,
             message: '请填写名字',
           }"
         >
           <el-input
-            v-model="form.name"
+            v-model="form.key_word_lib_name"
             maxLength="100"
             placeholder="请输入词库名字"
           />
@@ -39,10 +39,10 @@
             clearable
           >
             <el-option
-              v-for="(stateItem, index) in stateOptions"
-              :value="stateItem.value"
-              :key="stateItem.value"
-              :label="stateItem.label"
+              v-for="(listItem, index) in wordList"
+              :value="listItem.file_id"
+              :key="listItem.file_id"
+              :label="listItem.file_word_name"
             ></el-option>
           </el-select>
           <el-form-item
@@ -51,7 +51,7 @@
           >
             <el-button class="mt-2" @click.prevent="add()"> + </el-button>
             <el-button
-              v-if="form.wordArray.length > 1 && index != 0"
+              v-if="form.wordArray.length > 2 && index != 0"
               class="mt-2"
               @click.prevent="del()"
             >
@@ -76,16 +76,21 @@
 import { ref, computed } from "vue";
 import type { ComponentSize, FormInstance, FormRules } from "element-plus";
 import RuleForm from "@/types/administration.interface.ts";
-import { stateOptions } from "@/assets/ts/configOptions.ts";
+import { wordListGetOptions,addWord } from "@/utils/api.ts";
+
+
 import { ElMessage } from "element-plus";
 
 let show = ref(false);
 let form = ref({
-  name: "",
+  key_word_lib_name: "",
   wordArray: [
     {
       value: "",
     },
+    {
+      value:'',
+    }
   ],
 });
 
@@ -93,6 +98,23 @@ interface  Props {
     id:nubmer | undefined
 }
 
+
+let wordList = ref([]);
+
+
+const getOptions =async()=>{
+  let resp = await wordListGetOptions();
+  console.log('resp');
+  if (resp.data_list.length) {
+    wordList.value = resp.data_list || [];
+  }
+
+}
+
+
+const emits = defineEmits(["search"]);
+
+getOptions();
 
 const props = withDefaults(defineProps<Props>(), {
    id:''
@@ -108,12 +130,22 @@ const dialogHide = () => {
 };
 
 
-
 const submitForm = async (formEl: FormInstance | undefined) => {
   console.log("formEl", formEl);
   if (!formEl) return;
-  await formEl.validate((valid, fields) => {
+  await formEl.validate(async (valid, fields) => {
     if (valid) {
+      let file_id_list =[];
+      form.value.wordArray.forEach((item)=>{
+        file_id_list.push(item.value)
+      });
+      let params = {
+        key_word_lib_name: form.value.key_word_lib_name,
+        file_id_list
+      }
+      let resp = await addWord(params);
+      reset(formEl);
+      emits("search");
     } else {
       console.log("error submit!", fields);
     }
@@ -123,7 +155,16 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 const reset = (formEl: FormInstance | undefined) => {
   formEl.resetFields();
   dialogHide();
+  form.value.wordArray=[
+    {
+      value:''
+    },
+    {
+      value:''
+    }
+  ]
 };
+
 
 const changeSelect = (value, index: nubmer) => {
   if (value) {
