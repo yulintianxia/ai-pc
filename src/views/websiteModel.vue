@@ -8,10 +8,10 @@
           label-width="100px;"
           class="form"
         >
-          <el-form-item label="网站id" prop="web_id">
+          <el-form-item label="网站名字" prop="web_id">
             <el-select
               v-model="formInline.web_id"
-              placeholder="请选择网站id"
+              placeholder="请选择网站名字"
               clearable
             >
               <el-option
@@ -22,18 +22,17 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="网站名字">
+          <!-- <el-form-item label="网站名字">
             <el-input
               v-model="formInline.web_name"
               placeholder="请输入网站名字"
               clearable
             />
-          </el-form-item>
-
+          </el-form-item> -->
           <el-form-item label="模块名字">
             <el-input
               v-model="formInline.module_name"
-              placeholder="请输入长尾词名字"
+              placeholder="请输入模块名字"
               clearable
             />
           </el-form-item>
@@ -143,7 +142,7 @@ let formInline = ref({
   web_id: "",
   module_name: "",
   module_num: "",
-  date: "",
+  date: [],
   pageSize: 10,
   pageNum: 1,
 });
@@ -189,12 +188,15 @@ const search = async () => {
     formInline.value;
   let data = {
     web_name,
-    date,
     pageSize,
     pageNum,
     module_name,
     module_num,
     web_id,
+    start_time:
+      (date?.length && dayjs(date[0]).format("YYYY-MM-DD HH:mm:ss")) || "",
+    end_time:
+      (date?.length && dayjs(date[1]).format("YYYY-MM-DD HH:mm:ss")) || "",
   };
   let resp = await webSiteModeList(data);
   if (resp?.data_list) {
@@ -203,9 +205,9 @@ const search = async () => {
   }
 };
 
-const editRow = (data)=>{
-    dialog.value.dialogShow(data);
-}
+const editRow = (data) => {
+  dialog.value.dialogShow(data);
+};
 
 search();
 </script>

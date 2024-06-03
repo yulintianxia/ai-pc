@@ -28,5 +28,16 @@ const stateOptions  = [
     value:6,
   },
 ]
+ const typeOptions = [
+  {  
+    label:'易优',
+    value:'1',
+  },
+  {  
+    label:'非易优',
+    value:'2',
+  },
 
-export  {stateOptions}
+]
+
+export  {stateOptions, typeOptions}

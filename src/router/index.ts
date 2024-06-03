@@ -74,7 +74,7 @@ const router = createRouter({
         },
         {
           path: "/websiteModel",
-          name: "网站模板",
+          name: "网站模块设置",
           // route level code-splitting
           // this generates a separate chunk (About.[hash].js) for this route
           // which is lazy-loaded when the route is visited.
