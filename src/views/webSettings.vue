@@ -24,7 +24,7 @@
             >
               <el-option
                 v-for="(listItem, index) in typeOptions"
-                :value="listItem.value+''"
+                :value="listItem.value + ''"
                 :key="listItem.value"
                 :label="listItem.label"
               ></el-option>
@@ -35,7 +35,7 @@
             <el-date-picker
               v-model="formInline.date"
               type="datetimerange"
-              range-separator="To"
+              range-separator="到"
               start-placeholder="开始时间"
               end-placeholder="结束时间"
               :size="size"
@@ -48,47 +48,49 @@
           </el-form-item>
         </el-form>
       </el-header>
-      <el-main>
+      <el-main class="main-container">
         <div class="header-container">
           <el-button type="primary" @click="addRow">添加</el-button>
         </div>
-        <el-table
-          ref="singleTableRef"
-          :data="tableData"
-          highlight-current-row
-          style="width: 100%"
-          border
-          class="table-container"
-        >
-          <el-table-column type="index" width="50" abel="序号" />
-          <el-table-column property="web_name" label="网站名字" />
-          <el-table-column property="web_type" label="网站类型">
-            <template #default="scope">
-              {{ scope.row.web_type == 1 ? "易优" : "非易优" }}
-            </template>
-          </el-table-column>
-          <el-table-column property="web_address" label="网址" />
-          <el-table-column property="web_user_account" label="后台账户" />
-          <el-table-column property="web_password" label="后台密码" />
-          <el-table-column
-            property="create_time"
-            label="创建时间"
-            width="180"
-          />
-          <el-table-column fixed="right" label="操作" width="200">
-            <template #default="scope">
-              <el-button
-                @click.prevent="deleteRow(scope.row.web_id)"
-                type="danger"
-              >
-                删除
-              </el-button>
-              <el-button type="primary" @click.prevent="editRow(scope.row)">
-                修改
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+        <div class="table-container">
+          <el-table
+            ref="singleTableRef"
+            :data="tableData"
+            highlight-current-row
+            style="width: 100%"
+            border
+            class="table-container"
+          >
+            <el-table-column type="index" width="50" abel="序号" />
+            <el-table-column property="web_name" label="网站名字" />
+            <el-table-column property="web_type" label="网站类型">
+              <template #default="scope">
+                {{ scope.row.web_type == 1 ? "易优" : "非易优" }}
+              </template>
+            </el-table-column>
+            <el-table-column property="web_address" label="网址" />
+            <el-table-column property="web_user_account" label="后台账户" />
+            <el-table-column property="web_password" label="后台密码" />
+            <el-table-column
+              property="create_time"
+              label="创建时间"
+              width="180"
+            />
+            <el-table-column fixed="right" label="操作" width="200">
+              <template #default="scope">
+                <el-button
+                  @click.prevent="deleteRow(scope.row.web_id)"
+                  type="danger"
+                >
+                  删除
+                </el-button>
+                <el-button type="primary" @click.prevent="editRow(scope.row)">
+                  修改
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
       </el-main>
     </el-container>
     <el-footer>
@@ -163,7 +165,7 @@ const deleteRow = async (web_id: number) => {
 };
 
 const search = async () => {
-  const { web_name, web_type, date, pageSize, pageNum, } = formInline.value;
+  const { web_name, web_type, date, pageSize, pageNum } = formInline.value;
   let data = {
     web_name,
     pageSize,
@@ -187,7 +189,7 @@ const editRow = (data) => {
 
 search();
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .table-container {
   padding: 10px;
   margin-top: 10px;
@@ -198,5 +200,13 @@ search();
 }
 .header-container {
   margin-top: -10px;
+}
+.main-container {
+  display: flex;
+  flex-direction: column; /* 垂直方向排列子元素 */
+}
+.table-container {
+  flex: 1; /* 占据剩余空间 */
+  overflow-y: auto; /* 如果内容过多，出现垂直滚动条 */
 }
 </style>
