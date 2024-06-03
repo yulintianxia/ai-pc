@@ -44,13 +44,16 @@
             />
           </el-form-item>
 
-          <el-form-item label="创建时间">
+          <el-form-item label="时间">
             <el-date-picker
               v-model="formInline.date"
-              type="date"
-              range-separator="到"
-              placeholder="请选择创建时间"
-              clearable
+              type="datetimerange"
+              range-separator="To"
+              start-placeholder="开始时间"
+              end-placeholder="结束时间"
+              :size="size"
+              format="YYYY-MM-DD HH:mm:ss"
+              value-fomat="YYYY-MM-DD HH:mm:ss"
             />
           </el-form-item>
           <el-form-item>

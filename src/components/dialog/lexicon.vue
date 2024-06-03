@@ -110,11 +110,11 @@ const getOptions =async()=>{
   }
 
 }
-
+getOptions();
 
 const emits = defineEmits(["search"]);
 
-getOptions();
+
 
 const props = withDefaults(defineProps<Props>(), {
    id:''

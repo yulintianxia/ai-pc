@@ -5,62 +5,36 @@
         <el-form
           :inline="true"
           :model="formInline"
-          label-width="80px;"
+          label-width="100px;"
           class="form"
         >
-          <el-form-item label="关键词">
+          <el-form-item label="任务名字">
             <el-input
-              v-model="formInline.keyword"
-              placeholder="请填写关键词"
+              v-model="formInline.article_job_name"
+              placeholder="请输入任务名字"
               clearable
             />
           </el-form-item>
-          <el-form-item label="词库">
-            <el-select
-              v-model="formInline.lexicon"
-              placeholder="请选择词库"
-              clearable
-            >
-              <el-option label="Zone one" value="shanghai" />
-              <el-option label="Zone two" value="beijing" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="创建时间">
+          <el-form-item label="时间">
             <el-date-picker
               v-model="formInline.date"
-              type="daterange"
-              range-separator="到"
+              type="datetimerange"
+              range-separator="To"
               start-placeholder="开始时间"
               end-placeholder="结束时间"
               :size="size"
-              clearable
+              format="YYYY-MM-DD HH:mm:ss"
+              value-fomat="YYYY-MM-DD HH:mm:ss"
             />
           </el-form-item>
-          <el-form-item label="状态">
-            <el-select
-              v-model="formInline.state"
-              placeholder="请选择状态"
-              clearable
-            >
-              <el-option
-                v-for="(item, index) in stateOptions"
-                :value="item.value"
-                :key="item.value"
-                :label="item.label"
-              ></el-option>
-            </el-select>
-          </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit">发布配置</el-button>
-            <el-button type="primary" @click="onSubmit">新增任务</el-button>
-            <el-button type="primary" @click="onSubmit">查询</el-button>
-            <el-button type="primary" @click="onSubmit">重置</el-button>
+            <el-button type="primary" @click="search">查询</el-button>
           </el-form-item>
         </el-form>
       </el-header>
       <el-main>
-        <div>
-           <el-button type="primary" @click="cleanBtn">字符清洗</el-button>
+        <div class="header-container">
+          <el-button type="primary" @click="addRow">添加</el-button>
         </div>
         <el-table
           ref="singleTableRef"
@@ -68,63 +42,28 @@
           highlight-current-row
           style="width: 100%"
           border
-          @current-change="handleCurrentChange"
           class="table-container"
         >
-          <el-table-column type="index" width="50" />
-          <el-table-column property="ID" label="ID" />
-          <el-table-column property="name" label="长尾词" />
-          <el-table-column property="address" label="文章内容/标题" />
-          <el-table-column label="状态" width="120">
-            <template #default="scope">
-              <el-switch
-                v-model="scope.row.state"
-                class="mb-2"
-                style="
-                  --el-switch-on-color: #13ce66;
-                  --el-switch-off-color: #ff4949;
-                "
-                active-text="已生成"
-                disabled
-                inactive-text="未生成"
-              />
-            </template>
-          </el-table-column>
-          <el-table-column property="address" label="进度" width="180" />
-          <el-table-column property="address" label="创建时间" width="180" />
-          <el-table-column fixed="right" label="操作" width="120">
+          <el-table-column type="index" width="50" abel="序号" />
+          <el-table-column property="web_id" label="网站id" />
+          <el-table-column property="web_name" label="网站名字" />
+          <el-table-column property="module_name" label="模块名字" />
+          <el-table-column property="module_num" label="模块编号" />
+          <el-table-column
+            property="create_time"
+            label="创建时间"
+            width="180"
+          />
+          <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
               <el-button
-                link
+                @click.prevent="doArticle(scope.row.article_job_id)"
                 type="danger"
-                size="small"
-                @click.prevent="deleteRow(scope.$index)"
               >
-              打开文件夹
+                开始生成
               </el-button>
-              <el-button
-                link
-                type="primary"
-                size="small"
-                @click.prevent="editRow(scope.$index)"
-              >
-                修改
-              </el-button>
-              <el-button
-                link
-                type="primary"
-                size="small"
-                @click.prevent="editRow(scope.$index)"
-              >
-               发布
-              </el-button>
-              <el-button
-                link
-                type="primary"
-                size="small"
-                @click.prevent="editRow(scope.$index)"
-              >
-                删除
+              <el-button type="primary" @click.prevent="doArticle(scope.row.article_job_id)">
+                暂停生成
               </el-button>
             </template>
           </el-table-column>
@@ -133,58 +72,110 @@
     </el-container>
     <el-footer>
       <el-pagination
-        v-model:current-page="currentPage"
-        v-model:page-size="pageSize4"
-        :page-sizes="[100, 200, 300, 400]"
+        v-model:current-page="formInline.pageNum"
+        v-model:page-size="formInline.pageSize"
+        :page-sizes="[10, 20, 30, 40]"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
+        :total="total"
+        @size-change="search"
+        @current-change="search"
       />
     </el-footer>
   </div>
+  <main-dialog ref="dialog" @search="search" class="main-dialog"></main-dialog>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { stateOptions } from "@/assets/ts/configOptions.ts";
+import MainDialog from "@/components/dialog/article.vue";
+import {
+  taskList,
+  startTask,
+  stopTask 
+} from "@/utils/api.ts";
+import { ElMessage, ElMessageBox } from "element-plus";
+const dialog = ref("dialog");
+
+const tableData = ref([]);
 
 let formInline = ref({
-  keyword: "",
-  lexicon: "",
-  date: "",
-  state: "",
+  article_job_name:'',
+  date: [],
+  pageSize: 10,
+  pageNum: 1,
 });
 
-/* 分页 */
-const currentPage = ref(1);
+const total = ref(0);
 
-// 分页页数
-const pages = ref(1);
+/* 新增 */
+const addRow = () => {
+  dialog.value.dialogShow();
+};
 
-const handleSizeChange = () => {};
+/* 生成或者停止操作 */
+const doArticle = async (article_job_id: number) => {
+  ElMessageBox.confirm("您确定要生成这个网站模块", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(async () => {
+      let params = {
+        article_job_id,
+      };
+      let data = await startTask(params);
+      console.log("data", data);
+      if (data) {
+        ElMessage({
+          message: "成功",
+          type: "success",
+        });
+        search();
+      }
+    })
+    .catch(() => {
+      ElMessage({
+        type: "info",
+        message: "取消",
+      });
+    });
+};
 
-const handleCurrentChange = () => {};
+const search = async () => {
+  const { article_job_name, date, pageSize, pageNum } =
+    formInline.value;
+  let data = {
+    article_job_name,
+    start_time:
+      (date?.length && dayjs(date[0]).format("YYYY-MM-DD HH:mm:ss")) || "",
+    end_time:
+      (date?.length && dayjs(date[1]).format("YYYY-MM-DD HH:mm:ss")) || "",
+      pageSize,
+      pageNum
+  };
+  let resp = await taskList(data);
+  if (resp?.data_list) {
+    tableData.value = resp?.data_list || [];
+    total.value = resp.total;
+  }
+};
 
-const onSubmit = () => {};
+const editRow = (data) => {
+  dialog.value.dialogShow(data);
+};
 
-// 删除
-const deleteRow = () => {};
-
-// 修改
-const editRow = () => {};
-
-// 字符清洗
-const cleanBtn = ()=>{
-  
-}
-
-
-
+search();
 </script>
 <style lang="scss">
 .table-container {
   padding: 10px;
+  margin-top: 10px;
+}
+.table-action {
   margin-top: 20px;
+  margin-left: 20px;
+}
+.header-container {
+  margin-top: -10px;
 }
 </style>

@@ -129,3 +129,32 @@ export const webSettingDel = (data: any) =>
 // 修改网站
 export const webSettingUpdate = (data: any) =>
   instance.post("/web_set/update_web_set", data);
+
+// 文章生成任务列表
+export const taskList = (data: any) =>
+  instance.post("/app_article_job/get_article_job_list", data);
+
+// 暂停文章生成
+export  const stopTask = (data:any)=>
+instance.post("/app_article_job/stop_article_job", data);
+
+//开始文章生成
+export  const startTask = (data:any)=>
+instance.post("/app_article_job/start_article_job", data);
+
+//文章添加生成
+export  const addTask = (data:any)=>
+instance.post("/app_article_job/add_article_job", data);
+
+// 获取大模型配置列表
+export  const AImodeList = (data:any)=>
+instance.post("/app_model_manage/get_model_config_list", data);
+
+// 获取模型类型
+export  const AImodeType = (data:any)=>
+instance.post("/app_model_manage/get_model_type", data);
+
+// 退出登录
+export  const loginOut = ()=>
+instance.post("/user/logout_sys");
+

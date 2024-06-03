@@ -33,11 +33,10 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       let response = await loginAPI(data);
       let token = response[0].token;
       localStorage.setItem('token', token);
+      localStorage.setItem('user', phone_num);
       router.push({
-        path:'/administration'
+        path:'/home'
       })
-
-
     } else {
       console.log("error submit!", fields);
     }
