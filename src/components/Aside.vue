@@ -45,6 +45,7 @@ const iconColor = ref("color:#F8FAFB");
           </template>
           <el-menu-item index="/modeSettings">模型设置</el-menu-item>
           <el-menu-item index="/webSettings">网站设置</el-menu-item>
+          <el-menu-item index="/websiteModel">网站模型设置</el-menu-item>
         </el-sub-menu>
       </el-menu>
     </el-scrollbar>

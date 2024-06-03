@@ -15,12 +15,12 @@
                 clearable
               />
             </el-form-item>
-            <el-form-item label="导入时间">
+            <el-form-item label="创建时间">
               <el-date-picker
                 v-model="formInline.date"
                 type="date"
                 range-separator="到"
-                placeholder="请填写导入时间"
+                placeholder="请填写创建时间"
                 clearable
               />
             </el-form-item>

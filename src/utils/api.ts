@@ -83,3 +83,21 @@ export const delDetail = (data:any)=>instance.post("/app_word_library/delete_key
 
 // 获取关键词列表
 export const keywordList = (data:any)=>instance.post("/app_word_library/get_key_word_list", data);
+
+// 获取网站模块的列表
+export const webSiteModeList = (data:any)=>instance.post("/web_set/get_web_module_list", data);
+
+// 添加网站模块的列表
+export const webSiteModeAdd = (data:any)=>instance.post("/web_set/add_web_module", data);
+
+// 删除网站模块的列表
+export const webSiteModeDel = (data:any)=>instance.post("/web_set/del_web_module", data);
+
+// 修改网站模块的列表
+export const webSiteModeEdit = (data:any)=>instance.post("/web_set/update_web_module", data);
+
+// 获取网站模块的下拉
+export const webSiteModeOptions = (data:any)=>instance.post("/web_set/get_web_module_drop", data);
+
+// 获取网站设置下拉列表
+export const  webSettingOptions = (data:any)=> instance.post("/web_set/get_web_set_drop", data);

@@ -8,23 +8,50 @@
           label-width="100px;"
           class="form"
         >
-          <el-form-item label="名字">
+          <el-form-item label="网站id" prop="web_id">
+            <el-select
+              v-model="formInline.web_id"
+              placeholder="请选择网站id"
+              clearable
+            >
+              <el-option
+                v-for="(listItem, index) in webOptions"
+                :value="listItem.web_id"
+                :key="listItem.web_id"
+                :label="listItem.web_name"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="网站名字">
             <el-input
-              v-model="formInline.file_name"
+              v-model="formInline.web_name"
+              placeholder="请输入网站名字"
+              clearable
+            />
+          </el-form-item>
+
+          <el-form-item label="模块名字">
+            <el-input
+              v-model="formInline.module_name"
               placeholder="请输入长尾词名字"
               clearable
             />
           </el-form-item>
-          <el-form-item label="时间">
+          <el-form-item label="模块编号">
+            <el-input
+              v-model="formInline.module_num"
+              placeholder="请输入模块编号"
+              clearable
+            />
+          </el-form-item>
+
+          <el-form-item label="创建时间">
             <el-date-picker
               v-model="formInline.date"
-              type="datetimerange"
-              range-separator="To"
-              start-placeholder="开始时间"
-              end-placeholder="结束时间"
-              :size="size"
-              format="YYYY-MM-DD HH:mm:ss"
-              value-fomat="YYYY-MM-DD HH:mm:ss"
+              type="date"
+              range-separator="到"
+              placeholder="请选择创建时间"
+              clearable
             />
           </el-form-item>
           <el-form-item>
@@ -45,8 +72,10 @@
           class="table-container"
         >
           <el-table-column type="index" width="50" abel="序号" />
-          <el-table-column property="file_word_name" label="名字" />
-          <el-table-column property="file_path" label="文件" />
+          <el-table-column property="web_id" label="网站id" />
+          <el-table-column property="web_name" label="网站名字" />
+          <el-table-column property="module_name" label="模块名字" />
+          <el-table-column property="module_num" label="模块编号" />
           <el-table-column
             property="create_time"
             label="创建时间"
@@ -55,18 +84,13 @@
           <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
               <el-button
+                @click.prevent="deleteRow(scope.row.web_module_id)"
                 type="danger"
-                size="small"
-                @click.prevent="deleteRow(scope.row.file_id)"
               >
                 删除
               </el-button>
-              <el-button
-                type="primary"
-                size="small"
-                @click.prevent="download(scope.row.file_id)"
-              >
-                下载
+              <el-button type="primary" @click.prevent="editRow(scope.row)">
+                修改
               </el-button>
             </template>
           </el-table-column>
@@ -90,24 +114,36 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { stateOptions } from "@/assets/ts/configOptions.ts";
-import { dayjs } from "element-plus";
-
-import MainDialog from "@/components/dialog/administration.vue";
+import MainDialog from "@/components/dialog/websiteMode.vue";
 import {
-  administrationDel,
-  administrationList,
-  administrationExPort,
-  exportUrl,
+  webSiteModeEdit,
+  webSiteModeList,
+  webSiteModeDel,
+  webSettingOptions,
 } from "@/utils/api.ts";
 import { ElMessage, ElMessageBox } from "element-plus";
 const dialog = ref("dialog");
 
+const webOptions = ref([]);
+
+const getOptions = async () => {
+  let resp = await webSettingOptions();
+  console.log("resp");
+  if (resp.data_list.length) {
+    webOptions.value = resp.data_list || [];
+  }
+};
+
+getOptions();
+
 const tableData = ref([]);
 
 let formInline = ref({
-  file_name: "",
-  date: [],
+  web_name: "",
+  web_id: "",
+  module_name: "",
+  module_num: "",
+  date: "",
   pageSize: 10,
   pageNum: 1,
 });
@@ -116,22 +152,21 @@ const total = ref(0);
 
 /* 新增 */
 const addRow = () => {
-  console.log("dialog", dialog);
   dialog.value.dialogShow();
 };
 
 /* 删除操作 */
-const deleteRow = (file_id: number) => {
-  ElMessageBox.confirm("您确定要删除这个长尾词文件", "提示", {
+const deleteRow = async (web_module_id: number) => {
+  ElMessageBox.confirm("您确定要删除这个网站模块", "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",
   })
     .then(async () => {
       let params = {
-        file_id,
+        web_module_id,
       };
-      let data = await administrationDel(params);
+      let data = await webSiteModeDel(params);
       console.log("data", data);
       if (data) {
         ElMessage({
@@ -149,37 +184,28 @@ const deleteRow = (file_id: number) => {
     });
 };
 
-/* 导出 */
-const download = async (file_id: number) => {
-  let params = {
-    file_id,
-  };
-  let data = await administrationExPort(params);
-  console.log("data", data);
-  if (data[0].file_url) {
-    const { file_url, file_name } = data[0];
-    console.log("ile_name", file_name);
-    exportUrl(file_url, file_name);
-  }
-};
-
 const search = async () => {
-  const { file_name, date, pageSize, pageNum } = formInline.value;
+  const { web_name, module_name, module_num, web_id, date, pageSize, pageNum } =
+    formInline.value;
   let data = {
-    file_name,
+    web_name,
+    date,
     pageSize,
     pageNum,
-    start_time:
-      (date?.length && dayjs(date[0]).format("YYYY-MM-DD HH:mm:ss")) || "",
-    end_time:
-      (date?.length && dayjs(date[1]).format("YYYY-MM-DD HH:mm:ss")) || "",
+    module_name,
+    module_num,
+    web_id,
   };
-  let resp = await administrationList(data);
+  let resp = await webSiteModeList(data);
   if (resp?.data_list) {
     tableData.value = resp?.data_list || [];
     total.value = resp.total;
   }
 };
+
+const editRow = (data)=>{
+    dialog.value.dialogShow(data);
+}
 
 search();
 </script>
