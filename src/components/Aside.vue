@@ -39,7 +39,7 @@ const iconColor = ref("color:#F8FAFB");
         <el-sub-menu index="3">
           <template #title>
             <el-icon>
-              <Message /> </el-icon
+              <Setting /> </el-icon
             ><span>设置</span>
           </template>
           <el-menu-item index="/modeSettings">模型设置</el-menu-item>

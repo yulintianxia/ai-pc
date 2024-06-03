@@ -1,7 +1,7 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header>
+      <el-header height='80px'>
         <el-form
           :inline="true"
           :model="formInline"
@@ -48,7 +48,7 @@
             <el-date-picker
               v-model="formInline.date"
               type="datetimerange"
-              range-separator="To"
+              range-separator="到"
               start-placeholder="开始时间"
               end-placeholder="结束时间"
               :size="size"
