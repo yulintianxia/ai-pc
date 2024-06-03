@@ -32,8 +32,7 @@ const iconColor = ref("color:#F8FAFB");
             <el-icon>
               <Message /></el-icon><span>内容</span>
           </template>
-          <el-menu-item index="/newTask">新建任务</el-menu-item>
-          <el-menu-item index="/taskManagement">任务管理</el-menu-item>
+          <!-- <el-menu-item index="/taskManagement">任务管理</el-menu-item> -->
           <el-menu-item index="/articleManagement">文章管理</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="3">
