@@ -8,10 +8,10 @@
           label-width="100px;"
           class="form"
         >
-          <el-form-item label="任务名字">
+          <el-form-item label="文章任务名字">
             <el-input
               v-model="formInline.article_job_name"
-              placeholder="请输入任务名字"
+              placeholder="请输入文章任务名字"
               clearable
             />
           </el-form-item>
@@ -45,25 +45,29 @@
           class="table-container"
         >
           <el-table-column type="index" width="50" abel="序号" />
-          <el-table-column property="web_id" label="网站id" />
-          <el-table-column property="web_name" label="网站名字" />
-          <el-table-column property="module_name" label="模块名字" />
-          <el-table-column property="module_num" label="模块编号" />
+          <el-table-column property="article_job_name" label="文章任务名字" />
+          <el-table-column property="article_sum" label="文章数量" />
+          <el-table-column property="job_status" label="文章状态" />
           <el-table-column
             property="create_time"
             label="创建时间"
+            width="180"
+          />
+          <el-table-column
+            property="update_time"
+            label="更新时间"
             width="180"
           />
           <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
               <el-button
                 @click.prevent="doArticle(scope.row.article_job_id)"
-                type="danger"
+                type="primary" 
               >
-                开始生成
+                开始
               </el-button>
-              <el-button type="primary" @click.prevent="doArticle(scope.row.article_job_id)">
-                暂停生成
+              <el-button  type="danger" @click.prevent="doArticle(scope.row.article_job_id)">
+                暂停
               </el-button>
             </template>
           </el-table-column>
@@ -114,7 +118,7 @@ const addRow = () => {
 
 /* 生成或者停止操作 */
 const doArticle = async (article_job_id: number) => {
-  ElMessageBox.confirm("您确定要生成这个网站模块", "提示", {
+  ElMessageBox.confirm("您确定要生成文章", "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",

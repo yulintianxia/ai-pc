@@ -17,10 +17,10 @@
         <el-form-item label="模型" prop="model_id">
           <el-select v-model="form.model_id" placeholder="请选择模型" clearable>
             <el-option
-              v-for="(listItem, index) in modeList"
-              :value="listItem.value + ''"
-              :key="listItem.value"
-              :label="listItem.label"
+              v-for="(item, index) in modeList"
+              :value="item.model_id"
+              :key="item.model_id"
+              :label="item.model_name"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -33,10 +33,14 @@
                 placeholder="请输入词库名字"
                 clearable
               />
-             
             </el-form-item>
-            <el-form-item >
-                <el-button type="primary"  style='margin-left:20px;' @click="search()">搜索</el-button>
+            <el-form-item>
+              <el-button
+                type="primary"
+                style="margin-left: 20px"
+                @click="search()"
+                >搜索</el-button
+              >
             </el-form-item>
           </div>
           <el-table
@@ -101,13 +105,13 @@ import { ref, nextTick } from "vue";
 import type { ComponentSize, FormInstance, FormRules } from "element-plus";
 import RuleForm from "@/types/administration.interface.ts";
 import { typeOptions } from "@/assets/ts/configOptions.ts";
-import { AImodeList, addTask, wordList } from "@/utils/api.ts";
+import { AImodeListPage, addTask, wordList } from "@/utils/api.ts";
 let show = ref(false);
 let form = ref({
   article_job_name: "",
   key_word_lib_list: [],
-//   model_id: "",
-model_id: '5',
+  //   model_id: "",
+  model_id: "",
 });
 
 let title = "新增";
@@ -118,7 +122,6 @@ let formInline = ref({
   key_word_lib_name: "",
 });
 const multipleTableRef = ref();
-
 
 let total = ref(0);
 
@@ -143,14 +146,15 @@ search();
 const editData = ref(null);
 
 let modeList = ref([]);
-
 const getOptions = async () => {
-  let resp = await AImodeList();
-  console.log("resp");
-  if (resp.data_list.length) {
-    modeList.value = resp.data_list || [];
+  let resp = await AImodeListPage();
+  console.log("resp222222222", resp);
+  if (resp?.length) {
+    modeList.value = resp || [];
   }
 };
+
+
 getOptions();
 
 const emits = defineEmits(["search"]);
@@ -202,10 +206,10 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         key_word_lib_list,
         model_id,
       };
-     let resp = await addTask(data);
+      let resp = await addTask(data);
       if (resp) {
         reset(formEl);
-        
+
         emits("search");
       }
     } else {
@@ -217,7 +221,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 const reset = (formEl: FormInstance | undefined) => {
   formEl.resetFields();
   dialogHide();
-  multipleTableRef.value!.clearSelection()
+  multipleTableRef.value!.clearSelection();
 };
 
 defineExpose({
@@ -225,15 +229,13 @@ defineExpose({
   dialogHide,
 });
 
-
 const handleSelectionChange = (val) => {
-    // multipleSelection.value = val;
-    form.value.key_word_lib_list =[];
-    val.forEach(item => {
-        form.value.key_word_lib_list.push(item.key_word_lib_id)
-    });
-}
-
+  // multipleSelection.value = val;
+  form.value.key_word_lib_list = [];
+  val.forEach((item) => {
+    form.value.key_word_lib_list.push(item.key_word_lib_id);
+  });
+};
 </script>
 <style scoped lang="scss">
 .avatar-uploader .avatar {

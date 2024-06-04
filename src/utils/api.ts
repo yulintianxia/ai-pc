@@ -156,7 +156,7 @@ instance.post("/app_model_manage/get_model_type", data);
 
 
 // 获取大数据模型列表
-export const AImodeListPage = (data:any)=>
+export const AImodeListPage = (data?:any)=>
 instance.post("/app_model_manage/get_model_list", data);
 
 //配置模型密匙 key类型模型
