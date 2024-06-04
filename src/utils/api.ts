@@ -154,6 +154,23 @@ instance.post("/app_model_manage/get_model_config_list", data);
 export  const AImodeType = (data:any)=>
 instance.post("/app_model_manage/get_model_type", data);
 
+
+// 获取大数据模型列表
+export const AImodeListPage = (data:any)=>
+instance.post("/app_model_manage/get_model_list", data);
+
+//配置模型密匙 key类型模型
+export const  configAIkey =  (data:any)=>
+instance.post("/app_model_manage/add_model_key", data);
+
+// 修改模型密匙 appid类型模型
+export const  editAIid =(data:any)=>
+instance.post("/app_model_manage/update_model_key", data);
+
+//删除模型密匙 key类型模型
+export const  delKey =  (data:any)=>
+instance.post("/app_model_manage/delete_model_key", data);
+
 // 退出登录
 export  const loginOut = ()=>
 instance.post("/user/logout_sys");

@@ -39,7 +39,7 @@ request.interceptors.response.use(
   (response) => {
     // 对响应数据做点什么
     let resData = response.data;
-    if (resData.code == "0000" || resData.code == 200) {
+    if (resData.code == "0000" || resData.code == 200 || resData.code == '9999') {
       return Promise.resolve(resData.data);
     } else {
       return Promise.reject(resData.data);

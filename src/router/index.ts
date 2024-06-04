@@ -14,6 +14,9 @@ const router = createRouter({
           path: "home",
           component: Home,
           name: "home",
+          meta: {
+            auth: false,
+          },
         },
         {
           path: "/administration",
@@ -22,6 +25,9 @@ const router = createRouter({
           // this generates a separate chunk (About.[hash].js) for this route
           // which is lazy-loaded when the route is visited.
           component: () => import("../views/administration.vue"),
+          meta: {
+            auth: true,
+          },
         },
         {
           path: "/lexicon",
@@ -38,6 +44,9 @@ const router = createRouter({
           // this generates a separate chunk (About.[hash].js) for this route
           // which is lazy-loaded when the route is visited.
           component: () => import("../views/newTask.vue"),
+          meta: {
+            auth: true,
+          },
         },
         {
           path: "/taskManagement",
@@ -46,6 +55,9 @@ const router = createRouter({
           // this generates a separate chunk (About.[hash].js) for this route
           // which is lazy-loaded when the route is visited.
           component: () => import("../views/taskManagement.vue"),
+          meta: {
+            auth: true,
+          },
         },
         {
           path: "/articleManagement",
@@ -54,6 +66,9 @@ const router = createRouter({
           // this generates a separate chunk (About.[hash].js) for this route
           // which is lazy-loaded when the route is visited.
           component: () => import("../views/articleManagement.vue"),
+          meta: {
+            auth: true,
+          },
         },
         {
           path: "/webSettings",
@@ -62,15 +77,20 @@ const router = createRouter({
           // this generates a separate chunk (About.[hash].js) for this route
           // which is lazy-loaded when the route is visited.
           component: () => import("../views/webSettings.vue"),
-
+          meta: {
+            auth: true,
+          },
         },
         {
           path: "/modeSettings",
-          name: "模型设置",
+          name: "模型管理",
           // route level code-splitting
           // this generates a separate chunk (About.[hash].js) for this route
           // which is lazy-loaded when the route is visited.
           component: () => import("../views/modeSettings.vue"),
+          meta: {
+            auth: true,
+          },
         },
         {
           path: "/websiteModel",
@@ -79,7 +99,10 @@ const router = createRouter({
           // this generates a separate chunk (About.[hash].js) for this route
           // which is lazy-loaded when the route is visited.
           component: () => import("../views/websiteModel.vue"),
-        }
+          meta: {
+            auth: true,
+          },
+        },
       ],
     },
     {
@@ -89,8 +112,30 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import("../views/login.vue"),
+      meta: {
+        auth: false,
+      },
     },
   ],
 });
+
+// router.beforeEach((to, from, next) => {
+//   // 1. 每个条件执行后都要跟上 next() 或 使用路由跳转 api 否则页面就会停留一动不动
+//   // 2. 要合理的搭配条件语句，避免出现路由死循环。
+//   const token = localStorage.getItem("token");
+//   if (to.meta.auth) {
+//     console.log('to.meta.auth',to.meta.auth);
+  
+//     if (!token) {
+//       console.log('token',token);
+//       return router.replace({
+//         name: "login",
+//       });
+//     }
+//     next();
+//   } else {
+//     next();
+//   }
+// });
 
 export default router;

@@ -1,38 +1,34 @@
 <template>
-    <div class="common-layout">
-      <el-container>
-        <el-header>
-          <el-form
-            :inline="true"
-            :model="formInline"
-            label-width="100px;"
-            class="form"
-          >
-            <el-form-item label="名字">
-              <el-input
-                v-model="formInline.file_name"
-                placeholder="请输入长尾词名字"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item label="创建时间">
-              <el-date-picker
-                v-model="formInline.date"
-                type="date"
-                range-separator="到"
-                placeholder="请填写创建时间"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="search">查询</el-button>
-            </el-form-item>
-          </el-form>
-        </el-header>
-        <el-main>
-          <div class="header-container">
-            <el-button type="primary" @click="addRow">添加</el-button>
-          </div>
+  <div class="common-layout">
+    <el-container>
+      <el-header>
+        <el-form
+          :inline="true"
+          :model="formInline"
+          label-width="100px;"
+          class="form"
+        >
+          <el-form-item label="模型" prop="model_id">
+            <el-select
+              v-model="formInline.model_id"
+              placeholder="请选择模型"
+              clearable
+            >
+              <el-option
+                v-for="(item, index) in aiTypeOptions"
+                :value="item.model_id"
+                :key="item.model_id"
+                :label="item.model_name"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="search">查询</el-button>
+          </el-form-item>
+        </el-form>
+      </el-header>
+      <el-main class="main-container">
+        <div class="table-container">
           <el-table
             ref="singleTableRef"
             :data="tableData"
@@ -42,135 +38,110 @@
             class="table-container"
           >
             <el-table-column type="index" width="50" abel="序号" />
-            <el-table-column property="file_name" label="程序" />
-            <el-table-column property="file_path" label="名称" />
+            <el-table-column property="model_name" label="模型名字" />
             <el-table-column
               property="create_time"
-              label="后台网址"
+              label="创建时间"
               width="180"
             />
             <el-table-column
-              property="create_time"
-              label="板块设置"
+              property="update_time"
+              label="更新时间"
               width="180"
             />
-            <el-table-column
-              property="create_time"
-              label="发布状态"
-              width="180"
-            />
-            <el-table-column fixed="right" label="操作" width="120">
+            <el-table-column fixed="right" label="操作" width="200">
               <template #default="scope">
-                <el-button
-                  @click.prevent="deleteRow(scope.row.file_id)"
-                  type="danger">
-                  删除
-                </el-button>
-                <el-button
-                  link
-          
-                  size="small"
-                  @click.prevent="deleteRow(scope.row.file_id)"
-                >
-                  修改
+                <el-button type="primary" @click.prevent="editRow(scope.row)">
+                  配置
                 </el-button>
               </template>
             </el-table-column>
           </el-table>
-        </el-main>
-      </el-container>
-      <el-footer>
-        <el-pagination
-          v-model:current-page="formInline.pageNum"
-          v-model:page-size="formInline.pageSize"
-          :page-sizes="[10, 20, 30, 40]"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        />
-      </el-footer>
-    </div>
-    <main-dialog ref="dialog" class="main-dialog"></main-dialog>
-  </template>
-  
-  <script setup lang="ts">
-  import { ref } from "vue";
-  import { stateOptions } from "@/assets/ts/configOptions.ts";
-  import MainDialog from "@/components/dialog/administration.vue";
-  import { administrationDel, administrationList } from "@/utils/api.ts";
-  import { ElMessage } from "element-plus";
-  const dialog = ref("dialog");
-  
-  const tableData = ref([]);
-  
-  let formInline = ref({
-    file_name: "",
-    date: "",
-    pageSize: 10,
-    pageNum: 1,
-  });
-  
-  const total = ref(0);
-  
-  const handleSizeChange = () => {
-    search()
-  };
-  
-  const handleCurrentChange = () => {
-    search()
-  };
-  
-  /* 新增 */
-  const addRow = () => {
-    console.log("dialog", dialog);
-    dialog.value.dialogShow();
-  };
-  
-  /* 删除操作 */
-  const deleteRow = async (file_id: number) => {
-    let params = {
-      file_id
-    }
-    let data = await administrationDel(params);
-    console.log('data',data);
-    if (data) {
-      ElMessage({
-        message: "删除成功",
-        type: "success",
-      });
-    }
-  };
-  
-  const search = async () => {
-    const { file_name, date, pageSize, pageNum } = formInline.value;
-    let data = {
-      file_name,
-      date,
-      pageSize,
-      pageNum,
-    };
-    let resp = await administrationList(data);
-    if (resp?.data_list) {
-      tableData.value = resp?.data_list || [];
-      total.value = resp.total;
-    }
-  };
-  
-  search();
-  
-  </script>
-  <style lang="scss">
-  .table-container {
-    padding: 10px;
-    margin-top: 10px;
+        </div>
+      </el-main>
+    </el-container>
+    <el-footer>
+      <el-pagination
+        v-model:current-page="formInline.pageNum"
+        v-model:page-size="formInline.pageSize"
+        :page-sizes="[10, 20, 30, 40]"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+        @size-change="search"
+        @current-change="search"
+      />
+    </el-footer>
+  </div>
+  <main-dialog ref="dialog" @search="search" class="main-dialog"></main-dialog>
+</template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+import MainDialog from "@/components/dialog/modeSetting.vue";
+import { AImodeListPage,AImodeList } from "@/utils/api.ts";
+
+const dialog = ref("dialog");
+const tableData = ref([]);
+let formInline = ref({
+  model_id: "",
+});
+
+const total = ref(0);
+
+/* 新增 */
+const addRow = () => {
+  dialog.value.dialogShow();
+};
+
+
+let aiTypeOptions = ref([]);
+
+const getOptions = async()=>{
+  let resp = await AImodeListPage();
+  if (resp?.length) {
+    aiTypeOptions.value = resp;
   }
-  .table-action {
-    margin-top: 20px;
-    margin-left: 20px;
+}
+
+getOptions();
+
+const search = async () => {
+  const { model_id, pageSize, pageNum } = formInline.value;
+  let data = {
+    model_id,
+  };
+  let resp = await AImodeListPage(data);
+  console.log('resp',resp);
+  if (resp?.length) {
+    tableData.value = resp || [];
+    total.value = resp.total;
   }
-  .header-container {
-    margin-top: -10px;
-  }
-  </style>
-  
+};
+
+const editRow = (data) => {
+  dialog.value.dialogShow(data);
+};
+
+search();
+</script>
+<style lang="scss" scoped>
+.table-container {
+  padding: 10px;
+  margin-top: 10px;
+}
+.table-action {
+  margin-top: 20px;
+  margin-left: 20px;
+}
+.header-container {
+  margin-top: -10px;
+}
+.main-container {
+  display: flex;
+  flex-direction: column; /* 垂直方向排列子元素 */
+}
+.table-container {
+  flex: 1; /* 占据剩余空间 */
+  overflow-y: auto; /* 如果内容过多，出现垂直滚动条 */
+}
+</style>

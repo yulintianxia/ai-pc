@@ -61,7 +61,7 @@
             border
             class="table-container"
           >
-            <el-table-column type="index" width="50" abel="序号" />
+          <el-table-column type="selection" width="55" />
             <el-table-column property="web_name" label="网站名字" />
             <el-table-column property="web_type" label="网站类型">
               <template #default="scope">

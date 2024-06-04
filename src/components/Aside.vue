@@ -41,7 +41,7 @@ const iconColor = ref("color:#F8FAFB");
               <Setting /> </el-icon
             ><span>设置</span>
           </template>
-          <el-menu-item index="/modeSettings">模型设置</el-menu-item>
+          <el-menu-item index="/modeSettings">模型管理</el-menu-item>
           <el-menu-item index="/webSettings">网站设置</el-menu-item>
           <el-menu-item index="/websiteModel">网站模块设置</el-menu-item>
         </el-sub-menu>
