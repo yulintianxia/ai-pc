@@ -17,7 +17,8 @@ const iconColor = ref("color:#F8FAFB");
         active-text-color="#F8FAFB"
         background-color="#1A1C1E"
         text-color="#74767A"
-        router="true"
+        collapse-transition="false"
+        router
       >
         <el-sub-menu index="1">
           <template #title>

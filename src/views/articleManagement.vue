@@ -118,6 +118,8 @@ const addRow = () => {
 
 /* 生成或者停止操作 */
 const doArticle = async (article_job_id: number) => {
+
+  
   ElMessageBox.confirm("您确定要生成文章", "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
