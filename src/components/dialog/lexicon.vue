@@ -1,6 +1,6 @@
 <template>
   <teleport to="body">
-    <el-dialog v-model="show" title="新增词库" width="550">
+    <el-dialog v-model="show" title="添加" width="550">
       <el-form
         :model="form"
         ref="ruleForm"
@@ -49,8 +49,10 @@
             class="el-form-action"
             v-if="form.wordArray.length == index + 1"
           >
-            <el-button class="mt-2" @click.prevent="add()"> + </el-button>
+            <el-button class="mt-2"   type="primary"
+                @click.prevent="add()"> + </el-button>
             <el-button
+            type="primary"
               v-if="form.wordArray.length > 2 && index != 0"
               class="mt-2"
               @click.prevent="del()"
@@ -77,8 +79,6 @@ import { ref, computed } from "vue";
 import type { ComponentSize, FormInstance, FormRules } from "element-plus";
 import RuleForm from "@/types/administration.interface.ts";
 import { wordListGetOptions,addWord } from "@/utils/api.ts";
-
-
 import { ElMessage } from "element-plus";
 
 let show = ref(false);
@@ -98,10 +98,7 @@ interface  Props {
     id:nubmer | undefined
 }
 
-
 let wordList = ref([]);
-
-
 const getOptions =async()=>{
   let resp = await wordListGetOptions();
   console.log('resp');
@@ -113,8 +110,6 @@ const getOptions =async()=>{
 getOptions();
 
 const emits = defineEmits(["search"]);
-
-
 
 const props = withDefaults(defineProps<Props>(), {
    id:''

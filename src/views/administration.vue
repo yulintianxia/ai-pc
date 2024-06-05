@@ -1,17 +1,17 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header>
+      <el-header height="45px">
         <el-form
           :inline="true"
           :model="formInline"
-          label-width="100px;"
+          label-width="auto"
           class="form"
         >
           <el-form-item label="名字">
             <el-input
               v-model="formInline.file_name"
-              placeholder="请输入长尾词名字"
+              placeholder="请输入名字"
               clearable
             />
           </el-form-item>
@@ -22,7 +22,6 @@
               range-separator="到"
               start-placeholder="开始时间"
               end-placeholder="结束时间"
-              :size="size"
               format="YYYY-MM-DD HH:mm:ss"
               value-fomat="YYYY-MM-DD HH:mm:ss"
             />
@@ -32,7 +31,7 @@
           </el-form-item>
         </el-form>
       </el-header>
-      <el-main>
+      <el-main class="el-main-container">
         <div class="header-container">
           <el-button type="primary" @click="addRow">添加</el-button>
         </div>
@@ -43,30 +42,31 @@
           style="width: 100%"
           border
           class="table-container"
+          header-cell-class-name='table-header-cell-class'
         >
-          <el-table-column type="index" width="50" abel="序号" />
+          <el-table-column type="index" width="80" label="序号" />
           <el-table-column property="file_word_name" label="名字" />
           <el-table-column property="file_path" label="文件" />
           <el-table-column
             property="create_time"
             label="创建时间"
-            width="180"
+            width="200"
           />
           <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
-              <el-button
-                type="danger"
-                size="small"
-                @click.prevent="deleteRow(scope.row.file_id)"
-              >
-                删除
-              </el-button>
               <el-button
                 type="primary"
                 size="small"
                 @click.prevent="download(scope.row.file_id)"
               >
                 下载
+              </el-button>
+              <el-button
+                type="danger"
+                size="small"
+                @click.prevent="deleteRow(scope.row.file_id)"
+              >
+                删除
               </el-button>
             </template>
           </el-table-column>
@@ -82,6 +82,7 @@
         :total="total"
         @size-change="search"
         @current-change="search"
+        class="page-footer"
       />
     </el-footer>
   </div>
@@ -91,8 +92,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { stateOptions } from "@/assets/ts/configOptions.ts";
-import { dayjs } from "element-plus";
-
 import MainDialog from "@/components/dialog/administration.vue";
 import {
   administrationDel,
@@ -100,7 +99,7 @@ import {
   administrationExPort,
   exportUrl,
 } from "@/utils/api.ts";
-import { ElMessage, ElMessageBox } from "element-plus";
+import { ElMessage, ElMessageBox, dayjs } from "element-plus";
 const dialog = ref("dialog");
 
 const tableData = ref([]);
@@ -122,7 +121,7 @@ const addRow = () => {
 
 /* 删除操作 */
 const deleteRow = (file_id: number) => {
-  ElMessageBox.confirm("您确定要删除这个长尾词文件", "提示", {
+  ElMessageBox.confirm("您确定要删除这个长尾词文件?", "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",
@@ -185,7 +184,6 @@ search();
 </script>
 <style lang="scss">
 .table-container {
-  padding: 10px;
   margin-top: 10px;
 }
 .table-action {
@@ -195,4 +193,5 @@ search();
 .header-container {
   margin-top: -10px;
 }
+
 </style>

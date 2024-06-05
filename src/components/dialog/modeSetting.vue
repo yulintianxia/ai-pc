@@ -81,7 +81,6 @@
                 </el-button>
               </el-form-item>
             </div>
-
             <el-table
               ref="singleTableRef"
               :data="tableData"
@@ -90,20 +89,18 @@
               border
               class="table-container"
               @selection-change="handleSelectionChange"
+              header-cell-class-name="table-header-cell-class"
+              v-if="form.model_type == 2"
             >
               <el-table-column type="selection" width="55" />
-              <el-table-column property="model_key_key" label="配置key" />
               <el-table-column property="model_key_value" label="配置value" />
               <el-table-column property="error_num" label="错误次数" />
-              <el-table-column
-                fixed="right"
-                v-if="form.model_type == 2"
-                label="操作"
-                width="100"
-              >
+              <!-- <el-table-column property="error_num" label="错误状态" /> -->
+              <el-table-column fixed="right" label="操作" width="100">
                 <template #default="scope">
                   <el-button
                     type="danger"
+                    size="small"
                     @click.prevent="deleteRow(scope.row.model_key_id)"
                   >
                     删除
@@ -111,7 +108,7 @@
                 </template>
               </el-table-column>
             </el-table>
-            <el-footer class="footer-container">
+            <el-footer class="footer-container" v-if="form.model_type == 2">
               <el-pagination
                 v-model:current-page="searchData.pageNum"
                 v-model:page-size="searchData.pageSize"
@@ -120,6 +117,7 @@
                 :total="total"
                 @size-change="getTableData"
                 @current-change="getTableData"
+                class="page-footer"
               />
             </el-footer>
           </el-form>
@@ -128,11 +126,11 @@
           <div>测试页面结果</div>
         </el-aside>
       </el-container>
-      <template #footer>
+      <!-- <template #footer>
         <div class="dialog-footer">
           <el-button @click="reset(ruleForm)">关闭</el-button>
         </div>
-      </template>
+      </template> -->
     </el-dialog>
   </teleport>
 </template>
@@ -169,8 +167,6 @@ const dialogShow = (data: any) => {
     model_id: data.model_id,
     model_type: data.model_type,
   };
-
-  console.log("form", form);
   getTableData();
 };
 
@@ -198,8 +194,21 @@ const getTableData = async () => {
   tableData.value = [];
   let resp = await AImodeList(params);
   if (resp?.data_list.length) {
-    tableData.value = resp.data_list || [];
-    total.value = resp.total;
+    if (form.value.model_type == 1) {
+      // form.value.model_key_list = [];
+      let formData = [];
+      resp.data_list.forEach((item) => {
+        formData.unshift({
+          model_key: item.model_key_key,
+          model_value: item.model_key_value,
+        });
+      });
+      form.value.model_key_list = formData;
+      console.log('form.value.model_key_list', form.value.model_key_list);
+    } else {
+      tableData.value = resp.data_list || [];
+      total.value = resp.total;
+    }
   }
 };
 
@@ -219,6 +228,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         resp = await configAIkey(params);
         form.value.model_key = "";
         formEl.resetFields();
+        getTableData();
       } else {
         file_id_list = model_key_list;
         let params = {
@@ -227,8 +237,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         };
         resp = await editAIid(params);
       }
-      getTableData();
-
       emits("search");
     } else {
       console.log("error submit!", fields);
@@ -255,7 +263,7 @@ const reset = (formEl: FormInstance | undefined) => {
 };
 
 const deleteRow = async (model_key_id: number) => {
-  ElMessageBox.confirm("您确定要删除这个key", "提示", {
+  ElMessageBox.confirm("您确定要删除?", "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",
@@ -291,8 +299,8 @@ const add = () => {
   );
   if (checkValue) {
     form.value.model_key_list.push({
-      model_value: "",
       model_key: "",
+      model_value: "",
     });
   } else {
     ElMessage({

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref, } from "vue";
-import { ElMessage } from "element-plus";
-import a11Img from "@/assets/imgs/a11.jpeg";
+import { ref } from "vue";
+import { ElMessage, ElMessageBox } from "element-plus";
+import a11Img from "@/assets/imgs/user.png";
 import { loginOut } from "@/utils/api.ts";
-import { useRouter} from 'vue-router';
+import { useRouter } from "vue-router";
 const isCollapse = ref(true);
 
-const user  =  ref(localStorage.getItem('user') || '') ;
+const user = ref(localStorage.getItem("user") || "");
 
-console.log(localStorage.getItem('user') );
+console.log(localStorage.getItem("user"));
 // 获取父组件传递过来的数据
 const showIcon = defineProps({
   isCollapse: Boolean,
@@ -23,16 +23,28 @@ const collapseAside = () => {
   emit("changeAside");
 };
 
-
 // 登出按钮
-const LogOut = async() => {
-  let resp = await loginOut();
-  if (resp) {
-    localStorage.clear();
-    router.push({
-      path: "/login",
+const LogOut = async () => {
+  ElMessageBox.confirm("您确定要退出登录?", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(async () => {
+      let resp = await loginOut();
+      if (resp) {
+        localStorage.clear();
+        router.push({
+          path: "/login",
+        });
+      }
+    })
+    .catch(() => {
+      ElMessage({
+        type: "info",
+        message: "取消",
+      });
     });
-  }
 };
 </script>
 
@@ -66,7 +78,7 @@ const LogOut = async() => {
         <div class="block" style="margin-right: 10px">
           <el-avatar :size="40" :src="a11Img" />
         </div>
-        <span>{{user}}</span>
+        <span>{{ user }}</span>
         <el-dropdown trigger="click">
           <el-icon style="margin-left: 18px; margin-top: 1px; color: #303133">
             <setting />

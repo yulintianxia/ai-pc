@@ -1,11 +1,11 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header>
+      <el-header height="45px">
         <el-form
           :inline="true"
           :model="formInline"
-          label-width="100px;"
+          label-width="auto;"
           class="form"
         >
           <el-form-item label="网站名字">
@@ -15,7 +15,6 @@
               clearable
             />
           </el-form-item>
-
           <el-form-item label="网站类型" prop="web_type">
             <el-select
               v-model="formInline.web_type"
@@ -38,7 +37,6 @@
               range-separator="到"
               start-placeholder="开始时间"
               end-placeholder="结束时间"
-              :size="size"
               format="YYYY-MM-DD HH:mm:ss"
               value-fomat="YYYY-MM-DD HH:mm:ss"
             />
@@ -48,7 +46,7 @@
           </el-form-item>
         </el-form>
       </el-header>
-      <el-main class="main-container">
+      <el-main class="el-main-container">
         <div class="header-container">
           <el-button type="primary" @click="addRow">添加</el-button>
         </div>
@@ -60,6 +58,7 @@
             style="width: 100%"
             border
             class="table-container"
+            header-cell-class-name='table-header-cell-class'
           >
           <el-table-column type="selection" width="55" />
             <el-table-column property="web_name" label="网站名字" />
@@ -78,14 +77,16 @@
             />
             <el-table-column fixed="right" label="操作" width="200">
               <template #default="scope">
+             
+                <el-button type="primary"  size="small" @click.prevent="editRow(scope.row)">
+                  修改
+                </el-button>
                 <el-button
                   @click.prevent="deleteRow(scope.row.web_id)"
                   type="danger"
+                  size="small"
                 >
                   删除
-                </el-button>
-                <el-button type="primary" @click.prevent="editRow(scope.row)">
-                  修改
                 </el-button>
               </template>
             </el-table-column>
@@ -102,6 +103,7 @@
         :total="total"
         @size-change="search"
         @current-change="search"
+        class="page-footer"
       />
     </el-footer>
   </div>
@@ -137,7 +139,7 @@ const addRow = () => {
 
 /* 删除操作 */
 const deleteRow = async (web_id: number) => {
-  ElMessageBox.confirm("您确定要删除这个网站设置", "提示", {
+  ElMessageBox.confirm("您确定要删除这个网站设置?", "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",
@@ -191,8 +193,8 @@ search();
 </script>
 <style lang="scss" scoped>
 .table-container {
-  padding: 10px;
   margin-top: 10px;
+  padding:0;
 }
 .table-action {
   margin-top: 20px;
@@ -205,8 +207,5 @@ search();
   display: flex;
   flex-direction: column; /* 垂直方向排列子元素 */
 }
-.table-container {
-  flex: 1; /* 占据剩余空间 */
-  overflow-y: auto; /* 如果内容过多，出现垂直滚动条 */
-}
+
 </style>

@@ -32,7 +32,6 @@
               range-separator="到"
               start-placeholder="开始时间"
               end-placeholder="结束时间"
-              :size="size"
               clearable
             />
           </el-form-item>
@@ -173,7 +172,6 @@ const editRow = () => {};
 </script>
 <style lang="scss">
 .table-container {
-  padding: 10px;
   margin-top: 20px;
 }
 </style>

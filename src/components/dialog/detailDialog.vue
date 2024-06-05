@@ -8,14 +8,15 @@
           highlight-current-row
           border
           class="table-container"
+          header-cell-class-name='table-header-cell-class'
         >
-          <el-table-column type="index" width="50" />
+        <el-table-column type="index" width="100" label="序号" />
           <el-table-column property="key_word_lib_name" label="词库名字" />
           <el-table-column property="key_word_name" label="长尾词组合" />
-          <el-table-column fixed="right" label="操作" width="120">
+          <el-table-column fixed="right" label="操作" width="160">
             <template #default="scope">
               <el-button
-                link
+
                 type="primary"
                 size="small"
                 @click.prevent="
@@ -25,7 +26,6 @@
                 编辑
               </el-button>
               <el-button
-                link
                 type="danger"
                 size="small"
                 @click.prevent="deleteRow(scope.row.key_word_id)"
@@ -45,6 +45,7 @@
           :total="total"
           @size-change="search"
           @current-change="search"
+          class="page-footer"
         />
       </el-footer>
       <el-dialog v-model="showWord" width="500" title="编辑" append-to-body>
@@ -157,8 +158,8 @@ let tableData = ref([]);
 
 const search = async () => {
   let params = {
-    pageNum: form.value.pageNum,
-    pageSize: form.value.pageSize,
+    pageNum: searchData.value.pageNum,
+    pageSize: searchData.value.pageSize,
     key_word_lib_id: id.value,
   };
   console.log("params", params);
@@ -171,7 +172,7 @@ const search = async () => {
 
 /* 删除操作 */
 const deleteRow = (key_word_id: nubmer) => {
-  ElMessageBox.confirm("您确定要删除这个关键词", "提示", {
+  ElMessageBox.confirm("您确定要删除这个关键词?", "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",

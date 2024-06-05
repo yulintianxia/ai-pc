@@ -1,11 +1,11 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header>
+      <el-header height="45px">
         <el-form
           :inline="true"
           :model="formInline"
-          label-width="80px;"
+          label-width="auto;"
           class="form"
         >
           <el-form-item label="词库名字">
@@ -22,31 +22,16 @@
               range-separator="到"
               start-placeholder="开始时间"
               end-placeholder="结束时间"
-              :size="size"
               format="YYYY-MM-DD HH:mm:ss"
               value-fomat="YYYY-MM-DD HH:mm:ss"
             />
           </el-form-item>
-          <!-- <el-form-item label="状态">
-            <el-select
-              v-model="formInline.state"
-              placeholder="请选择状态"
-              clearable
-            >
-              <el-option
-                v-for="(item, index) in stateOptions"
-                :value="item.value"
-                :key="item.value"
-                :label="item.label"
-              ></el-option>
-            </el-select>
-          </el-form-item> -->
           <el-form-item>
             <el-button type="primary" @click="search">查询</el-button>
           </el-form-item>
         </el-form>
       </el-header>
-      <el-main>
+      <el-main class="el-main-container">
         <div class="header-container">
           <el-button type="primary" @click="addRow">添加</el-button>
         </div>
@@ -57,15 +42,16 @@
           style="width: 100%"
           border
           class="table-container"
+          header-cell-class-name='table-header-cell-class'
         >
-          <el-table-column type="index" width="50" />
-          <el-table-column property="key_word_lib_name" label="词库名字" />
-          <el-table-column label="长尾词数量(总数/已生成)" width="120">
+          <el-table-column type="index" width="100" label="序号" />
+          <el-table-column property="key_word_lib_name" label="词库名字"  />
+          <el-table-column label="长尾词数量(已生成/总数)" width="240">
             <template #default="scope">
-              {{scope.row.key_word_lib_num}}/{{scope.row.key_word_lib_sum}}
+              {{ scope.row.key_word_lib_num }}/{{ scope.row.key_word_lib_sum }}
             </template>
           </el-table-column>
-          <el-table-column label="状态" width="120">
+          <el-table-column label="状态" width="200">
             <template #default="scope">
               <div v-if="scope.row.status == 0">未开始</div>
               <div v-else-if="scope.row.status == 1">生成中</div>
@@ -109,10 +95,11 @@
         :total="total"
         @size-change="search"
         @current-change="search"
+        class="page-footer"
       />
     </el-footer>
   </div>
-  <main-dialog ref="dialog" @search="search"  class="main-dialog"></main-dialog>
+  <main-dialog ref="dialog" @search="search" class="main-dialog"></main-dialog>
   <detail-dialog
     :id="detailId"
     ref="detailDialog"
@@ -169,7 +156,7 @@ search();
 
 /* 删除操作 */
 const deleteRow = (key_word_lib_id: number) => {
-  ElMessageBox.confirm("您确定要删除这个词库", "提示", {
+  ElMessageBox.confirm("您确定要删除这个词库?", "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",
@@ -198,14 +185,12 @@ const deleteRow = (key_word_lib_id: number) => {
 
 /* 详情页面展示 */
 const detail = (id: nubmer) => {
-  console.log('idid',id);
+  console.log("idid", id);
   detailDialog.value.dialogShow(id);
-  
 };
 </script>
 <style lang="scss">
 .table-container {
-  padding: 10px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 </style>

@@ -8,10 +8,10 @@
         label-width="auto"
         style="max-width: 600px"
       >
-        <el-form-item label="网站id" prop="web_id">
+        <el-form-item label="网站名字" prop="web_id">
           <el-select
             v-model="form.web_id"
-            placeholder="请选择网站id"
+            placeholder="请选择网站名字"
             clearable
             :disabled="editData"
           >
@@ -29,8 +29,8 @@
         <el-form-item label="模块名字" prop="module_name">
           <el-input v-model="form.module_name" placeholder="请输入模块名字" />
         </el-form-item>
-        <el-form-item label="模块pid号码" prop="module_num">
-          <el-input v-model="form.module_num" placeholder="请输入模块pid号码" />
+        <el-form-item label="模块PID号码" prop="module_num">
+          <el-input v-model="form.module_num" placeholder="请输入模块PID号码" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -58,7 +58,7 @@ let form = ref({
   module_num: "",
 });
 
-let title = "新增";
+let title = ref('添加');
 
 const editData = ref(null);
 
@@ -77,10 +77,11 @@ const ruleForm = ref<FormInstance>();
 const dialogShow = async(data) => {
    await getOptions()
   show.value = true;
+  editData.value =false;
   if (data) {
     nextTick(() => {
       setTimeout(() => {
-        title = "修改";
+        title.value = "修改";
         const { web_id, web_name, module_name, module_num, web_module_id } = data;
         form.value = {
           web_id,
@@ -91,7 +92,7 @@ const dialogShow = async(data) => {
         editData.value = true;
       }, 500);
     });
-  }
+  } 
 };
 
 const dialogHide = () => {

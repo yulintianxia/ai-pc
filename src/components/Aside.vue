@@ -17,7 +17,7 @@ const iconColor = ref("color:#F8FAFB");
         active-text-color="#F8FAFB"
         background-color="#1A1C1E"
         text-color="#74767A"
-        collapse-transition="false"
+        :collapse-transition="false"
         router
       >
         <el-sub-menu index="1">
@@ -31,10 +31,10 @@ const iconColor = ref("color:#F8FAFB");
         <el-sub-menu index="2">
           <template #title>
             <el-icon>
-              <Message /></el-icon><span>内容</span>
+              <Folder /></el-icon><span>管理</span>
           </template>
           <!-- <el-menu-item index="/taskManagement">任务管理</el-menu-item> -->
-          <el-menu-item index="/articleManagement">文章管理</el-menu-item>
+          <el-menu-item index="/articleManagement">任务管理</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="3">
           <template #title>
@@ -42,9 +42,16 @@ const iconColor = ref("color:#F8FAFB");
               <Setting /> </el-icon
             ><span>设置</span>
           </template>
-          <el-menu-item index="/modeSettings">模型管理</el-menu-item>
+
           <el-menu-item index="/webSettings">网站设置</el-menu-item>
           <el-menu-item index="/websiteModel">网站模块设置</el-menu-item>
+        </el-sub-menu>
+        <el-sub-menu index="4">
+          <template #title>
+            <el-icon>
+              <Monitor /> </el-icon><span>AI大数据</span>
+          </template>
+          <el-menu-item index="/modeSettings">AI模型</el-menu-item>
         </el-sub-menu>
       </el-menu>
     </el-scrollbar>

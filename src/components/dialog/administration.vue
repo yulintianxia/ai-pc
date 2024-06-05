@@ -22,8 +22,8 @@
             :http-request="customRequest"
             action="string"
           >
-            <img v-if="form.imageUrl" :src="form.imageUrl" class="avatar" />
-            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+            <!-- <img v-if="form.imgUrl" :src="form.imgUrl" class="avatar" />
+            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon> -->
           </el-upload>
         </el-form-item>
       </el-form>
@@ -73,6 +73,8 @@ const customRequest = async (file: File) => {
   console.log("fileUrl", fileUrl);
   form.value.imgUrl = fileUrl;
   form.value.file = file.file;
+
+  console.log('form.value.imgUrl',form.value.imgUrl);
 };
 
 const dialog = ref("dialog");
@@ -103,6 +105,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 /* 重置 */
 const reset = (formEl: FormInstance | undefined) => {
   formEl.resetFields();
+  form.value.imgUrl='';
   dialogHide();
 };
 

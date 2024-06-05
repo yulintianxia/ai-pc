@@ -53,3 +53,16 @@ a,
   position:absolute;
   transition:transform(-50%, -50%);
 }
+
+.el-main-container {
+  height: calc(100vh - 220px);
+}
+.page-footer {
+  display: flex;
+  justify-content: end;
+}
+
+.table-header-cell-class {
+  background-color: #d9ecff !important;
+  color: black;
+}

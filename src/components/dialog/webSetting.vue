@@ -68,20 +68,21 @@ let form = ref({
   web_password: "",
 });
 
-let title = "新增";
+let title = ref('添加');
 
 const editData = ref(null);
-
 const webOptions = ref([]);
 const emits = defineEmits(["search"]);
 
 const ruleForm = ref<FormInstance>();
 const dialogShow = async (data) => {
   show.value = true;
+  title.value ='添加';
   if (data) {
+    console.log('data',data);
     nextTick(() => {
       setTimeout(() => {
-        title = "修改";
+        title.value = "修改";
         const {
           web_name,
           web_type,
@@ -101,7 +102,7 @@ const dialogShow = async (data) => {
         editData.value = true;
       }, 500);
     });
-  }
+  } 
 };
 
 const dialogHide = () => {

@@ -1,17 +1,17 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header>
+      <el-header height="45px">
         <el-form
           :inline="true"
           :model="formInline"
-          label-width="100px;"
+          label-width="auto;"
           class="form"
         >
-          <el-form-item label="文章任务名字">
+          <el-form-item label="任务名字">
             <el-input
               v-model="formInline.article_job_name"
-              placeholder="请输入文章任务名字"
+              placeholder="请输入任务名字"
               clearable
             />
           </el-form-item>
@@ -22,7 +22,6 @@
               range-separator="到"
               start-placeholder="开始时间"
               end-placeholder="结束时间"
-              :size="size"
               format="YYYY-MM-DD HH:mm:ss"
               value-fomat="YYYY-MM-DD HH:mm:ss"
             />
@@ -32,7 +31,7 @@
           </el-form-item>
         </el-form>
       </el-header>
-      <el-main>
+      <el-main class="el-main-container">
         <div class="header-container">
           <el-button type="primary" @click="addRow">添加</el-button>
         </div>
@@ -43,11 +42,17 @@
           style="width: 100%"
           border
           class="table-container"
+          header-cell-class-name='table-header-cell-class'
         >
-          <el-table-column type="index" width="50" abel="序号" />
-          <el-table-column property="article_job_name" label="文章任务名字" />
-          <el-table-column property="article_sum" label="文章数量" />
-          <el-table-column property="job_status" label="文章状态" />
+          <el-table-column type="index" width="100" label="序号" />
+          <el-table-column property="article_job_name" label="任务名字" />
+          <el-table-column property="article_sum" label="文章总数" />
+          <el-table-column property="article_ok" label="已生成的文章个数" />
+          <el-table-column property="job_status" label="文章状态">
+            <template #default="scope">
+              {{scope.row.job_status == '0' ? '未开始':'生成中'}}
+            </template>
+          </el-table-column>
           <el-table-column
             property="create_time"
             label="创建时间"
@@ -58,15 +63,17 @@
             label="更新时间"
             width="180"
           />
-          <el-table-column fixed="right" label="操作" width="200">
+          <el-table-column fixed="right" label="操作" width="150">
             <template #default="scope">
               <el-button
-                @click.prevent="doArticle(scope.row.article_job_id)"
+                 v-if='scope.row.job_status==0'
+                @click.prevent="doArticle(scope.row.article_job_id,scope.row.job_status)"
                 type="primary" 
+                size="small"
               >
                 开始
               </el-button>
-              <el-button  type="danger" @click.prevent="doArticle(scope.row.article_job_id)">
+              <el-button  v-else  size="small" type="danger" @click.prevent="doArticle(scope.row.article_job_id, scope.row.job_status)">
                 暂停
               </el-button>
             </template>
@@ -83,6 +90,7 @@
         :total="total"
         @size-change="search"
         @current-change="search"
+        class="page-footer"
       />
     </el-footer>
   </div>
@@ -97,7 +105,7 @@ import {
   startTask,
   stopTask 
 } from "@/utils/api.ts";
-import { ElMessage, ElMessageBox } from "element-plus";
+import { ElMessage, ElMessageBox , dayjs} from "element-plus";
 const dialog = ref("dialog");
 
 const tableData = ref([]);
@@ -117,10 +125,10 @@ const addRow = () => {
 };
 
 /* 生成或者停止操作 */
-const doArticle = async (article_job_id: number) => {
-
-  
-  ElMessageBox.confirm("您确定要生成文章", "提示", {
+const doArticle = async (article_job_id: number, job_status:number) => {
+  console.log('job_status',job_status);
+  let title = job_status == 0 ?'开始':'暂停';
+  ElMessageBox.confirm(`您确定要${title}文章生成?`, "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning",
@@ -130,7 +138,6 @@ const doArticle = async (article_job_id: number) => {
         article_job_id,
       };
       let data = await startTask(params);
-      console.log("data", data);
       if (data) {
         ElMessage({
           message: "成功",
@@ -172,9 +179,8 @@ const editRow = (data) => {
 
 search();
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .table-container {
-  padding: 10px;
   margin-top: 10px;
 }
 .table-action {

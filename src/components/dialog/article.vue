@@ -1,6 +1,6 @@
 <template>
   <teleport to="body">
-    <el-dialog v-model="show" :title="title" width="800">
+    <el-dialog v-model="show" title="添加" width="800">
       <el-form
         :model="form"
         ref="ruleForm"
@@ -8,11 +8,8 @@
         label-width="auto"
         style="max-width: 800px"
       >
-        <el-form-item label="文章生成任务名字" prop="article_job_name">
-          <el-input
-            v-model="form.article_job_name"
-            placeholder="文章生成任务名字"
-          />
+        <el-form-item label="任务名字" prop="article_job_name">
+          <el-input v-model="form.article_job_name" placeholder="任务名字" />
         </el-form-item>
         <el-form-item label="模型" prop="model_id">
           <el-select v-model="form.model_id" placeholder="请选择模型" clearable>
@@ -51,17 +48,17 @@
             border
             class="table-container"
             @selection-change="handleSelectionChange"
+            header-cell-class-name="table-header-cell-class"
           >
-            <el-table-column type="selection" width="55" />
+            <el-table-column type="selection" width="50" />
             <el-table-column property="key_word_lib_name" label="词库名字" />
-            <el-table-column label="长尾词数量(总数/已生成)">
+            <el-table-column label="长尾词数量(已生成/总数)" width="200">
               <template #default="scope">
-                {{ scope.row.key_word_lib_num }}/{{
-                  scope.row.key_word_lib_sum
-                }}
+                {{ scope.row.key_word_lib_num }}/
+                {{ scope.row.key_word_lib_sum }}
               </template>
             </el-table-column>
-            <el-table-column label="状态" width="120">
+            <el-table-column label="状态" width="100">
               <template #default="scope">
                 <div v-if="scope.row.status == 0">未开始</div>
                 <div v-else-if="scope.row.status == 1">生成中</div>
@@ -86,6 +83,7 @@
             :total="total"
             @size-change="search"
             @current-change="search"
+            class="page-footer"
           />
         </el-form-item>
       </el-form>
@@ -114,7 +112,6 @@ let form = ref({
   model_id: "",
 });
 
-let title = "新增";
 
 let formInline = ref({
   pageNum: 1,
@@ -153,7 +150,6 @@ const getOptions = async () => {
     modeList.value = resp || [];
   }
 };
-
 
 getOptions();
 
@@ -248,6 +244,9 @@ const handleSelectionChange = (val) => {
     margin-left: 0 !important;
   }
 }
+.table-container {
+  padding: 10px 0;
+}
 </style>
 
 <style lang="scss">
@@ -274,9 +273,5 @@ const handleSelectionChange = (val) => {
 .search-container {
   display: flex;
   justify-content: space-between;
-}
-.table-container {
-  padding: 0 !important;
-  margin: 10px 0;
 }
 </style>
