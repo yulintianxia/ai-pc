@@ -1,6 +1,6 @@
 <template>
   <teleport to="body">
-    <el-dialog v-model="show" title="新增长尾词" width="500">
+    <el-dialog v-model="show" title="添加" width="500">
       <el-form
         :model="form"
         ref="ruleForm"
@@ -15,15 +15,17 @@
             placeholder="请输入长尾词名字"
           />
         </el-form-item>
-        <el-form-item label="上传文件" prop="imgUrl">
+        <el-form-item label="上传文件" prop="fileUrl">
           <el-upload
             class="avatar-uploader"
             :show-file-list="false"
             :http-request="customRequest"
             action="string"
           >
-            <!-- <img v-if="form.imgUrl" :src="form.imgUrl" class="avatar" />
-            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon> -->
+            <el-icon class="avatar-uploader-icon">
+              <span v-if="form.fileUrl">{{ form.fileName }}</span>
+              <Plus v-else />
+            </el-icon>
           </el-upload>
         </el-form-item>
       </el-form>
@@ -47,8 +49,9 @@ import { upfileAPI } from "@/utils/api.ts";
 let show = ref(false);
 let form = ref({
   file_word_name: "",
-  imgUrl: "",
+  fileUrl: "",
   file: "",
+  fileName: "",
 });
 
 const emits = defineEmits(["search"]);
@@ -64,17 +67,18 @@ const dialogHide = () => {
 
 const rules = ref<FormRules<RuleForm>>({
   file_word_name: [{ required: true, message: "请填写名字" }],
-  imgUrl: [{ required: true }],
+  fileUrl: [{ required: true,  message: "请上传文件" }],
 });
 
 /* 假的上传只是展示文件的链接 */
 const customRequest = async (file: File) => {
   let fileUrl = URL.createObjectURL(file.file);
   console.log("fileUrl", fileUrl);
-  form.value.imgUrl = fileUrl;
+  form.value.fileUrl = fileUrl;
   form.value.file = file.file;
-
-  console.log('form.value.imgUrl',form.value.imgUrl);
+  form.value.fileName = file.file.name;
+  console.log("file", file);
+  console.log("form.value.fileUrl", form.value);
 };
 
 const dialog = ref("dialog");
@@ -94,7 +98,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       formData.append("up_file", form.value.file);
       formData.append("file_word_name", form.value.file_word_name);
       let resp = await upfileAPI(formData);
-      URL.revokeObjectURL(form.value.imgUrl); // 释放url
+      URL.revokeObjectURL(form.value.fileUrl); // 释放url
       reset(formEl);
       emits("search");
     } else {
@@ -105,7 +109,8 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 /* 重置 */
 const reset = (formEl: FormInstance | undefined) => {
   formEl.resetFields();
-  form.value.imgUrl='';
+  form.value.fileUrl = "";
+  form.value.fileName = "";
   dialogHide();
 };
 
@@ -137,10 +142,10 @@ defineExpose({
 }
 
 .el-icon.avatar-uploader-icon {
-  font-size: 28px;
+  font-size: 18px;
   color: #8c939d;
-  width: 178px;
-  height: 178px;
+  width: 150px;
+  height: 150px;
   text-align: center;
 }
 </style>
