@@ -15,7 +15,7 @@ const router = createRouter({
           component: Home,
           name: "home",
           meta: {
-            auth: false,
+            auth: true,
           },
         },
         {
@@ -126,11 +126,10 @@ router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token");
   if (to.meta.auth) {
     console.log('to.meta.auth',to.meta.auth);
-  
     if (!token) {
       console.log('token',token);
       return router.replace({
-        path:'login'
+        path:'/login'
       });
     }
     next();
