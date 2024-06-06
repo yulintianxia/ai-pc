@@ -39,6 +39,7 @@
               end-placeholder="结束时间"
               format="YYYY-MM-DD HH:mm:ss"
               value-fomat="YYYY-MM-DD HH:mm:ss"
+              :default-time="['00:00:00', '23:59:59']"
             />
           </el-form-item>
           <el-form-item>
