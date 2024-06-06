@@ -10,7 +10,7 @@ let loginForm = ref({
   password: "",
 });
 const form = ref();
-const loginRules = ref<FormRules<RuleForm>>({
+const loginRules = ref<FormRules<any>>({
   phone_num: [{ required: true, message: "账号不能为空" }],
   password: [{ required: true, message: "密码不能为空" }],
 });
