@@ -15,6 +15,9 @@
               clearable
             />
           </el-form-item>
+          <!-- :default-time="['00:00:00', '23:59:59']" -->
+          <!-- format="yyyy-MM-dd HH:mm:ss"
+              value-fomat="yyyy-MM-dd HH:mm:ss" -->
           <el-form-item label="时间">
             <el-date-picker
               v-model="formInline.date"
@@ -24,7 +27,7 @@
               end-placeholder="结束时间"
               format="YYYY-MM-DD HH:mm:ss"
               value-fomat="YYYY-MM-DD HH:mm:ss"
-              :default-time="['00:00:00', '23:59:59']"
+              :default-time="defaultTime"
             />
           </el-form-item>
           <el-form-item>
@@ -43,7 +46,7 @@
           style="width: 100%"
           border
           class="table-container"
-          header-cell-class-name='table-header-cell-class'
+          header-cell-class-name="table-header-cell-class"
         >
           <el-table-column type="index" width="80" label="序号" />
           <el-table-column property="file_word_name" label="名字" />
@@ -107,12 +110,18 @@ const tableData = ref([]);
 
 let formInline = ref({
   file_name: "",
-  date: [],
+  // date: [],
+  date:"",
   pageSize: 10,
   pageNum: 1,
 });
 
 const total = ref(0);
+
+const defaultTime = ref<[Date, Date]>([
+  new Date(2000, 1, 1, 0, 0, 0),
+  new Date(2000, 2, 1, 23, 59, 59),
+]);
 
 /* 新增 */
 const addRow = () => {
@@ -194,5 +203,4 @@ search();
 .header-container {
   margin-top: -10px;
 }
-
 </style>

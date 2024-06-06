@@ -39,7 +39,7 @@
               end-placeholder="结束时间"
               format="YYYY-MM-DD HH:mm:ss"
               value-fomat="YYYY-MM-DD HH:mm:ss"
-              :default-time="['00:00:00', '23:59:59']"
+              :default-time="defaultTime"
             />
           </el-form-item>
           <el-form-item>
@@ -61,7 +61,8 @@
             class="table-container"
             header-cell-class-name='table-header-cell-class'
           >
-          <el-table-column type="selection" width="55" />
+          <!-- <el-table-column type="selection" width="55" /> -->
+          <el-table-column type="index" width="100" label="序号" />
             <el-table-column property="web_name" label="网站名字" />
             <el-table-column property="web_type" label="网站类型">
               <template #default="scope">
@@ -130,6 +131,12 @@ let formInline = ref({
   pageSize: 10,
   pageNum: 1,
 });
+
+const defaultTime = ref<[Date, Date]>([
+  new Date(2000, 1, 1, 0, 0, 0),
+  new Date(2000, 2, 1, 23, 59, 59),
+]);
+
 
 const total = ref(0);
 

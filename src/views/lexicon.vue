@@ -24,7 +24,7 @@
               end-placeholder="结束时间"
               format="YYYY-MM-DD HH:mm:ss"
               value-fomat="YYYY-MM-DD HH:mm:ss"
-              :default-time="['00:00:00', '23:59:59']"
+              :default-time="defaultTime"
             />
           </el-form-item>
           <el-form-item>
@@ -129,6 +129,11 @@ let detailId: nubmer | undefined = ref();
 const total = ref(0);
 const dialog = ref();
 const detailDialog = ref();
+
+const defaultTime = ref<[Date, Date]>([
+  new Date(2000, 1, 1, 0, 0, 0),
+  new Date(2000, 2, 1, 23, 59, 59),
+]);
 
 const search = async () => {
   const { key_word_lib_name, pageSize, pageNum, date } = formInline.value;

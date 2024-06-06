@@ -6,7 +6,7 @@ import Aside from '@/components/Aside.vue'
 import { RouterLink, RouterView } from "vue-router";
 
 const asideSettings = ref({
-    isCollapse:true,
+    isCollapse:false,
     width:'200'
 })
 
