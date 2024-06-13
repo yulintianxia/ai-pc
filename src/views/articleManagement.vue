@@ -47,6 +47,7 @@
         >
           <el-table-column type="index" width="100" label="序号" />
           <el-table-column property="article_job_name" label="任务名字" />
+          <el-table-column property="article_title" label="文章标题" />
           <el-table-column property="article_sum" label="文章总数" />
           <el-table-column property="article_ok" label="已生成的文章个数" />
           <el-table-column property="job_status" label="文章状态">

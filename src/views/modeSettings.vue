@@ -26,6 +26,7 @@
           >
           <el-table-column type="index" width="80" label="序号" />
             <el-table-column property="model_name" label="模型名字" />
+            <el-table-column property="model_host" label="模型请求域名" />
             <el-table-column
               property="create_time"
               label="创建时间"
@@ -95,6 +96,7 @@ const search = async () => {
 };
 
 const editRow = (data) => {
+  console.log('data',data);
   dialog.value.dialogShow(data);
 };
 

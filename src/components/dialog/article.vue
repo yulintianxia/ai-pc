@@ -11,6 +11,9 @@
         <el-form-item label="任务名字" prop="article_job_name">
           <el-input v-model="form.article_job_name" placeholder="任务名字" />
         </el-form-item>
+        <el-form-item label="文章标题" prop="article_title">
+          <el-input v-model="form.article_title" placeholder="文章标题" />
+        </el-form-item>
         <el-form-item label="模型" prop="model_id">
           <el-select v-model="form.model_id" placeholder="请选择模型" clearable>
             <el-option
@@ -110,6 +113,7 @@ let form = ref({
   key_word_lib_list: [],
   //   model_id: "",
   model_id: "",
+  article_title:'',
 });
 
 
@@ -182,6 +186,7 @@ const rules = ref<FormRules<RuleForm>>({
   article_job_name: [{ required: true, message: "请文章生成任务名字" }],
   model_id: [{ required: true, message: "请选择模型" }],
   //   key_word_lib_list: [{ required: true, message: "请选择关键词词库列表" }],
+  article_title: [{ required: true, message: "请填写文章标题" }],
 });
 
 const dialog = ref("dialog");
@@ -196,11 +201,12 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   await formEl.validate(async (valid, fields) => {
     if (valid) {
-      const { article_job_name, key_word_lib_list, model_id } = form.value;
+      const { article_job_name, key_word_lib_list, model_id, article_title} = form.value;
       let data = {
         article_job_name,
         key_word_lib_list,
         model_id,
+        article_title
       };
       let resp = await addTask(data);
       if (resp) {
