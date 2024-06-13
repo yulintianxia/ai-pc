@@ -2,7 +2,7 @@
   <teleport to="body">
     <el-dialog v-model="show" title="配置" width="1200">
       <el-container>
-        <el-aside width="800px">
+        <el-aside width="700px">
           <el-form :model="form" ref="ruleForm" :rules="rules" label-width="90">
             <el-form-item label="模型名字" requred prop="model_name">
               <el-input v-model="form.model_name" placeholder="模型名字" disabled />
@@ -61,7 +61,7 @@
             <el-main class="el-main-container" v-if="form.model_type == 2">
               <div class="header-container">
                 <el-button type="danger" @click="deleteRowAll">批量删除</el-button>
-                <el-button type="primary" @click="refresh">刷新</el-button>
+                <el-button type="primary" @click="getTableData()">刷新</el-button>
               </div>
               <el-table ref="singleTableRef" :data="tableData" highlight-current-row style="width: 100%" border
                 class="table-container" @selection-change="handleSelectionChange"
@@ -95,15 +95,11 @@
             </el-footer>
           </el-form>
         </el-aside>
-        <el-aside class="el-simulation-dialog">
-          <div>测试页面结果</div>
+        <el-aside class="el-simulation-dialog"  width="450px">
+          <mode-testing></mode-testing>
         </el-aside>
       </el-container>
-      <!-- <template #footer>
-        <div class="dialog-footer">
-          <el-button @click="reset(ruleForm)">关闭</el-button>
-        </div>
-      </template> -->
+
     </el-dialog>
   </teleport>
 </template>
@@ -113,6 +109,7 @@ import { ref, computed } from "vue";
 import type { ComponentSize, FormInstance, FormRules } from "element-plus";
 import { configAIkey, editAIid, delKey, AImodeList } from "@/utils/api.ts";
 import { ElMessage, ElMessageBox } from "element-plus";
+import ModeTesting from  './modeTesting.vue';
 let show = ref(false);
 let form = ref({
   model_name: "",
@@ -132,10 +129,6 @@ let form = ref({
 
 const emits = defineEmits(["search"]);
 const ruleForm = ref<FormInstance>();
-
-
-
-
 
 const dialogShow = (data: any) => {
   show.value = true;
@@ -194,8 +187,6 @@ const getTableData = async () => {
         });
       });
       form.value.model_key_list = formData;
-
-
       console.log('form.value.model_key_list', form.value.model_key_list);
     } else {
       tableData.value = resp.data_list || [];
@@ -373,7 +364,9 @@ defineExpose({
 
 .el-simulation-dialog {
   margin-left: 10px;
-}
+  height:500px;
+
+} 
 
 .mt-2 {
   margin-left: 5px;
