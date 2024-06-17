@@ -37,7 +37,37 @@ const stateOptions  = [
     label:'非易优',
     value:'2',
   },
-
 ]
 
-export  {stateOptions, typeOptions}
+const artcleStateOptions = [
+  {  
+    label:'已生成',
+    value:'1',
+  },
+  {  
+    label:'生成异常',
+    value:'2',
+  },
+  {  
+    label:'写入异常',
+    value:'3',
+  },
+]
+
+const artcleUpfileOptions = [
+  {  
+    label:'未上传',
+    value:'0',
+  },
+  {  
+    label:'上传成功',
+    value:'1',
+  },
+  {  
+    label:'上传失败',
+    value:'2',
+  },
+]
+
+
+export  {stateOptions, typeOptions, artcleStateOptions,artcleUpfileOptions}

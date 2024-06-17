@@ -35,6 +35,7 @@ const iconColor = ref("color:#F8FAFB");
           </template>
           <!-- <el-menu-item index="/taskManagement">任务管理</el-menu-item> -->
           <el-menu-item index="/articleManagement">任务管理</el-menu-item>
+          <el-menu-item index="/articleTaskManagement">文章生成任务管理</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="3">
           <template #title>

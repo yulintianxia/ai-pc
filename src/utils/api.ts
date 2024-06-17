@@ -171,6 +171,15 @@ instance.post("/app_model_manage/update_model_key", data);
 export const  delKey =  (data:any)=>
 instance.post("/app_model_manage/delete_model_key", data);
 
+
+// 文章生成任务列表
+export const  taskListPage =  (data:any)=>
+  instance.post("/app_article_manage/get_article_list", data);
+
+// 删除文章任务列表
+export const  deleteListPage =  (data:any)=>
+  instance.post("/app_article_manage/delete_article_list", data);
+
 // 退出登录
 export  const loginOut = ()=>
 instance.post("/user/logout_sys");
