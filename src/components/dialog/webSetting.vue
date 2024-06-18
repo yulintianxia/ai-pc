@@ -53,12 +53,12 @@
 <script setup lang="ts">
 import { ref, nextTick } from "vue";
 import type { ComponentSize, FormInstance, FormRules } from "element-plus";
-import RuleForm from "@/types/administration.interface.ts";
-import { typeOptions } from "@/assets/ts/configOptions.ts";
+import RuleForm from "@/types/administration.interface";
+import { typeOptions } from "@/assets/ts/configOptions";
 import {
     webSettingAdd,
     webSettingUpdate
-} from "@/utils/api.ts";
+} from "@/utils/api";
 let show = ref(false);
 let form = ref({
   web_name: "",

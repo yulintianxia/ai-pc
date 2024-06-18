@@ -43,6 +43,8 @@
             <el-form-item class="el-form-action submit_btn" v-if="form.model_type == 1">
               <el-button type="primary" @click="submitForm(ruleForm)">保存
               </el-button>
+              <!-- <el-button type="primary" @click="testModeBtn()">AI测试
+              </el-button> -->
             </el-form-item>
             <div v-else-if="form.model_type == 2">
               <el-form-item label="配置key" requred prop="model_key" :rules="{
@@ -56,6 +58,7 @@
               <el-form-item class="submit_btn">
                 <el-button type="primary" @click="submitForm(ruleForm)">保存
                 </el-button>
+              
               </el-form-item>
             </div>
             <el-main class="el-main-container" v-if="form.model_type == 2">
@@ -75,18 +78,27 @@
                   </template>
 
                 </el-table-column>
+
+                <el-table-column property="test_res" label="测试结果">
+                  <template #default="scope">
+                    {{ scope.row.test_res == 1 ? '测试通过"' : '测试异常' }}
+                  </template>
+
+                </el-table-column>
                 <el-table-column property="test_time" label="测试时间" />
+                <el-table-column property="test_question" label="测试问题" show-overflow-tooltip  />
+                <el-table-column property="test_answer" label="返回结果" show-overflow-tooltip />
                 <el-table-column property="user_times" label="使用间隔" />
                 <el-table-column property="last_user_time" label="上次使用时间" />
                 <!-- <el-table-column property="error_num" label="错误状态" /> -->
-                <el-table-column fixed="right" label="操作" width="80">
+                <!-- <el-table-column fixed="right" label="操作" width="80">
                   <template #default="scope">
                     <el-button type="primary" size="small" @click.prevent="testMode(scope.row.model_key_id)">
                       测试
                     </el-button>
                   </template>
-                </el-table-column>
-              </el-table>
+                </el-table-column>-->
+              </el-table> 
             </el-main>
             <el-footer class="footer-container" v-if="form.model_type == 2">
               <el-pagination v-model:current-page="searchData.pageNum" v-model:page-size="searchData.pageSize"
@@ -96,10 +108,13 @@
           </el-form>
         </el-aside>
         <el-aside class="el-simulation-dialog"  width="450px">
-          <mode-testing></mode-testing>
+          <mode-testing :type="form.model_type"
+            :modelKey="modelKey"
+            :modelList="model_key_id_list"
+            @search="getTableData"
+          ></mode-testing>
         </el-aside>
       </el-container>
-
     </el-dialog>
   </teleport>
 </template>
@@ -107,7 +122,7 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import type { ComponentSize, FormInstance, FormRules } from "element-plus";
-import { configAIkey, editAIid, delKey, AImodeList } from "@/utils/api.ts";
+import { configAIkey, editAIid, delKey, AImodeList } from "@/utils/api";
 import { ElMessage, ElMessageBox } from "element-plus";
 import ModeTesting from  './modeTesting.vue';
 let show = ref(false);
@@ -127,6 +142,8 @@ let form = ref({
 
 });
 
+const modelKey  = ref('');
+
 const emits = defineEmits(["search"]);
 const ruleForm = ref<FormInstance>();
 
@@ -141,15 +158,12 @@ const dialogShow = (data: any) => {
     // user_times: data.user_times,
     model_host: data.model_host
   };
+  modelKey.value = data.model_id;
+
+  console.log('modelKey.value',modelKey.value);
   getTableData();
 };
 
-
-
-// 测试mode
-const testMode = (id) => {
-  console.log('id');
-}
 
 const dialogHide = () => {
   show.value = false;
@@ -165,6 +179,7 @@ let total = ref(0);
 let tableData = ref([]);
 
 const getTableData = async () => {
+  console.log('111');
   const { pageSize, pageNum } = searchData.value;
   const { model_id } = form.value;
   let params = {
@@ -187,6 +202,7 @@ const getTableData = async () => {
         });
       });
       form.value.model_key_list = formData;
+
       console.log('form.value.model_key_list', form.value.model_key_list);
     } else {
       tableData.value = resp.data_list || [];

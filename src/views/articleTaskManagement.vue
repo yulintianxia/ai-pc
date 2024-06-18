@@ -93,7 +93,6 @@ import { ElMessage, ElMessageBox, dayjs } from "element-plus";
 import { artcleStateOptions, artcleUpfileOptions } from '../../src/assets/ts/configOptions';
 const dialog = ref("dialog");
 const tableData = ref([]);
-
 const taskOptions = ref([]);
 
 let formInline = ref({

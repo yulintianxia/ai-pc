@@ -31,6 +31,8 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         password,
       };
       let response = await loginAPI(data);
+      console.log('response', response);
+
       let token = response[0].token;
       localStorage.setItem('token', token);
       localStorage.setItem('user', phone_num);

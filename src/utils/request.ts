@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ElMessage } from 'element-plus'
 // 创建axios实例
 const request = axios.create({
   baseURL: "/api", // 所有的请求地址前缀部分
@@ -39,9 +40,13 @@ request.interceptors.response.use(
   (response) => {
     // 对响应数据做点什么
     let resData = response.data;
-    if (resData.code == "0000" || resData.code == 200 || resData.code == '9999') {
-      return Promise.resolve(resData.data);
+    if (resData.code == "0000" || resData.code == 200) {
+      return Promise.resolve(resData.data || resData);
     } else {
+      ElMessage({
+        message: resData.msg || '网络错误,请稍后重试',
+        type: 'warning',
+      })
       return Promise.reject(resData.data);
     }
   },

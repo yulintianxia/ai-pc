@@ -180,6 +180,12 @@ export const  taskListPage =  (data:any)=>
 export const  deleteListPage =  (data:any)=>
   instance.post("/app_article_manage/delete_article_list", data);
 
+// 模型为1的测试模型
+export const testAiMode1 = (data:any)=> instance.post("/app_model_manage/check_model_config", data);
+
+// 模型为1的测试模型
+export const testAiMode2 = (data:any)=> instance.post("/app_model_manage/check_model_key_config", data);
+
 // 退出登录
 export  const loginOut = ()=>
 instance.post("/user/logout_sys");

@@ -69,13 +69,13 @@
             <template #default="scope">
               <el-button
                  v-if='scope.row.job_status==0'
-                @click.prevent="doArticle(scope.row.article_job_id,scope.row.job_status)"
+                @click.prevent="doArticle(scope.row.article_obj_id,scope.row.job_status)"
                 type="primary" 
                 size="small"
               >
                 开始
               </el-button>
-              <el-button  v-else  size="small" type="danger" @click.prevent="doArticle(scope.row.article_job_id, scope.row.job_status)">
+              <el-button  v-else  size="small" type="danger" @click.prevent="doArticle(scope.row.article_obj_id, scope.row.job_status)">
                 暂停
               </el-button>
             </template>
@@ -106,7 +106,7 @@ import {
   taskList,
   startTask,
   stopTask 
-} from "@/utils/api.ts";
+} from "@/utils/api";
 import { ElMessage, ElMessageBox , dayjs} from "element-plus";
 const dialog = ref("dialog");
 
@@ -145,7 +145,13 @@ const doArticle = async (article_job_id: number, job_status:number) => {
       let params = {
         article_job_id,
       };
-      let data = await startTask(params);
+      let data;
+      if (job_status ==0) {
+        data= await startTask(params);
+      } else {
+         data = await stopTask(params);
+      }
+
       if (data) {
         ElMessage({
           message: "成功",
