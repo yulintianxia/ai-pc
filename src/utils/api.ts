@@ -186,6 +186,10 @@ export const testAiMode1 = (data:any)=> instance.post("/app_model_manage/check_m
 // 模型为1的测试模型
 export const testAiMode2 = (data:any)=> instance.post("/app_model_manage/check_model_key_config", data);
 
+
+// 获取下拉任务列表
+export const taskNoPage = ()=> instance.post("/app_article_job/get_article_job_list_no_page");
+
 // 退出登录
 export  const loginOut = ()=>
 instance.post("/user/logout_sys");

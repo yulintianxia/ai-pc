@@ -13,6 +13,7 @@
             v-model="form.web_id"
             placeholder="请选择网站名字"
             clearable
+            filterable
             :disabled="editData"
           >
             <el-option

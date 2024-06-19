@@ -37,6 +37,7 @@
             @change="changeSelect(item.value, index)"
             placeholder="请选择长尾词"
             clearable
+            filterable
           >
             <el-option
               v-for="(listItem, index) in wordList"

@@ -17,6 +17,7 @@
           </el-form-item>
           <el-form-item label="网站类型" prop="web_type">
             <el-select
+            filterable
               v-model="formInline.web_type"
               placeholder="请选择网站类型"
               clearable

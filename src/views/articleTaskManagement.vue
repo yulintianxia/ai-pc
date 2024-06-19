@@ -3,10 +3,10 @@
         <el-container>
             <el-header height="45px">
                 <el-form :inline="true" :model="formInline" label-width="auto;" class="form">
-                    <el-form-item label="任务名字" prop="web_id">
-                        <el-select v-model="formInline.web_id" placeholder="请选择任务" clearable>
-                            <el-option v-for="(listItem, index) in taskOptions" :value="listItem.web_id"
-                                :key="listItem.web_id" :label="listItem.web_name"></el-option>
+                    <el-form-item label="任务名字" prop="article_obj_id">
+                        <el-select filterable v-model="formInline.article_obj_id" placeholder="请选择任务" clearable>
+                            <el-option v-for="(listItem, index) in taskOptions" :value="listItem.article_obj_id"
+                                :key="listItem.article_obj_id" :label="listItem.article_job_name"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="关键词" prop="key_word">
@@ -58,9 +58,16 @@
                         </template>
                     </el-table-column>
                     <!-- 上传的网站[{"web_id": web_id, "web_name": web_name, 'web_module_name': web_module_name, 'web_module_id': module_id}] -->
-                    <el-table-column property="up_web" label="上传的网站">
+                    <el-table-column property="up_web" show-overflow-tooltip label="上传的网站">
+                        <template #default="scope">
+                            <!-- <span>网站的名字: {{ scope.row.web_name || '' }}</span></br>
+                            <span>网站模块名字: {{ scope.row.web_module_name || '' }}</span> -->
+                           <div v-for="(item,index) in scope.row.up_web">
+                            <div>网站名字: {{ item.web_name || '' }}</div>
+                            <div>网站模块名字: {{ item.web_module_name || '' }}</div>
+                           </div>
+                        </template>
                     </el-table-column>
-
                     <el-table-column property="create_time" label="创建时间" width="120" />
                     <el-table-column property="update_time" label="更新时间" width="120" />
                     <el-table-column fixed="right" label="操作" width="150">
@@ -87,7 +94,8 @@ import { ref } from "vue";
 import MainDialog from "@/components/dialog/article.vue";
 import {
     deleteListPage,
-    taskListPage
+    taskListPage,
+    taskNoPage
 } from "@/utils/api";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
 import { artcleStateOptions, artcleUpfileOptions } from '../../src/assets/ts/configOptions';
@@ -96,15 +104,30 @@ const tableData = ref([]);
 const taskOptions = ref([]);
 
 let formInline = ref({
-    web_id: '',
+    article_obj_id:'',
     key_word: '',
     is_success: '',
     up_status: '',
     date: [],
     pageSize: 10,
     pageNum: 1,
+ 
 });
 
+
+const getTaskOPtions = async()=>{
+    let data = await taskNoPage();
+    // if()
+    console.log('data00',data.data_list.length);
+    if (data.data_list.length) {
+        taskOptions.value = data.data_list;
+    } else {
+        taskOptions.value = []
+    }
+
+}
+
+getTaskOPtions();
 
 const defaultTime = ref<[Date, Date]>([
     new Date(2000, 1, 1, 0, 0, 0),
@@ -143,9 +166,9 @@ const deleteRow = (article_txt_id: number) => {
 };
 
 const search = async () => {
-    const { web_id, date, pageSize, pageNum, key_word, is_success, up_status } = formInline.value;
+    const { article_obj_id, date, pageSize, pageNum, key_word, is_success, up_status } = formInline.value;
     let data = {
-        web_id,
+        article_obj_id,
         key_word,
         is_success,
         up_status,

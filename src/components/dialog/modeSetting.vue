@@ -112,6 +112,7 @@
             :modelKey="modelKey"
             :modelList="model_key_id_list"
             @search="getTableData"
+            ref="modeTesting"
           ></mode-testing>
         </el-aside>
       </el-container>
@@ -144,6 +145,8 @@ let form = ref({
 
 const modelKey  = ref('');
 
+const modeTesting = ref();
+
 const emits = defineEmits(["search"]);
 const ruleForm = ref<FormInstance>();
 
@@ -159,8 +162,7 @@ const dialogShow = (data: any) => {
     model_host: data.model_host
   };
   modelKey.value = data.model_id;
-
-  console.log('modelKey.value',modelKey.value);
+  modeTesting.value.clearMessage();
   getTableData();
 };
 
@@ -217,13 +219,14 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     if (valid) {
       let file_id_list = [];
       let resp;
-      const { model_id, model_key, model_type, model_key_list, user_times } = form.value;
+      const { model_id, model_key, model_type, model_key_list, user_times,model_host } = form.value;
       if (Number(model_type) == 2) {
         file_id_list = model_key.split(",");
         let params = {
           model_id,
           model_key_list: file_id_list,
-          user_times
+          user_times,
+          model_host
         };
         resp = await configAIkey(params);
         form.value.model_key = "";
@@ -234,7 +237,8 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         let params = {
           model_id,
           model_key_list: file_id_list,
-          user_times
+          user_times,
+          model_host
         };
         resp = await editAIid(params);
       }

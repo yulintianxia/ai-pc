@@ -16,6 +16,7 @@
             v-model="form.web_type"
             placeholder="请选择网站类型"
             clearable
+            filterable
           >
             <el-option
               v-for="(listItem, index) in typeOptions"

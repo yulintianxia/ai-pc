@@ -13,6 +13,7 @@
               v-model="formInline.web_id"
               placeholder="请选择网站名字"
               clearable
+              filterable
             >
               <el-option
                 v-for="(listItem, index) in webOptions"

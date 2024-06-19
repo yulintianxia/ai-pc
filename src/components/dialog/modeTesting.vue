@@ -104,7 +104,9 @@ const clearMessage = () => {
     messagesArr.value = [];
 }
 
-
+defineExpose({
+    clearMessage
+});
 </script>  
 
 <style scoped lang="scss">

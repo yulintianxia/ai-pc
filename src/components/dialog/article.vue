@@ -15,7 +15,7 @@
           <el-input v-model="form.article_title" placeholder="文章标题" />
         </el-form-item>
         <el-form-item label="模型" prop="model_id">
-          <el-select v-model="form.model_id" placeholder="请选择模型" clearable>
+          <el-select filterable v-model="form.model_id" placeholder="请选择模型" clearable>
             <el-option
               v-for="(item, index) in modeList"
               :value="item.model_id"
