@@ -52,7 +52,13 @@
           <el-table-column property="article_ok" label="已生成的文章个数" />
           <el-table-column property="job_status" label="文章状态">
             <template #default="scope">
-              {{scope.row.job_status == '0' ? '未开始':'生成中'}}
+              <span v-if="scope.row.job_status == '0' ">未开始</span>
+              <span v-if="scope.row.job_status == '1' ">生成中</span>
+              <span v-if="scope.row.job_status == '2' ">暂停中</span>
+              <span v-if="scope.row.job_status == '3' ">已暂停</span>
+              <span v-if="scope.row.job_status == '4' ">已完成</span>
+              <span v-if="scope.row.job_status == '5' ">状态异常</span>
+              <span v-if="scope.row.job_status == '6' ">已删除</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -68,14 +74,14 @@
           <el-table-column fixed="right" label="操作" width="150">
             <template #default="scope">
               <el-button
-                 v-if='scope.row.job_status==0'
+                 v-if='scope.row.job_status==0 || scope.row.job_status==3 || scope.row.job_status==5'
                 @click.prevent="doArticle(scope.row.article_obj_id,scope.row.job_status)"
                 type="primary" 
                 size="small"
               >
                 开始
               </el-button>
-              <el-button  v-else  size="small" type="danger" @click.prevent="doArticle(scope.row.article_obj_id, scope.row.job_status)">
+              <el-button  v-else-if="scope.row.job_status==1"  size="small" type="danger" @click.prevent="doArticle(scope.row.article_obj_id, scope.row.job_status)">
                 暂停
               </el-button>
             </template>
@@ -134,8 +140,7 @@ const addRow = () => {
 
 /* 生成或者停止操作 */
 const doArticle = async (article_job_id: number, job_status:number) => {
-  console.log('job_status',job_status);
-  let title = job_status == 0 ?'开始':'暂停';
+  let title = job_status == 1 ?'暂停':'开始';
   ElMessageBox.confirm(`您确定要${title}文章生成?`, "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
@@ -146,12 +151,11 @@ const doArticle = async (article_job_id: number, job_status:number) => {
         article_job_id,
       };
       let data;
-      if (job_status ==0) {
-        data= await startTask(params);
+      if (job_status == 1) {
+        data = await stopTask(params);
       } else {
-         data = await stopTask(params);
+        data= await startTask(params);
       }
-
       if (data) {
         ElMessage({
           message: "成功",

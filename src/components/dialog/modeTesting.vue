@@ -85,9 +85,16 @@ const testAi = async () => {
             model_id: props.modelKey,
             model_key_list: props.modelList
         }
+
+
         let data = await testAiMode2(params);
-        emits("search");
-        
+        ElMessage({
+            type: "info",
+            message: "请稍等片刻后查看测试结果",
+        });
+        setTimeout(() => {
+            emits("search");
+        }, 5000)
     }
 
 }
