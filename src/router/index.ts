@@ -8,7 +8,7 @@ const router = createRouter({
     {
       path: "/",
       component: Layout,
-      redirect: "/home",
+      redirect: "/login",
       children: [
         {
           path: "home",
@@ -105,7 +105,7 @@ const router = createRouter({
         },
         {
           path: "/articleTaskManagement",
-          name: "文章生成任务管理",
+          name: "文章管理",
           // route level code-splitting
           // this generates a separate chunk (About.[hash].js) for this route
           // which is lazy-loaded when the route is visited.

@@ -51,7 +51,7 @@ body{
   width: 100%;
   padding: 0;
   height: 100vh;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 .title {
   margin:20px 10px;

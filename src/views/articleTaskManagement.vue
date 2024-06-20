@@ -1,7 +1,7 @@
 <template>
     <div class="common-layout">
         <el-container>
-            <el-header height="45px">
+            <el-header height="55px">
                 <el-form :inline="true" :model="formInline" label-width="auto;" class="form">
                     <el-form-item label="任务名字" prop="article_obj_id">
                         <el-select filterable v-model="formInline.article_obj_id" placeholder="请选择任务" clearable>
@@ -37,7 +37,7 @@
             <el-main class="el-main-container">
                 <el-table ref="singleTableRef" :data="tableData" highlight-current-row style="width: 100%" border
                     class="table-container" header-cell-class-name='table-header-cell-class'>
-                    <el-table-column type="index" width="100" label="序号" />
+                    <el-table-column type="index" width="50" label="序号" />
                     <el-table-column property="article_job_name" label="任务名字" />
                     <el-table-column property="key_word" label="关键词" />
                     <el-table-column property="file_path" label="文章文件路径" />
@@ -63,8 +63,7 @@
                             <!-- <span>网站的名字: {{ scope.row.web_name || '' }}</span></br>
                             <span>网站模块名字: {{ scope.row.web_module_name || '' }}</span> -->
                            <div v-for="(item,index) in scope.row.up_web">
-                            <div>网站名字: {{ item.web_name || '' }}</div>
-                            <div>网站模块名字: {{ item.web_module_name || '' }}</div>
+                            <div>{{ item.web_name || '' }}:{{ item.web_module_name || '' }}</div>
                            </div>
                         </template>
                     </el-table-column>
@@ -113,7 +112,6 @@ let formInline = ref({
     pageNum: 1,
  
 });
-
 
 const getTaskOPtions = async()=>{
     let data = await taskNoPage();
