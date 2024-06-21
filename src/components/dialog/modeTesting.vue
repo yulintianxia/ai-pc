@@ -9,13 +9,11 @@
                 <div class="message-content">
                     {{ message.text }}
                 </div>
-                <div class="message-timestamp">{{ message.timestamp }}</div>
             </div>
         </div>
         <div class="chat-input">
             <el-input type="text" v-model="newMessage" @keyup.enter="sendMessage" placeholder="输入消息..." />
-            <el-button type="primary" @click="sendMessage()">发送</el-button>
-            <el-button type="primary" :disabled="messagesArr.length == 0" @click="testAi()">测试</el-button>
+            <el-button type="primary" :disabled="newMessage.length == 0" @click="sendMessage()">发送</el-button>
             <el-button type="primary" :disabled="messagesArr.length == 0" @click="clearMessage()">清空</el-button>
         </div>
     </div>
@@ -37,40 +35,46 @@ const emits = defineEmits(['search'])
 
 const messagesArr = ref([]) as any;
 const newMessage = ref('');
-const sendMessage = () => {
-    if (newMessage.value) {
-        const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        messagesArr.value.push({ text: newMessage.value, sentBy: 'question', timestamp });
-        newMessage.value = ''; // 清空输入框  
+
+const getMessage = (row) => {
+    messagesArr.value = [];
+    if (row.test_answer) {
+        messagesArr.value.push(
+            {
+                text: row.test_question,
+                sentBy: 'question'
+            },
+            {
+                text: row.test_answer,
+                sentBy: 'answer'
+            },
+        )
+    } else {
+        ElMessage({
+            type: "warning",
+            message: "暂无测试结果",
+        });
+
     }
+}
 
-};
-
-//模型测试
-const testAi = async () => {
-    let message = '';
-    messagesArr.value.forEach((item: any) => {
-        if (item.sentBy == 'question') {
-            message = item.text;
-        }
-    })
+const sendMessage = async () => {
     if (Number(props.type) == 1) {
-        console.log('props', props);
         let params = {
-            messages: message,
+            messages: newMessage.value,
             model_id: props.modelKey
         }
         let data = await testAiMode1(params);
-        console.log('data', data);
-        if (data.is_success == 1) {
-            const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            messagesArr.value.push({
+        messagesArr.value.push(
+            {
+                text: newMessage.value,
+                sentBy: 'question'
+            },
+            {
                 text: data.message_res,
-                timestamp
+                sentBy: 'answer'
             })
-        }
     } else {
-        console.log('props.model_key_id_list.length', props.modelList);
         if (props.modelList.length == 0) {
             ElMessage({
                 type: "info",
@@ -78,26 +82,25 @@ const testAi = async () => {
             });
             return
         }
-
-
         let params = {
-            messages: message,
+            messages: newMessage.value,
             model_id: props.modelKey,
             model_key_list: props.modelList
         }
-
-
         let data = await testAiMode2(params);
         ElMessage({
-            type: "info",
-            message: "请稍等片刻后查看测试结果",
+            type: "warning",
+            message: "请稍等片刻后点击列表查看结果",
         });
+
         setTimeout(() => {
             emits("search");
         }, 5000)
     }
+    newMessage.value = '';
+};
 
-}
+
 
 //清空消息
 const clearMessage = () => {
@@ -105,7 +108,8 @@ const clearMessage = () => {
 }
 
 defineExpose({
-    clearMessage
+    clearMessage,
+    getMessage
 });
 </script>  
 
@@ -113,12 +117,13 @@ defineExpose({
 .chat-container {
     display: flex;
     flex-direction: column;
-    height: 500px;
+    height: 400px;
 }
 
 .chat-header {
-    padding: 10px;
+    padding: 5px;
     background-color: #f2f2f2;
+    font-size: 15px;
 }
 
 .chat-body {
