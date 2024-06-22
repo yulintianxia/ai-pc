@@ -83,7 +83,7 @@ const router = createRouter({
         },
         {
           path: "/modeSettings",
-          name: "Ai模型",
+          name: "AI模型",
           // route level code-splitting
           // this generates a separate chunk (About.[hash].js) for this route
           // which is lazy-loaded when the route is visited.
@@ -110,6 +110,17 @@ const router = createRouter({
           // this generates a separate chunk (About.[hash].js) for this route
           // which is lazy-loaded when the route is visited.
           component: () => import("../views/articleTaskManagement.vue"),
+          meta: {
+            auth: true,
+          },
+        },
+        {
+          path: "/log",
+          name: "模型日志",
+          // route level code-splitting
+          // this generates a separate chunk (About.[hash].js) for this route
+          // which is lazy-loaded when the route is visited.
+          component: () => import("../views/log.vue"),
           meta: {
             auth: true,
           },

@@ -1,8 +1,8 @@
 <template>
     <div class="chat-container">
-        <div class="chat-header">
+        <!-- <div class="chat-header">
             <h2>测试界面</h2>
-        </div>
+        </div> -->
         <div class="chat-body">
             <div v-for="(message, index) in messagesArr" :key="index" class="chat-message"
                 :class="{ 'sent': message.sentBy === 'question', 'received': message.sentBy !== 'question' }">
@@ -13,7 +13,7 @@
         </div>
         <div class="chat-input">
             <el-input type="text" v-model="newMessage" @keyup.enter="sendMessage" placeholder="输入消息..." />
-            <el-button type="primary" :disabled="newMessage.length == 0" @click="sendMessage()">发送</el-button>
+            <el-button class="sendMsgBtn" type="primary" :disabled="newMessage.length == 0" @click="sendMessage()">发送</el-button>
             <el-button type="primary" :disabled="messagesArr.length == 0" @click="clearMessage()">清空</el-button>
         </div>
     </div>
@@ -117,7 +117,7 @@ defineExpose({
 .chat-container {
     display: flex;
     flex-direction: column;
-    height: 400px;
+    height: 252px;
 }
 
 .chat-header {
@@ -184,5 +184,6 @@ defineExpose({
     border: none;
     color: #fff;
     cursor: pointer;
+    margin-left:5px;
 }
 </style>

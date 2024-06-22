@@ -190,7 +190,10 @@ export const testAiMode2 = (data:any)=> instance.post("/app_model_manage/check_m
 // 获取下拉任务列表
 export const taskNoPage = ()=> instance.post("/app_article_job/get_article_job_list_no_page");
 
+// 模型日志管理
+export const  logPage = (data:any)=>instance.post("/app_model_key_log/get_key_log_list", data);
+
+
 // 退出登录
-export  const loginOut = ()=>
-instance.post("/user/logout_sys");
+export  const loginOut = ()=>instance.post("/user/logout_sys");
 

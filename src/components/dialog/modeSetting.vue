@@ -70,12 +70,12 @@
             ref="modeTesting"></mode-testing>
         </el-main>
       </el-container>
-        <el-main class="el-main-container" v-if="form.model_type == 2">
+        <el-main  v-if="form.model_type == 2">
           <div class="header-container">
             <el-button type="danger" @click="deleteRowAll">批量删除</el-button>
-            <el-button type="primary" @click="getTableData()">刷新</el-button>
+            <el-button type="primary" @click="refreshTable()">刷新</el-button>
           </div>
-          <el-table ref="singleTableRef" :data="tableData" highlight-current-row style="width: 100%" border
+          <el-table ref="singleTableRef"  height="470" :data="tableData" highlight-current-row style="width: 100%" border
             class="table-container" @selection-change="handleSelectionChange"
             header-cell-class-name="table-header-cell-class">
             <el-table-column type="selection" width="50" />
@@ -90,15 +90,15 @@
 
             <el-table-column property="test_res" label="测试结果">
               <template #default="scope">
-                {{ scope.row.test_res == 1 ? '测试通过"' : '测试异常' }}
+                {{ scope.row.test_res == 1 ? '测试通过' : '测试异常' }}
               </template>
 
             </el-table-column>
-            <el-table-column property="test_time" label="测试时间" />
+            <el-table-column property="test_time" label="测试时间"  width="160"   />
             <el-table-column property="test_question" label="测试问题" show-overflow-tooltip />
             <!-- <el-table-column property="test_answer" label="返回结果" show-overflow-tooltip /> -->
             <el-table-column property="user_times" label="使用间隔" />
-            <el-table-column property="last_user_time" label="上次使用时间" />
+            <el-table-column property="last_user_time" label="上次使用时间"  width="160"  />
             <el-table-column fixed="right" label="操作" width="140">
                   <template #default="scope">
                     <el-button type="danger" size="small" @click.prevent="deleteRow(scope.row.model_key_id)">
@@ -237,6 +237,8 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         form.value.model_key = "";
         formEl.resetFields();
         getTableData();
+
+
       } else {
         file_id_list = model_key_list;
         let params = {
@@ -248,6 +250,10 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         resp = await editAIid(params);
       }
       emits("search");
+      ElMessage({
+            type: "success",
+            message: "成功",
+        });
     } else {
       console.log("error submit!", fields);
     }
@@ -342,6 +348,11 @@ const deleteRowAll = async () => {
     });
 };
 
+const refreshTable = ()=>{
+  getTableData();
+  modeTesting.value.clearMessage();
+}
+
 const add = () => {
   let checkValue = form.value.model_key_list.every(
     (item) =>
@@ -377,6 +388,9 @@ defineExpose({
   width: 178px;
   height: 178px;
   display: block;
+}
+.table-container {
+  margin-top: 10px;
 }
 </style>
 

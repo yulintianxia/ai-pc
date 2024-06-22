@@ -49,8 +49,8 @@
           <el-table-column property="article_job_name" label="任务名字" />
           <el-table-column property="article_title" label="文章标题" />
           <el-table-column property="article_sum" label="文章总数" />
-          <el-table-column property="article_ok" label="已生成的文章个数" />
-          <el-table-column property="job_status" label="文章状态">
+          <el-table-column property="article_ok" width="140" label="已生成的文章个数" />
+          <el-table-column property="job_status" label="状态">
             <template #default="scope">
               <span v-if="scope.row.job_status == '0' ">未开始</span>
               <span v-if="scope.row.job_status == '1' ">生成中</span>

@@ -50,9 +50,15 @@ const iconColor = ref("color:#F8FAFB");
         <el-sub-menu index="4">
           <template #title>
             <el-icon>
-              <Monitor /> </el-icon><span>AI大数据</span>
+              <Monitor /> </el-icon><span>模型配置</span>
           </template>
           <el-menu-item index="/modeSettings">AI模型</el-menu-item>
+        </el-sub-menu>
+        <el-sub-menu index="5">
+          <template #title>
+              <el-icon><Document /></el-icon><span>日志</span>
+          </template>
+          <el-menu-item index="/log">模型日志</el-menu-item>
         </el-sub-menu>
       </el-menu>
     </el-scrollbar>
