@@ -116,9 +116,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import MainDialog from "@/components/dialog/webSetting.vue";
-import { webSettingDel, webSettingList } from "@/utils/api.ts";
+import { webSettingDel, webSettingList } from "@/utils/api";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { typeOptions } from "@/assets/ts/configOptions.ts";
+import { typeOptions } from "@/assets/ts/configOptions";
 import { dayjs } from "element-plus";
 
 const dialog = ref("dialog");

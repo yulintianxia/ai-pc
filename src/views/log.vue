@@ -48,6 +48,12 @@
                         <el-table-column property="answer" label="模型返回结果" width="120" show-overflow-tooltip />
                         <el-table-column property="create_time" label="创建时间" width="180" />
                         <el-table-column property="update_time" label="更新时间" width="180" />
+                        <el-table-column fixed="right" label="操作" width="100">
+                            <template #default="scope">
+                                <el-button type="primary" size="small"
+                                    @click.prevent="detail(scope.row)">详情</el-button>
+                            </template>
+                        </el-table-column>
                     </el-table>
                 </div>
             </el-main>
@@ -58,16 +64,17 @@
                 @size-change="search" @current-change="search" class="page-footer" />
         </el-footer>
     </div>
+    <card-dialog ref="card" v-if="showCard"></card-dialog>
     <main-dialog ref="dialog" @search="search" class="main-dialog"></main-dialog>
 </template>
   
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref,nextTick } from "vue";
 import MainDialog from "@/components/dialog/webSetting.vue";
+import cardDialog from  "@/components/dialog/cardDialog.vue";
 import { logPage, AImodeListPage, modeList } from "@/utils/api";
-import { ElMessage, ElMessageBox } from "element-plus";
-import { typeOptions } from "@/assets/ts/configOptions";
 import { dayjs } from "element-plus";
+
 
 const dialog = ref("dialog");
 const tableData = ref([]);
@@ -83,6 +90,10 @@ let formInline = ref({
     pageNum: 1,
 });
 
+const card  = ref();
+
+const showCard = ref(false);
+
 const defaultTime = ref<[Date, Date]>([
     new Date(2000, 1, 1, 0, 0, 0),
     new Date(2000, 2, 1, 23, 59, 59),
@@ -90,13 +101,24 @@ const defaultTime = ref<[Date, Date]>([
 
 let modeListOptions = ref([]);
 
-const getOptions = async()=>{
-    let data:any = await AImodeListPage();
+const getOptions = async () => {
+    let data: any = await AImodeListPage();
     if (data?.length) {
         modeListOptions.value = data;
     } else {
         modeListOptions.value = []
     }
+}
+
+let rowData = ref({});
+
+
+const detail = (data:any)=>{
+    showCard.value = true;
+   
+    nextTick(()=>{
+        card.value.dialogShow(data);
+    })
 }
 
 
