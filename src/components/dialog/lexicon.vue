@@ -78,8 +78,7 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import type { ComponentSize, FormInstance, FormRules } from "element-plus";
-import RuleForm from "@/types/administration.interface.ts";
-import { wordListGetOptions,addWord } from "@/utils/api.ts";
+import { wordListGetOptions,addWord } from "@/utils/api";
 import { ElMessage } from "element-plus";
 
 let show = ref(false);
@@ -96,7 +95,7 @@ let form = ref({
 });
 
 interface  Props {
-    id:nubmer | undefined
+    id:number | undefined
 }
 
 let wordList = ref([]);

@@ -40,7 +40,7 @@
                     <el-table-column type="index" width="50" label="序号" />
                     <el-table-column property="article_job_name" label="任务名字" />
                     <el-table-column property="key_word" label="关键词" />
-                    <el-table-column property="file_path" label="文章文件路径" />
+                    <el-table-column property="file_path" label="文章文件路径" show-overflow-tooltip />
                     <el-table-column property="file_name" label="文章文件名字" />
                     <el-table-column property="is_success" label="文章生成状态">
                         <template #default="scope">
@@ -49,7 +49,7 @@
                             <span v-else>写入异常</span>
                         </template>
                     </el-table-column>
-                    <el-table-column property="error_str" label="文章生成异常描述" />
+                    <el-table-column property="error_str" label="文章生成异常描述" show-overflow-tooltip />
                     <el-table-column property="up_status" label="文章上传状态">
                         <template #default="scope">
                             <span v-if="scope.row.up_status == 0">未上传</span>
@@ -62,9 +62,9 @@
                         <template #default="scope">
                             <!-- <span>网站的名字: {{ scope.row.web_name || '' }}</span></br>
                             <span>网站模块名字: {{ scope.row.web_module_name || '' }}</span> -->
-                           <div v-for="(item,index) in scope.row.up_web">
-                            <div>{{ item.web_name || '' }}:{{ item.web_module_name || '' }}</div>
-                           </div>
+                            <div v-for="(item, index) in scope.row.up_web">
+                                <div>{{ item.web_name || '' }}:{{ item.web_module_name || '' }}</div>
+                            </div>
                         </template>
                     </el-table-column>
                     <el-table-column property="create_time" label="创建时间" width="120" />
@@ -73,6 +73,9 @@
                         <template #default="scope">
                             <el-button type="danger" size="small" @click.prevent="deleteRow(scope.row.article_txt_id)">
                                 删除
+                            </el-button>
+                            <el-button type="primary" size="small" @click.prevent="detailRow(scope.row.article_txt_id)">
+                                详情
                             </el-button>
                         </template>
                     </el-table-column>
@@ -86,6 +89,7 @@
         </el-footer>
     </div>
     <main-dialog ref="dialog" @search="search" class="main-dialog"></main-dialog>
+    <card-detail ref="cardDialog" v-if="showDetail" :article_str="article_str"></card-detail>
 </template>
   
 <script setup lang="ts">
@@ -94,38 +98,57 @@ import MainDialog from "@/components/dialog/article.vue";
 import {
     deleteListPage,
     taskListPage,
-    taskNoPage
+    taskNoPage,
+    detailPage
 } from "@/utils/api";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
+import cardDetail from "@/components/dialog/cardDetail.vue";
 import { artcleStateOptions, artcleUpfileOptions } from '../../src/assets/ts/configOptions';
 const dialog = ref("dialog");
 const tableData = ref([]);
 const taskOptions = ref([]);
+const showDetail = ref(false);
+
 
 let formInline = ref({
-    article_obj_id:'',
+    article_obj_id: '',
     key_word: '',
     is_success: '',
     up_status: '',
     date: [],
     pageSize: 10,
     pageNum: 1,
- 
+
 });
 
-const getTaskOPtions = async()=>{
+const getTaskOPtions = async () => {
     let data = await taskNoPage();
     // if()
-    console.log('data00',data.data_list.length);
+    console.log('data00', data.data_list.length);
     if (data.data_list.length) {
         taskOptions.value = data.data_list;
     } else {
         taskOptions.value = []
     }
-
 }
 
 getTaskOPtions();
+
+const cardDialog  =ref();
+
+let article_str = ref('');
+// 查看文章详情页面
+const detailRow = async (article_txt_id: number) => {
+    let params = {
+        article_txt_id
+    }
+    let data = await detailPage(params);
+    if (data?.article_str) {
+        showDetail.value = true;
+        cardDialog.value.show(data.article_str);
+    }
+}
+
 
 const defaultTime = ref<[Date, Date]>([
     new Date(2000, 1, 1, 0, 0, 0),

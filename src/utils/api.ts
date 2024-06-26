@@ -180,10 +180,18 @@ export const  taskListPage =  (data:any)=>
 export const  deleteListPage =  (data:any)=>
   instance.post("/app_article_manage/delete_article_list", data);
 
+// 获取文章详情
+export const  detailPage =  (data:any)=>
+  instance.post("/app_article_manage/get_article_detail", data);
+
+
+// 导入关键词库
+export const exportInWord = (data:any)=>instance.post("/app_word_library/upload_file_word_lib", data);
+
 // 模型为1的测试模型
 export const testAiMode1 = (data:any)=> instance.post("/app_model_manage/check_model_config", data);
 
-// 模型为1的测试模型
+// 模型为2的测试模型
 export const testAiMode2 = (data:any)=> instance.post("/app_model_manage/check_model_key_config", data);
 
 
@@ -192,6 +200,8 @@ export const taskNoPage = ()=> instance.post("/app_article_job/get_article_job_l
 
 // 模型日志管理
 export const  logPage = (data:any)=>instance.post("/app_model_key_log/get_key_log_list", data);
+
+
 
 
 // 退出登录

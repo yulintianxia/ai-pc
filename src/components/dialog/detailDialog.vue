@@ -75,7 +75,7 @@
 
 <script setup lang="ts">
 import { ref, reactive } from "vue";
-import { keywordList, delDetail, editDetail } from "@/utils/api.ts";
+import { keywordList, delDetail, editDetail } from "@/utils/api";
 import { ElMessage, ElMessageBox } from "element-plus";
 import type { ComponentSize, FormInstance, FormRules } from "element-plus";
 
