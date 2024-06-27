@@ -59,6 +59,7 @@
   </div>
   <main-dialog ref="dialog" @search="search" class="main-dialog"></main-dialog>
   <detail-dialog :id="detailId" ref="detailDialog" class="main-dialog"></detail-dialog>
+  <export-lexicon :id="detailId" @search="search" ref="exportLexion" class="main-dialog"></export-lexicon>
 </template>
 
 <script setup lang="ts">
@@ -68,6 +69,8 @@ import DetailDialog from "@/components/dialog/detailDialog.vue";
 import { dayjs } from "element-plus";
 import { wordList, delWord, exportInWord } from "@/utils/api";
 import { ElMessage, ElMessageBox } from "element-plus";
+import ExportLexicon  from "@/components/dialog/exportLexicon.vue";
+
 let formInline = ref({
   key_word_lib_name: "",
   date: [],
@@ -105,10 +108,11 @@ const search = async () => {
   }
 };
 
+const exportLexion = ref();
+
 // 导入词库
 const exportRow = async () => {
-  let params = {};
-  let data = await exportInWord(params);
+  exportLexion.value.dialogShow();
 }
 
 /* 新增 */

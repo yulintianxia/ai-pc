@@ -202,8 +202,6 @@ export const taskNoPage = ()=> instance.post("/app_article_job/get_article_job_l
 export const  logPage = (data:any)=>instance.post("/app_model_key_log/get_key_log_list", data);
 
 
-
-
 // 退出登录
 export  const loginOut = ()=>instance.post("/user/logout_sys");
 

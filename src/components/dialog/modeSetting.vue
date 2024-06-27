@@ -1,6 +1,6 @@
 <template>
   <teleport to="body">
-    <el-dialog v-model="show" title="配置" width="1200">
+    <el-dialog v-model="show" :before-close="handleClose" title="配置" width="1200">
       <el-container>
         <el-container> 
         <el-aside width="700px">
@@ -153,6 +153,7 @@ const emits = defineEmits(["search"]);
 const ruleForm = ref<FormInstance>();
 
 const dialogShow = (data: any) => {
+  console.log('dadta',data.model_host);
   show.value = true;
   form.value = {
     ...form.value,
@@ -160,8 +161,12 @@ const dialogShow = (data: any) => {
     model_id: data.model_id,
     model_type: data.model_type,
     // user_times: data.user_times,
-    model_host: data.model_host
+    // model_host: data.model_host
+    model_host: data.model_type == 1 ? data.model_host:'',
   };
+
+ console.log('model_host',  form.value.model_host);
+
   modelKey.value = data.model_id;
   modeTesting.value.clearMessage();
   getTableData();
@@ -197,7 +202,6 @@ const getTableData = async () => {
   tableData.value = [];
   let resp = await AImodeList(params);
   if (resp?.data_list.length) {
-
     form.value.user_times = resp?.data_list[0].user_times;
     if (Number(form.value.model_type) == 1) {
       // form.value.model_key_list = [];
@@ -209,7 +213,6 @@ const getTableData = async () => {
         });
       });
       form.value.model_key_list = formData;
-
       console.log('form.value.model_key_list', form.value.model_key_list);
     } else {
       tableData.value = resp.data_list || [];
@@ -237,8 +240,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         form.value.model_key = "";
         formEl.resetFields();
         getTableData();
-
-
       } else {
         file_id_list = model_key_list;
         let params = {
@@ -312,7 +313,11 @@ const  deleteRow = async (model_key_id)=>{
         message: "取消删除",
       });
     });
+}
 
+const handleClose = (done: () => void) => {
+  reset(ruleForm.value);
+  done();
 }
 
 const deleteRowAll = async () => {

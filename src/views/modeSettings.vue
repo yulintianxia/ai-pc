@@ -96,7 +96,6 @@ const search = async () => {
 };
 
 const editRow = (data) => {
-  console.log('data',data);
   dialog.value.dialogShow(data);
 };
 
