@@ -2,7 +2,7 @@
     <teleport to="body">
         <el-dialog v-model="show" title="详情" width="500">
             <el-card>  
-                <p class="text item">文章详情:  {{ article_str}}</p>
+                <p class="text item longtext">{{ article_str}}</p>
             </el-card>
         </el-dialog>
     </teleport>
@@ -31,7 +31,7 @@ defineExpose({
     margin-top:5px;
 }
 .longtext {
-    max-height: 300px;
+    max-height: 500px;
     overflow: auto;
 }
 </style>

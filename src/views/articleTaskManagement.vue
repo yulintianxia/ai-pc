@@ -50,7 +50,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column property="error_str" label="文章生成异常描述" show-overflow-tooltip />
-                    <el-table-column property="up_status" label="文章上传状态">
+                    <el-table-column property="up_status" label="文章上传状态"  width="140" >
                         <template #default="scope">
                             <span v-if="scope.row.up_status == 0">未上传</span>
                             <span v-else-if="scope.row.up_status == 1">上传成功</span>
@@ -58,7 +58,7 @@
                         </template>
                     </el-table-column>
                     <!-- 上传的网站[{"web_id": web_id, "web_name": web_name, 'web_module_name': web_module_name, 'web_module_id': module_id}] -->
-                    <el-table-column property="up_web" show-overflow-tooltip label="上传的网站">
+                    <el-table-column property="up_web" show-overflow-tooltip label="上传网站">
                         <template #default="scope">
                             <!-- <span>网站的名字: {{ scope.row.web_name || '' }}</span></br>
                             <span>网站模块名字: {{ scope.row.web_module_name || '' }}</span> -->
@@ -67,9 +67,9 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column property="create_time" label="创建时间" width="120" />
-                    <el-table-column property="update_time" label="更新时间" width="120" />
-                    <el-table-column fixed="right" label="操作" width="150">
+                    <el-table-column property="create_time" label="创建时间" width="160" />
+                    <el-table-column property="update_time" label="更新时间" width="160" />
+                    <el-table-column fixed="right" label="操作" width="140">
                         <template #default="scope">
                             <el-button type="danger" size="small" @click.prevent="deleteRow(scope.row.article_txt_id)">
                                 删除
@@ -89,7 +89,7 @@
         </el-footer>
     </div>
     <main-dialog ref="dialog" @search="search" class="main-dialog"></main-dialog>
-    <card-detail ref="cardDialog" v-if="showDetail" :article_str="article_str"></card-detail>
+    <card-detail ref="cardDialog" :article_str="article_str"></card-detail>
 </template>
   
 <script setup lang="ts">
@@ -107,9 +107,6 @@ import { artcleStateOptions, artcleUpfileOptions } from '../../src/assets/ts/con
 const dialog = ref("dialog");
 const tableData = ref([]);
 const taskOptions = ref([]);
-const showDetail = ref(false);
-
-
 let formInline = ref({
     article_obj_id: '',
     key_word: '',
@@ -143,12 +140,11 @@ const detailRow = async (article_txt_id: number) => {
         article_txt_id
     }
     let data = await detailPage(params);
-    if (data?.article_str) {
-        showDetail.value = true;
-        cardDialog.value.show(data.article_str);
+    
+    if (data[0]?.article_str) {
+        cardDialog.value.dialogShow(data[0].article_str);
     }
 }
-
 
 const defaultTime = ref<[Date, Date]>([
     new Date(2000, 1, 1, 0, 0, 0),
