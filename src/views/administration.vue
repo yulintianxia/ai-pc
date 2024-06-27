@@ -95,14 +95,13 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { stateOptions } from "@/assets/ts/configOptions.ts";
 import MainDialog from "@/components/dialog/administration.vue";
 import {
   administrationDel,
   administrationList,
   administrationExPort,
   exportUrl,
-} from "@/utils/api.ts";
+} from "@/utils/api";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
 const dialog = ref("dialog");
 
