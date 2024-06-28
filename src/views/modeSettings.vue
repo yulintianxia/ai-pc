@@ -64,17 +64,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import MainDialog from "@/components/dialog/modeSetting.vue";
-import { AImodeListPage,AImodeList } from "@/utils/api.ts";
+import { AImodeListPage,AImodeList } from "@/utils/api";
 
 const dialog = ref("dialog");
 const tableData = ref([]);
 const total = ref(0);
 
-/* 新增 */
-const addRow = () => {
-  dialog.value.dialogShow();
-};
 
+const  formInline = ref('')
 
 let aiTypeOptions = ref([]);
 

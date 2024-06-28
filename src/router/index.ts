@@ -37,28 +37,6 @@ const router = createRouter({
           // which is lazy-loaded when the route is visited.
           component: () => import("../views/lexicon.vue"),
         },
-        // {
-        //   path: "/newTask",
-        //   name: "新建任务",
-        //   // route level code-splitting
-        //   // this generates a separate chunk (About.[hash].js) for this route
-        //   // which is lazy-loaded when the route is visited.
-        //   component: () => import("../views/newTask.vue"),
-        //   meta: {
-        //     auth: true,
-        //   },
-        // },
-        // {
-        //   path: "/taskManagement",
-        //   name: "任务管理",
-        //   // route level code-splitting
-        //   // this generates a separate chunk (About.[hash].js) for this route
-        //   // which is lazy-loaded when the route is visited.
-        //   component: () => import("../views/taskManagement.vue"),
-        //   meta: {
-        //     auth: true,
-        //   },
-        // },
         {
           path: "/articleManagement",
           name: "任务管理",
