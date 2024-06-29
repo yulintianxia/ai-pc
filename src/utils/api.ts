@@ -165,10 +165,10 @@ export const   upLoadArticleTask = (data:any)=>instance.post("/app_article_manag
 export const upLoadArticle = (data:any)=>instance.post("/app_article_manage/up_article_to_web", data); 
  
 //暂停文章生成任务
-export const stopArticle = (data:any)=>instance.post("/app_article_job/stop_article_job", data); 
+export const stopArticle = (data:any)=>instance.post("/app_article_manage/stop_up_article_to_web", data); 
 
 //开始文章生成任务
-export const startArticle = (data:any)=>instance.post("/app_article_job/start_article_job", data); 
+export const startArticle = (data:any)=>instance.post("/app_article_manage/start_up_article_to_web", data); 
 
 // 退出登录
 export  const loginOut = ()=>instance.post("/user/logout_sys");

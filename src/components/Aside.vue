@@ -33,10 +33,10 @@ const iconColor = ref("color:#F8FAFB");
             <el-icon>
               <Folder /></el-icon><span>管理</span>
           </template>
-          <!-- <el-menu-item index="/taskManagement">任务管理</el-menu-item> -->
-          <el-menu-item index="/articleManagement">任务管理</el-menu-item>
+          <!-- <el-menu-item index="/taskManagement">文章生成任务</el-menu-item> -->
+          <el-menu-item index="/articleManagement">文章生成任务</el-menu-item>
           <el-menu-item index="/articleTaskManagement">文章管理</el-menu-item>
-          <el-menu-item index="/articleUpload">文章上传任务列表</el-menu-item>
+          <el-menu-item index="/articleUpload">文章上传任务</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="3">
           <template #title>

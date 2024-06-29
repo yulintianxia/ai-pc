@@ -48,12 +48,12 @@
         <el-table ref="singleTableRef" :data="tableData" highlight-current-row style="width: 100%" border
           class="table-container" header-cell-class-name="table-header-cell-class">
           <el-table-column type="index" width="80" label="序号" />
-          <el-table-column property="article_obj_name" label="文章生成任务名字" />
+          <el-table-column property="article_job_name" label="文章生成任务名字" />
           <el-table-column property="word_lib_name" label="词库名字" />
           <el-table-column property="up_status" label="上传状态">
             <template #default="scope">
               <span v-if="scope.row.up_status == 0">未开始</span>
-              <span v-else-if="scope.row.up_status == 1">生成中</span>
+              <span v-else-if="scope.row.up_status == 1">上传中</span>
               <span v-else-if="scope.row.up_status == 2">暂停中</span>
               <span v-else-if="scope.row.up_status == 3">已暂停</span>
               <span v-else-if="scope.row.up_status == 4">已完成</span>
@@ -61,19 +61,19 @@
               <span v-else-if="scope.row.up_status == 6">已删除</span>
             </template>
           </el-table-column>
-          <el-table-column property="up_web" label="上传的web" />
-          <el-table-column property="error_str" label="异常信息" />
+          <el-table-column property="up_web" label="上传的web" show-overflow-tooltip />
+          <el-table-column property="error_str" label="异常信息" show-overflow-tooltip />
           <el-table-column fixed="right" label="操作" width="150">
             <template #default="scope">
               <el-button
-                 v-if='scope.row.job_status==0 || scope.row.job_status==3 || scope.row.job_status==5'
-                @click.prevent="doArticle(scope.row.article_obj_id,scope.row.job_status)"
+                 v-if='scope.row.up_status==0 || scope.row.up_status==3 || scope.row.up_status==5'
+                @click.prevent="doArticle(scope.row.article_up_id,scope.row.up_status)"
                 type="primary" 
                 size="small"
               >
                 开始
               </el-button>
-              <el-button  v-else-if="scope.row.job_status==1"  size="small" type="danger" @click.prevent="doArticle(scope.row.article_obj_id, scope.row.job_status)">
+              <el-button  v-else-if="scope.row.up_status==1"  size="small" type="danger" @click.prevent="doArticle(scope.row.article_up_id, scope.row.up_status)">
                 暂停
               </el-button>
             </template>
@@ -94,7 +94,7 @@
 import { ref } from "vue";
 
 import MainDialog from "@/components/dialog/articleUpload.vue";
-import { upLoadArticleTask, } from "@/utils/api";
+import { upLoadArticleTask,stopArticle, startArticle } from "@/utils/api";
 import { ElMessage, ElMessageBox , dayjs} from "element-plus";
 const dialog = ref("dialog");
 const tableData = ref([]);
@@ -122,6 +122,39 @@ const addRow = () => {
   dialog.value.dialogShow();
 };
 
+/* 生成或者停止操作 */
+const doArticle = async (article_up_id: number, up_status:number) => {
+  let title = up_status == 1 ?'暂停':'开始';
+  ElMessageBox.confirm(`您确定要${title}文章生成?`, "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(async () => {
+      let params = {
+        article_up_id,
+      };
+      let data;
+      if (up_status == 1) {
+        data = await stopArticle(params);
+      } else {
+        data= await startArticle(params);
+      }
+      if (data) {
+        ElMessage({
+          message: "成功",
+          type: "success",
+        });
+        search();
+      }
+    })
+    .catch(() => {
+      ElMessage({
+        type: "info",
+        message: "取消",
+      });
+    });
+};
 
 const search = async () => {
   const { article_up_name, pageSize, pageNum, article_job_name, word_lib_name,date } = formInline.value;

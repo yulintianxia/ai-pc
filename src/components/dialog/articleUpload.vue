@@ -4,12 +4,12 @@
             <el-form :model="form" ref="ruleForm" :rules="rules" label-width="auto" style="max-width: 600px">
                 <el-form-item label="文章生成任务" prop="article_job_id">
                     <el-select filterable v-model="form.article_job_id" placeholder="请选择文章生成任务" clearable>
-                        <el-option v-for="(listItem, index) in taskOptions" :value="listItem.article_obj_id"
-                            :key="listItem.article_obj_id" :label="listItem.article_job_name"></el-option>
+                        <el-option v-for="(listItem, index) in taskOptions" :value="listItem.article_job_id"
+                            :key="listItem.article_job_id" :label="listItem.article_job_name"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="文章上传任务名字" prop="article_txt_name">
-                    <el-input v-model="form.article_txt_name" placeholder="文章上传任务名字" />
+                <el-form-item label="文章上传任务名字" prop="article_up_name">
+                    <el-input v-model="form.article_up_name" placeholder="文章上传任务名字" />
                 </el-form-item>
             </el-form>
             <template #footer>
@@ -31,7 +31,7 @@ import { taskNoPage,upLoadArticle  } from "@/utils/api";
 let show = ref(false);
 let form = ref({
     article_job_id: "",
-    article_txt_name: "",
+    article_up_name: "",
 });
 
 const emits = defineEmits(["search"]);
@@ -63,7 +63,7 @@ getTaskOPtions();
 
 const rules = ref<FormRules<RuleForm>>({
     article_job_id: [{ required: true, message: "请选择文章生成任务" }],
-    article_txt_name: [{ required: true, message: "请填写文章上传任务名字" }],
+    article_up_name: [{ required: true, message: "请填写文章上传任务名字" }],
 });
 
 
@@ -71,10 +71,10 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     if (!formEl) return;
     await formEl.validate(async (valid, fields) => {
         if (valid) {
-            const { article_job_id, article_txt_name} = form.value;
+            const { article_job_id, article_up_name} = form.value;
             let params = {
                 article_job_id,
-                article_txt_name
+                article_up_name
             }
             let data = await upLoadArticle(params)
             
