@@ -61,7 +61,8 @@
               <span v-else-if="scope.row.up_status == 6">已删除</span>
             </template>
           </el-table-column>
-          <el-table-column property="up_web" label="上传的web" show-overflow-tooltip />
+          <el-table-column property="web_name" label="网站名字" show-overflow-tooltip />
+          <el-table-column property="web_module_name" label="模块名字" show-overflow-tooltip />
           <el-table-column property="error_str" label="异常信息" show-overflow-tooltip />
           <el-table-column fixed="right" label="操作" width="150">
             <template #default="scope">

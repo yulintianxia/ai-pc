@@ -3,10 +3,10 @@
         <el-container>
             <el-header height="55px">
                 <el-form :inline="true" :model="formInline" label-width="auto;" class="form">
-                    <el-form-item label="任务名字" prop="article_obj_id">
-                        <el-select filterable v-model="formInline.article_obj_id" placeholder="请选择任务" clearable>
-                            <el-option v-for="(listItem, index) in taskOptions" :value="listItem.article_obj_id"
-                                :key="listItem.article_obj_id" :label="listItem.article_job_name"></el-option>
+                    <el-form-item label="任务名字" prop="article_job_id">
+                        <el-select filterable v-model="formInline.article_job_id" placeholder="请选择任务" clearable>
+                            <el-option v-for="(listItem, index) in taskOptions" :value="listItem.article_job_id"
+                                :key="listItem.article_job_id" :label="listItem.article_job_name"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="关键词" prop="key_word">
@@ -108,7 +108,7 @@ const dialog = ref("dialog");
 const tableData = ref([]);
 const taskOptions = ref([]);
 let formInline = ref({
-    article_obj_id: '',
+    article_job_id: '',
     key_word: '',
     is_success: '',
     up_status: '',
@@ -183,9 +183,9 @@ const deleteRow = (article_txt_id: number) => {
 };
 
 const search = async () => {
-    const { article_obj_id, date, pageSize, pageNum, key_word, is_success, up_status } = formInline.value;
+    const { article_job_id, date, pageSize, pageNum, key_word, is_success, up_status } = formInline.value;
     let data = {
-        article_obj_id,
+        article_job_id,
         key_word,
         is_success,
         up_status,

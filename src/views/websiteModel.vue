@@ -118,7 +118,7 @@ import {
   webSiteModeList,
   webSiteModeDel,
   webSettingOptions,
-} from "@/utils/api.ts";
+} from "@/utils/api";
 import { ElMessage, ElMessageBox, dayjs } from "element-plus";
 const dialog = ref("dialog");
 

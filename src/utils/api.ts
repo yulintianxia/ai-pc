@@ -84,10 +84,10 @@ export const webSiteModeDel = (data: any) =>instance.post("/web_set/del_web_modu
 export const webSiteModeEdit = (data: any) =>instance.post("/web_set/update_web_module", data);
 
 // 获取网站模块的下拉
-export const webSiteModeOptions = (data: any) =>instance.post("/web_set/get_web_module_drop", data);
+export const webSiteModeOptions = (data?: any) =>instance.post("/web_set/get_web_module_drop", data);
 
 // 获取网站设置下拉列表
-export const webSettingOptions = (data: any) =>instance.post("/web_set/get_web_set_drop", data);
+export const webSettingOptions = (data?: any) =>instance.post("/web_set/get_web_set_drop", data);
 
 // 获取网站设置列表
 export const webSettingList = (data: any) =>instance.post("/web_set/get_web_set_list", data);

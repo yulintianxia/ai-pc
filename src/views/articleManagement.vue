@@ -75,13 +75,13 @@
             <template #default="scope">
               <el-button
                  v-if='scope.row.job_status==0 || scope.row.job_status==3 || scope.row.job_status==5'
-                @click.prevent="doArticle(scope.row.article_obj_id,scope.row.job_status)"
+                @click.prevent="doArticle(scope.row.article_job_id,scope.row.job_status)"
                 type="primary" 
                 size="small"
               >
                 开始
               </el-button>
-              <el-button  v-else-if="scope.row.job_status==1"  size="small" type="danger" @click.prevent="doArticle(scope.row.article_obj_id, scope.row.job_status)">
+              <el-button  v-else-if="scope.row.job_status==1"  size="small" type="danger" @click.prevent="doArticle(scope.row.article_job_id, scope.row.job_status)">
                 暂停
               </el-button>
             </template>
