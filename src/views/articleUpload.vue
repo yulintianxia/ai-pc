@@ -48,6 +48,7 @@
         <el-table ref="singleTableRef" :data="tableData" highlight-current-row style="width: 100%" border
           class="table-container" header-cell-class-name="table-header-cell-class">
           <el-table-column type="index" width="80" label="序号" />
+          <el-table-column property="article_up_name" label="文章上传任务名字" />
           <el-table-column property="article_job_name" label="文章生成任务名字" />
           <el-table-column property="word_lib_name" label="词库名字" />
           <el-table-column property="up_status" label="上传状态">

@@ -12,7 +12,7 @@
                     <el-input v-model="form.article_up_name" placeholder="文章上传任务名字" />
                 </el-form-item>
                 <el-form-item label="选择网站" prop="web_id">
-                    <el-select v-model="form.web_id" placeholder="请选择网站名字" clearable filterable>
+                    <el-select v-model="form.web_id" placeholder="请选择网站名字" @change="getModeOptions" clearable filterable>
                         <el-option v-for="(listItem, index) in webOptions" :value="listItem.web_id" :key="listItem.web_id"
                             :label="listItem.web_name"></el-option>
                     </el-select>
@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import type { ComponentSize, FormInstance, FormRules } from "element-plus";
-import { taskNoPage, upLoadArticle, webSettingOptions,webSiteModeOptions } from "@/utils/api";
+import { taskNoPage, upLoadArticle, webSettingOptions, webSiteModeOptions } from "@/utils/api";
 
 let show = ref(false);
 let form = ref({
@@ -97,22 +97,29 @@ const webOptions = ref([]);
 const webSiteOptions = ref([]);
 
 const getOptions = async () => {
-   let resp = await webSettingOptions();
-   return resp;
+    let resp = await webSettingOptions();
+    return resp;
 
 };
 
-const getModeOptions = async()=>{
-    let resp = await webSiteModeOptions();
-    return resp;
+const getModeOptions = async (value:number) => {
+    if (value) {
+        let data = {
+            web_id:value
+        }
+        let resp = await webSiteModeOptions(data);
+        webSiteOptions.value = resp?.data_list || [];
+    } else {
+        webSiteOptions.value = [];
+    }
 }
 
-const  getAllOptioins = async()=>{
-  Promise.allSettled([ getOptions(), getModeOptions()]).then((data)=>{
-    webOptions.value= data[0].value?.data_list || [];
-    webSiteOptions.value = data[1].value?.data_list || [];
-  })
-   
+const getAllOptioins = async () => {
+    Promise.allSettled([getOptions(),]).then((data) => {
+        webOptions.value = data[0].value?.data_list || [];
+        // webSiteOptions.value = data[1].value?.data_list || [];
+    })
+
 }
 
 

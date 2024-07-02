@@ -1,13 +1,7 @@
 <template>
   <teleport to="body">
     <el-dialog v-model="show" title="添加" width="800">
-      <el-form
-        :model="form"
-        ref="ruleForm"
-        :rules="rules"
-        label-width="auto"
-        style="max-width: 800px"
-      >
+      <el-form :model="form" ref="ruleForm" :rules="rules" label-width="auto" style="max-width: 800px">
         <el-form-item label="任务名字" prop="article_job_name">
           <el-input v-model="form.article_job_name" placeholder="任务名字" />
         </el-form-item>
@@ -16,45 +10,25 @@
         </el-form-item>
         <el-form-item label="模型" prop="model_id">
           <el-select filterable v-model="form.model_id" placeholder="请选择模型" clearable>
-            <el-option
-              v-for="(item, index) in modeList"
-              :value="item.model_id"
-              :key="item.model_id"
-              :label="item.model_name"
-            ></el-option>
+            <el-option v-for="(item, index) in modeList" :value="item.model_id" :key="item.model_id"
+              :label="item.model_name"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="关键词词库列表" required>
           <br />
           <div class="search-container">
             <el-form-item label="词库名字" class="label-name">
-              <el-input
-                v-model="formInline.key_word_lib_name"
-                placeholder="请输入词库名字"
-                clearable
-              />
+              <el-input v-model="formInline.key_word_lib_name" placeholder="请输入词库名字" clearable />
             </el-form-item>
             <el-form-item>
-              <el-button
-                type="primary"
-                style="margin-left: 20px"
-                @click="search()"
-                >搜索</el-button
-              >
+              <el-button type="primary" style="margin-left: 20px" @click="search()">搜索</el-button>
             </el-form-item>
           </div>
-          <el-table
-            ref="multipleTableRef"
-            :data="tableData"
-            highlight-current-row
-            style="width: 100%"
-            border
-            class="table-container"
-            @selection-change="handleSelectionChange"
-            header-cell-class-name="table-header-cell-class"
-          >
+          <el-table ref="multipleTableRef" :data="tableData" highlight-current-row style="width: 100%" max-height="400"
+            border class="table-word" @selection-change="toggleSelectedChannels"
+            header-cell-class-name="table-header-cell-class">
             <el-table-column type="selection" width="50" />
-            <el-table-column property="key_word_lib_name" label="词库名字" />
+            <el-table-column property="key_word_lib_name" label="词库名字" show-overflow-tooltip />
             <el-table-column label="长尾词数量(已生成/总数)" width="200">
               <template #default="scope">
                 {{ scope.row.key_word_lib_num }}/
@@ -72,29 +46,17 @@
                 <div v-else-if="scope.row.status == 6">已删除</div>
               </template>
             </el-table-column>
-            <el-table-column
-              property="create_time"
-              label="创建时间"
-              width="180"
-            />
+            <el-table-column property="create_time" label="创建时间" width="180" />
           </el-table>
-          <el-pagination
-            v-model:current-page="formInline.pageNum"
-            v-model:page-size="formInline.pageSize"
-            :page-sizes="[10, 20, 30, 40]"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total"
-            @size-change="search"
-            @current-change="search"
-            class="page-footer"
-          />
+          <el-pagination v-model:current-page="formInline.pageNum" v-model:page-size="formInline.pageSize"
+            :page-sizes="[10, 20, 30, 40]" layout="total, sizes, prev, pager, next, jumper" :total="total"
+            @size-change="search" @current-change="search" class="page-footer" />
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="reset(ruleForm)">取消</el-button>
-          <el-button type="primary" @click="submitForm(ruleForm)"
-            >提交
+          <el-button type="primary" @click="submitForm(ruleForm)">提交
           </el-button>
         </div>
       </template>
@@ -104,16 +66,16 @@
 <script setup lang="ts">
 import { ref, nextTick } from "vue";
 import type { ComponentSize, FormInstance, FormRules } from "element-plus";
-import RuleForm from "@/types/administration.interface.ts";
-import { typeOptions } from "@/assets/ts/configOptions.ts";
-import { AImodeListPage, addTask, wordList } from "@/utils/api.ts";
+import RuleForm from "@/types/administration.interface";
+import { typeOptions } from "@/assets/ts/configOptions";
+import { AImodeListPage, addTask, wordList } from "@/utils/api";
 let show = ref(false);
 let form = ref({
   article_job_name: "",
   key_word_lib_list: [],
   //   model_id: "",
   model_id: "",
-  article_title:'',
+  article_title: '',
 });
 
 
@@ -149,7 +111,6 @@ const editData = ref(null);
 let modeList = ref([]);
 const getOptions = async () => {
   let resp = await AImodeListPage();
-  console.log("resp222222222", resp);
   if (resp?.length) {
     modeList.value = resp || [];
   }
@@ -191,17 +152,14 @@ const rules = ref<FormRules<RuleForm>>({
 
 const dialog = ref("dialog");
 
-/* 新增 */
-const addRow = () => {
-  dialog.value.dialogShow();
-};
+
 
 const submitForm = async (formEl: FormInstance | undefined) => {
   console.log("formEl", formEl);
   if (!formEl) return;
   await formEl.validate(async (valid, fields) => {
     if (valid) {
-      const { article_job_name, key_word_lib_list, model_id, article_title} = form.value;
+      const { article_job_name, key_word_lib_list, model_id, article_title } = form.value;
       let data = {
         article_job_name,
         key_word_lib_list,
@@ -231,13 +189,23 @@ defineExpose({
   dialogHide,
 });
 
-const handleSelectionChange = (val) => {
-  // multipleSelection.value = val;
+const toggleSelectedChannels = (rows) => {
   form.value.key_word_lib_list = [];
-  val.forEach((item) => {
-    form.value.key_word_lib_list.push(item.key_word_lib_id);
-  });
-};
+  if (rows) {
+    rows.forEach((row, index) => {
+      form.value.key_word_lib_list = [];
+      if (index == rows.length - 1) {
+        form.value.key_word_lib_list.push(row.key_word_lib_id);
+        multipleTableRef.value.toggleRowSelection(row, true);
+      } else {
+        multipleTableRef.value.toggleRowSelection(row, false);
+      }
+    });
+  } else {
+    multipleTableRef.value.clearSelection();
+  }
+}
+
 </script>
 <style scoped lang="scss">
 .avatar-uploader .avatar {
@@ -245,11 +213,13 @@ const handleSelectionChange = (val) => {
   height: 178px;
   display: block;
 }
+
 .label-name {
   :deep(.el-form-item__label-wrap) {
     margin-left: 0 !important;
   }
 }
+
 .table-container {
   padding: 10px 0;
 }
@@ -276,8 +246,22 @@ const handleSelectionChange = (val) => {
   height: 178px;
   text-align: center;
 }
+
 .search-container {
   display: flex;
   justify-content: space-between;
+}
+
+.page-footer {
+  margin-top: 30px;
+}
+
+.table-word {
+  margin-top: 20px;
+}
+
+.el-table__header-wrapper .el-checkbox {
+  //找到表头那一行，然后把里面的复选框隐藏掉
+  display: none
 }
 </style>
