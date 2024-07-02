@@ -103,6 +103,7 @@ const getOptions = async () => {
 };
 
 const getModeOptions = async (value:number) => {
+    form.value.web_module_id ='';
     if (value) {
         let data = {
             web_id:value
