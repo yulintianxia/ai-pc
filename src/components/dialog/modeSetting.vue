@@ -153,7 +153,6 @@ const emits = defineEmits(["search"]);
 const ruleForm = ref<FormInstance>();
 
 const dialogShow = (data: any) => {
-  console.log('dadta',data.model_host);
   show.value = true;
   form.value = {
     ...form.value,
@@ -162,7 +161,8 @@ const dialogShow = (data: any) => {
     model_type: data.model_type,
     // user_times: data.user_times,
     // model_host: data.model_host
-    model_host: data.model_type == 1 ? data.model_host:'',
+    // model_host: data.model_type == 1 ? data.model_host:'',
+    model_host:  data.model_host
   };
 
  console.log('model_host',  form.value.model_host);
