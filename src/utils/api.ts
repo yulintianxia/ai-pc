@@ -173,3 +173,5 @@ export const startArticle = (data:any)=>instance.post("/app_article_manage/start
 // 退出登录
 export  const loginOut = ()=>instance.post("/user/logout_sys");
 
+// 删除任务
+export const deleteArticle= (data:any)=>instance.post("/app_article_job/delete_article_job",data);

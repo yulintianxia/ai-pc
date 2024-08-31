@@ -30,10 +30,10 @@
               clearable
             />
           </el-form-item>
-          <el-form-item label="模块PID">
+          <el-form-item label="模块ID">
             <el-input
               v-model="formInline.module_num"
-              placeholder="请输入模块PID"
+              placeholder="请输入模块ID"
               clearable
             />
           </el-form-item>
@@ -71,7 +71,7 @@
           <el-table-column type="index" width="80" label="序号" />
           <el-table-column property="web_name" label="网站名字" />
           <el-table-column property="module_name" label="模块名字" />
-          <el-table-column property="module_num" label="模块PID" />
+          <el-table-column property="module_num" label="模块ID" />
           <el-table-column
             property="create_time"
             label="创建时间"

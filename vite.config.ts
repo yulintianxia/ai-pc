@@ -16,7 +16,8 @@ export default defineConfig({
     proxy: {
       "/api": {
         // 匹配请求路径，
-        target: "https://yuerhoo.cn:8399/py_api", // 代理的目标地址
+        // target: "https://yuerhoo.cn:8399/py_api", // 代理的目标地址
+        target:'http://47.93.98.103:80/api', 
         // 开发模式，默认的127.0.0.1,开启后代理服务会把origin修改为目标地址
         changeOrigin: true,
         // secure: true, // 是否https接口

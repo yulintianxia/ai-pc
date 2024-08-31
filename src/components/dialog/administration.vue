@@ -1,27 +1,12 @@
 <template>
   <teleport to="body">
     <el-dialog v-model="show" title="添加" width="500">
-      <el-form
-        :model="form"
-        ref="ruleForm"
-        :rules="rules"
-        label-width="auto"
-        style="max-width: 600px"
-      >
+      <el-form :model="form" ref="ruleForm" :rules="rules" label-width="auto" style="max-width: 600px">
         <el-form-item label="名字" prop="file_word_name">
-          <el-input
-            v-model="form.file_word_name"
-            maxLength="100"
-            placeholder="请输入长尾词名字"
-          />
+          <el-input v-model="form.file_word_name" maxLength="100" placeholder="请输入长尾词名字" />
         </el-form-item>
         <el-form-item label="上传文件" prop="fileUrl">
-          <el-upload
-            class="avatar-uploader"
-            :show-file-list="false"
-            :http-request="customRequest"
-            action="string"
-          >
+          <el-upload class="avatar-uploader" :show-file-list="false" :http-request="customRequest" action="string">
             <el-icon class="avatar-uploader-icon">
               <span v-if="form.fileUrl">{{ form.fileName }}</span>
               <Plus v-else />
@@ -32,8 +17,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="reset(ruleForm)">取消</el-button>
-          <el-button type="primary" @click="submitForm(ruleForm)"
-            >提交
+          <el-button type="primary" @click="submitForm(ruleForm)">提交
           </el-button>
         </div>
       </template>
@@ -53,9 +37,7 @@ let form = ref({
   file: "",
   fileName: "",
 });
-
 const emits = defineEmits(["search"]);
-
 const ruleForm = ref<FormInstance>();
 const dialogShow = () => {
   show.value = true;
@@ -67,7 +49,7 @@ const dialogHide = () => {
 
 const rules = ref<FormRules<RuleForm>>({
   file_word_name: [{ required: true, message: "请填写名字" }],
-  fileUrl: [{ required: true,  message: "请上传文件" }],
+  fileUrl: [{ required: true, message: "请上传文件" }],
 });
 
 /* 假的上传只是展示文件的链接 */
@@ -89,7 +71,7 @@ const addRow = () => {
   dialog.value.dialogShow();
 };
 
-const submitForm = async (formEl: FormInstance | undefined) => {
+const submitForm = async (foRyyrmEl: FormInstance | undefined) => {
   console.log("formEl", formEl);
   if (!formEl) return;
   await formEl.validate(async (valid, fields) => {

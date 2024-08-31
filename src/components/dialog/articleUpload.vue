@@ -1,6 +1,6 @@
 <template>
     <teleport to="body">
-        <el-dialog v-model="show" title="上传" width="500">
+        <el-dialog v-model="show" title="上传" width="700">
             <el-form :model="form" ref="ruleForm" :rules="rules" label-width="auto" style="max-width: 600px">
                 <el-form-item label="文章生成任务" prop="article_job_id">
                     <el-select filterable v-model="form.article_job_id" placeholder="请选择文章生成任务" clearable>
@@ -22,6 +22,16 @@
                         <el-option v-for="(listItem, index) in webSiteOptions" :value="listItem.web_module_id"
                             :key="listItem.web_module_id" :label="listItem.module_name"></el-option>
                     </el-select>
+                </el-form-item>
+                <el-form-item label="发布速度">
+                    <div class="time_speed">
+                        <el-input placeholder="时间" v-model="form.speed_0_7">
+                            <template #prepend>0-7小时</template>
+                        </el-input>
+                        <el-input placeholder="时间" v-model="form.speed_7_24">
+                            <template #prepend>7-24小时</template>
+                        </el-input>
+                    </div>
                 </el-form-item>
             </el-form>
             <template #footer>
@@ -46,6 +56,8 @@ let form = ref({
     article_up_name: "",
     web_id: '',
     web_module_id: '',
+    speed_0_7:5,
+    speed_7_24:15,
 });
 
 const emits = defineEmits(["search"]);
@@ -84,6 +96,7 @@ interface RuleForm {
     article_up_name: string,
     web_id: number | string,
     web_module_id: number | string,
+    
 }
 
 const rules = ref<FormRules<RuleForm>>({
@@ -102,11 +115,11 @@ const getOptions = async () => {
 
 };
 
-const getModeOptions = async (value:number) => {
-    form.value.web_module_id ='';
+const getModeOptions = async (value: number) => {
+    form.value.web_module_id = '';
     if (value) {
         let data = {
-            web_id:value
+            web_id: value
         }
         let resp = await webSiteModeOptions(data);
         webSiteOptions.value = resp?.data_list || [];
@@ -133,12 +146,14 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     if (!formEl) return;
     await formEl.validate(async (valid, fields) => {
         if (valid) {
-            const { article_job_id, article_up_name, web_id, web_module_id } = form.value;
+            const { article_job_id, article_up_name, web_id, web_module_id, speed_0_7, speed_7_24} = form.value;
             let params = {
                 article_job_id,
                 article_up_name,
                 web_id,
                 web_module_id,
+                speed_0_7,
+                speed_7_24,
             }
             let data = await upLoadArticle(params)
 
@@ -188,6 +203,10 @@ defineExpose({
     width: 150px;
     height: 150px;
     text-align: center;
+}
+
+.time_speed {
+    display: flex;
 }
 </style>
   

@@ -1,6 +1,6 @@
 <template>
     <teleport to="body">
-        <el-dialog v-model="show" title="详情" width="500">
+        <el-dialog v-model="show" title="详情" width="700">
             <el-card>  
                 <p class="text item longtext">{{ article_str}}</p>
             </el-card>

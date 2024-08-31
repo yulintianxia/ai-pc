@@ -30,8 +30,8 @@
         <el-form-item label="模块名字" prop="module_name">
           <el-input v-model="form.module_name" placeholder="请输入模块名字" />
         </el-form-item>
-        <el-form-item label="模块PID号码" prop="module_num">
-          <el-input v-model="form.module_num" placeholder="请输入模块PID号码" />
+        <el-form-item label="模块ID" prop="module_num">
+          <el-input v-model="form.module_num" placeholder="请输入模块ID" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -104,7 +104,7 @@ const rules = ref<FormRules<RuleForm>>({
   web_id: [{ required: true, message: "请选择网站id" }],
   //   web_name: [{ required: true, message: "请填写网站名字" }],
   module_name: [{ required: true, message: "请填写模块名字" }],
-  module_num: [{ required: true, message: "请填写模块pid号码" }],
+  module_num: [{ required: true, message: "请填写模块ID" }],
 });
 
 const dialog = ref("dialog");

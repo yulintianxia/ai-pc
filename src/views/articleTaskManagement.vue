@@ -219,5 +219,9 @@ search();
 .el-main-container {
     margin-top: 30px;
 }
+
+.el-main-container {
+  height: calc(100vh - 260px);
+}
 </style>
   

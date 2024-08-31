@@ -1,12 +1,12 @@
 <template>
   <teleport to="body">
-    <el-dialog v-model="show" title="添加" width="800">
-      <el-form :model="form" ref="ruleForm" :rules="rules" label-width="auto" style="max-width: 800px">
+    <el-dialog v-model="show" title="添加" width="1000">
+      <el-form :model="form" ref="ruleForm" :rules="rules" label-width="auto" style="max-width: 900px">
         <el-form-item label="任务名字" prop="article_job_name">
           <el-input v-model="form.article_job_name" placeholder="任务名字" />
         </el-form-item>
-        <el-form-item label="文章标题" prop="article_title">
-          <el-input v-model="form.article_title" placeholder="文章标题" />
+        <el-form-item label="生成指令" prop="article_title">
+          <el-input autosize="{ minRows: 2 }" type="textarea" v-model="form.article_title" placeholder="生成指令" />
         </el-form-item>
         <el-form-item label="模型" prop="model_id">
           <el-select filterable v-model="form.model_id" placeholder="请选择模型" clearable>
@@ -75,7 +75,7 @@ let form = ref({
   key_word_lib_list: [],
   //   model_id: "",
   model_id: "",
-  article_title: '',
+  article_title: '以{key_word}为关键词， 帮我搜索并总结其相关信息，把结果整理成一篇符合SEO规则且不低于 600字的文章，文章采用markdown格式呈现，第一行写一个符合seo规则的标题，标题用txt格式即可不要带markdown格式',
 });
 
 
@@ -147,7 +147,7 @@ const rules = ref<FormRules<RuleForm>>({
   article_job_name: [{ required: true, message: "请文章生成任务名字" }],
   model_id: [{ required: true, message: "请选择模型" }],
   //   key_word_lib_list: [{ required: true, message: "请选择关键词词库列表" }],
-  article_title: [{ required: true, message: "请填写文章标题" }],
+  article_title: [{ required: true, message: "请填写生成指令" }],
 });
 
 const dialog = ref("dialog");

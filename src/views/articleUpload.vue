@@ -4,25 +4,13 @@
       <el-header height="60px">
         <el-form :inline="true" :model="formInline" label-width="auto" class="form">
           <el-form-item label="文章上传任务" prop="article_up_name">
-            <el-input
-              v-model="formInline.article_up_name"
-              placeholder="请输入文章上传任务"
-              clearable
-            />
+            <el-input v-model="formInline.article_up_name" placeholder="请输入文章上传任务" clearable />
           </el-form-item>
           <el-form-item label="文章生成任务" prop="article_job_name">
-            <el-input
-              v-model="formInline.article_job_name"
-              placeholder="请输入文章生成任务"
-              clearable
-            />
+            <el-input v-model="formInline.article_job_name" placeholder="请输入文章生成任务" clearable />
           </el-form-item>
           <el-form-item label="词库" prop="word_lib_name">
-            <el-input
-              v-model="formInline.word_lib_name"
-              placeholder="请输入词库"
-              clearable
-            />
+            <el-input v-model="formInline.word_lib_name" placeholder="请输入词库" clearable />
           </el-form-item>
           <!-- <el-form-item label="时间">
             <el-date-picker
@@ -65,17 +53,24 @@
           <el-table-column property="web_name" label="网站名字" show-overflow-tooltip />
           <el-table-column property="web_module_name" label="模块名字" show-overflow-tooltip />
           <el-table-column property="error_str" label="异常信息" show-overflow-tooltip />
+          <el-table-column property="speed_0_7" label="0-7小时上传速速" width="150" show-overflow-tooltip />
+          <el-table-column property="speed_7_24" label="7-24小时上传速度" width="150" show-overflow-tooltip />
+
+          <el-table-column property="up_status" label="文章进度">
+            <template #default="scope">
+              <span>
+                {{ scope.row.up_num }}/{{ scope.row.article_sum }}
+              </span>
+            </template>
+          </el-table-column>
           <el-table-column fixed="right" label="操作" width="150">
             <template #default="scope">
-              <el-button
-                 v-if='scope.row.up_status==0 || scope.row.up_status==3 || scope.row.up_status==5'
-                @click.prevent="doArticle(scope.row.article_up_id,scope.row.up_status)"
-                type="primary" 
-                size="small"
-              >
+              <el-button v-if='scope.row.up_status == 0 || scope.row.up_status == 3 || scope.row.up_status == 5'
+                @click.prevent="doArticle(scope.row.article_up_id, scope.row.up_status)" type="primary" size="small">
                 开始
               </el-button>
-              <el-button  v-else-if="scope.row.up_status==1"  size="small" type="danger" @click.prevent="doArticle(scope.row.article_up_id, scope.row.up_status)">
+              <el-button v-else-if="scope.row.up_status == 1" size="small" type="danger"
+                @click.prevent="doArticle(scope.row.article_up_id, scope.row.up_status)">
                 暂停
               </el-button>
             </template>
@@ -96,8 +91,8 @@
 import { ref } from "vue";
 
 import MainDialog from "@/components/dialog/articleUpload.vue";
-import { upLoadArticleTask,stopArticle, startArticle } from "@/utils/api";
-import { ElMessage, ElMessageBox , dayjs} from "element-plus";
+import { upLoadArticleTask, stopArticle, startArticle } from "@/utils/api";
+import { ElMessage, ElMessageBox, dayjs } from "element-plus";
 const dialog = ref("dialog");
 const tableData = ref([]);
 
@@ -125,8 +120,8 @@ const addRow = () => {
 };
 
 /* 生成或者停止操作 */
-const doArticle = async (article_up_id: number, up_status:number) => {
-  let title = up_status == 1 ?'暂停':'开始';
+const doArticle = async (article_up_id: number, up_status: number) => {
+  let title = up_status == 1 ? '暂停' : '开始';
   ElMessageBox.confirm(`您确定要${title}文章生成?`, "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
@@ -140,7 +135,7 @@ const doArticle = async (article_up_id: number, up_status:number) => {
       if (up_status == 1) {
         data = await stopArticle(params);
       } else {
-        data= await startArticle(params);
+        data = await startArticle(params);
       }
       if (data) {
         ElMessage({
@@ -159,7 +154,7 @@ const doArticle = async (article_up_id: number, up_status:number) => {
 };
 
 const search = async () => {
-  const { article_up_name, pageSize, pageNum, article_job_name, word_lib_name,date } = formInline.value;
+  const { article_up_name, pageSize, pageNum, article_job_name, word_lib_name, date } = formInline.value;
   let data = {
     article_up_name,
     article_job_name,
@@ -168,8 +163,8 @@ const search = async () => {
       (date?.length && dayjs(date[0]).format("YYYY-MM-DD HH:mm:ss")) || "",
     end_time:
       (date?.length && dayjs(date[1]).format("YYYY-MM-DD HH:mm:ss")) || "",
-      pageSize,
-      pageNum
+    pageSize,
+    pageNum
   };
   let resp = await upLoadArticleTask(data);
   if (resp?.data_list) {
