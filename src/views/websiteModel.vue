@@ -114,7 +114,7 @@ import { ref } from "vue";
 import MainDialog from "@/components/dialog/websiteMode.vue";
 import {
   webSiteModeEdit,
-  WebModeList,
+  webSiteModeList,
   webSiteModeDel,
   webSettingOptions,
 } from "@/utils/api";
@@ -202,7 +202,7 @@ const search = async () => {
     // end_time:
     //   (date?.length && dayjs(date[1]).format("YYYY-MM-DD HH:mm:ss")) || "",
   };
-  let resp = await WebModeList(data);
+  let resp = await webSiteModeList(data);
   if (resp?.data_list) {
     tableData.value = resp?.data_list || [];
     total.value = resp.total;

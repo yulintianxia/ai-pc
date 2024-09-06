@@ -26,7 +26,7 @@
           class="table-container" header-cell-class-name='table-header-cell-class'>
           <el-table-column type="index" width="100" label="序号" />
           <el-table-column property="article_job_name" label="任务名字" />
-          <el-table-column property="article_title" label="文章标题" />
+          <el-table-column property="article_title" label="文章标题" width="280" show-overflow-tooltip />
           <el-table-column property="article_sum" label="文章总数" />
           <el-table-column property="article_ok" width="140" label="已生成的文章个数" />
           <el-table-column property="job_status" label="状态">

@@ -127,7 +127,7 @@ const tableData = ref([]);
 
 let formInline = ref({
   web_name: "",
-  web_type: "",
+  // web_type: "",
   date: [],
   pageSize: 10,
   pageNum: 1,
@@ -176,12 +176,11 @@ const deleteRow = async (web_id: number) => {
 };
 
 const search = async () => {
-  const { web_name, web_type, date, pageSize, pageNum } = formInline.value;
+  const { web_name,  date, pageSize, pageNum } = formInline.value;
   let data = {
     web_name,
     pageSize,
     pageNum,
-    web_type,
     start_time:
       (date?.length && dayjs(date[0]).format("YYYY-MM-DD HH:mm:ss")) || "",
     end_time:

@@ -59,9 +59,21 @@
 
           <el-table-column property="image_start" label="图片开始序号" width="150" show-overflow-tooltip />
           <el-table-column property="image_end" label="图片结束序号" width="150" show-overflow-tooltip />
-          <el-table-column property="image_type" label="图片类型" width="150" show-overflow-tooltip />
+          <el-table-column property="image_type" label="图片类型">
+            <template #default="scope">
+              <span v-if="scope.row.image_type==1">
+                PNG
+              </span>
+              <span v-else-if="scope.row.image_type==2">
+                JPEG
+              </span>
+              <span v-else-if="scope.row.image_type==3">
+                GIF
+              </span>
+            </template>
+          </el-table-column>
 
-          <el-table-column property="up_status" label="文章进度">
+          <el-table-column property="up_status" label="文章进度" width="120">
             <template #default="scope">
               <span>
                 {{ scope.row.up_num }}/{{ scope.row.article_sum }}

@@ -179,7 +179,6 @@ export const deleteArticle= (data:any)=>instance.post("/app_article_job/delete_a
 
 /* 删除网站模块的栏目 */
 export const deleteWebCol= (data:any)=>instance.post("/web_set/del_web_column",data);
-
 /* 添加网站栏目的栏目 */
 export const addWebCol= (data:any)=>instance.post("/web_set/add_web_column",data);
 
@@ -190,4 +189,4 @@ export const updateWebCol= (data:any)=>instance.post("/web_set/update_web_column
 export const WebColList= (data:any)=>instance.post("/web_set/get_web_column_drop",data);
 
 /* 获取网站模块的栏目列表 */
-export const WebModeList= (data:any)=>instance.post("/web_set/get_web_column_list",data);
+export const WebColPage= (data:any)=>instance.post("/web_set/get_web_column_list",data);

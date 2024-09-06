@@ -260,7 +260,7 @@ const toggleSelectedChannels = (rows) => {
   margin-top: 20px;
 }
 
-.el-table__header-wrapper .el-checkbox {
+ .table-word .el-table__header-wrapper .el-checkbox {
   //找到表头那一行，然后把里面的复选框隐藏掉
   display: none
 }

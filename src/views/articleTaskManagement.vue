@@ -1,7 +1,7 @@
 <template>
     <div class="common-layout">
         <el-container>
-            <el-header height="55px">
+            <el-header height="45px">
                 <el-form :inline="true" :model="formInline" label-width="auto;" class="form">
                     <el-form-item label="任务名字" prop="article_job_id">
                         <el-select filterable v-model="formInline.article_job_id" placeholder="请选择任务" clearable>

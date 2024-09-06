@@ -39,15 +39,15 @@
                     <el-table ref="singleTableRef" :data="tableData" highlight-current-row style="width: 100%" border
                         class="table-container" header-cell-class-name='table-header-cell-class'>
                         <el-table-column type="index" width="60" label="序号" />
-                        <el-table-column property="model_name" label="模型名字" />
-                        <el-table-column property="model_key_key" label="模型key" show-overflow-tooltip />
+                        <el-table-column property="model_name" label="模型名字"  width="100" />
+                        <el-table-column property="model_key_key" label="模型key" width="100" show-overflow-tooltip />
                         <el-table-column property="model_key_value" label="模型value" show-overflow-tooltip />
                         <el-table-column property="word_lib_name" label="词库名字" />
-                        <el-table-column property="key_question" label="模型请求问题" width="120" show-overflow-tooltip />
-                        <el-table-column property="parameter" label="模型请求入参" width="120" show-overflow-tooltip />
-                        <el-table-column property="answer" label="模型返回结果" width="120" show-overflow-tooltip />
-                        <el-table-column property="create_time" label="创建时间" width="180" />
-                        <el-table-column property="update_time" label="更新时间" width="180" />
+                        <el-table-column property="key_question" label="模型请求问题" width="200" show-overflow-tooltip />
+                        <el-table-column property="parameter" label="模型请求入参" width="200" show-overflow-tooltip />
+                        <el-table-column property="answer" label="模型返回结果" width="200" show-overflow-tooltip />
+                        <el-table-column property="create_time" label="创建时间" width="200" />
+                        <el-table-column property="update_time" label="更新时间" width="200" />
                         <el-table-column fixed="right" label="操作" width="100">
                             <template #default="scope">
                                 <el-button type="primary" size="small"

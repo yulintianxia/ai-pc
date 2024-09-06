@@ -25,8 +25,8 @@
             header-cell-class-name='table-header-cell-class'
           >
           <el-table-column type="index" width="80" label="序号" />
-            <el-table-column property="model_name" label="模型名字" />
-            <el-table-column property="model_host" label="模型请求域名" />
+            <el-table-column property="model_name" width="100" label="模型名字" />
+            <el-table-column property="model_host" width="150" label="模型请求域名" />
             <el-table-column
               property="create_time"
               label="创建时间"

@@ -16,7 +16,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="栏目名字" prop="column_name">
-            <el-input v-model="formInline.module_name" placeholder="请输入栏目名字" clearable />
+            <el-input v-model="formInline.column_name" placeholder="请输入栏目名字" clearable />
           </el-form-item>
           <!-- <el-form-item label="栏目序号">
             <el-input v-model="formInline.column_num" placeholder="请输入栏目序号" clearable />
@@ -47,7 +47,7 @@
           <el-table-column type="index" width="80" label="序号" />
           <el-table-column property="web_name" label="网站名字" />
           <el-table-column property="module_name" label="模块名字" />
-          <el-table-column property="module_id" label="模块ID" />
+          <!-- <el-table-column property="module_id" label="模块ID" /> -->
           <el-table-column property="column_name" label="栏目名字" />
           <!-- <el-table-column property="column_id" label="栏目ID" /> -->
           <el-table-column property="column_num" label="栏目序号" />
@@ -81,7 +81,7 @@ import {
   updateWebCol,
   WebColList,
   deleteWebCol,
-  WebModeList,
+  WebColPage,
   webSettingOptions,
   webSiteModeOptions
 } from "@/utils/api";
@@ -111,11 +111,11 @@ const tableData = ref([]);
 let formInline = ref({
   web_name: "",
   web_id: "",
-  module_name: "",
-  module_num: "",
   date: [],
   pageSize: 10,
   pageNum: 1,
+  column_name:'',
+  module_id:'',
 });
 
 const total = ref(0);
@@ -171,21 +171,22 @@ const deleteRow = async (column_id: number) => {
 };
 
 const search = async () => {
-  const { web_name, module_name, module_num, web_id, pageSize, pageNum } =
+  const { web_name, module_name, module_num, web_id, pageSize, pageNum,column_name,module_id } =
     formInline.value;
   let data = {
     web_name,
     pageSize,
     pageNum,
     module_name,
-    module_num,
+    module_id,
     web_id,
+    column_name,
     //   start_time:
     //     (date?.length && dayjs(date[0]).format("YYYY-MM-DD HH:mm:ss")) || "",
     //   end_time:
     //     (date?.length && dayjs(date[1]).format("YYYY-MM-DD HH:mm:ss")) || "",
   };
-  let resp = await WebColList(data);
+  let resp = await WebColPage(data);
   if (resp?.data_list) {
     tableData.value = resp?.data_list || [];
     total.value = resp.total;

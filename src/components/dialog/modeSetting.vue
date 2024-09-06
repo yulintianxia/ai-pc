@@ -1,6 +1,6 @@
 <template>
   <teleport to="body">
-    <el-dialog v-model="show" :before-close="handleClose" title="配置" width="1200">
+    <el-dialog v-model="show" :before-close="handleClose" title="配置" width="1500">
       <el-container>
         <el-container> 
         <el-aside width="700px">
@@ -77,9 +77,11 @@
           </div>
           <el-table ref="singleTableRef"  height="470" :data="tableData" highlight-current-row style="width: 100%" border
             class="table-container" @selection-change="handleSelectionChange" 
+
+            @select-all="handleAll"
             header-cell-class-name="table-header-cell-class">
             <el-table-column type="selection" width="50" />
-            <el-table-column property="model_key_value" label="配置value" show-overflow-tooltip />
+            <el-table-column property="model_key_value" label="配置value" width="480" show-overflow-tooltip />
             <el-table-column property="error_num" label="错误次数" />
             <el-table-column property="is_test" label="是否测试">
               <template #default="scope">
@@ -168,7 +170,10 @@ const dialogShow = (data: any) => {
  console.log('model_host',  form.value.model_host);
 
   modelKey.value = data.model_id;
-  modeTesting.value.clearMessage();
+  setTimeout(() => {
+    modeTesting.value.clearMessage();
+  }, 100);
+
   getTableData();
 };
 
@@ -287,7 +292,13 @@ const handleSelectionChange = (val: any) => {
   });
 };
 
- 
+const handleAll =(data:any)=>{
+  model_key_id_list.value = [];
+  data.forEach((item: any) => {
+    model_key_id_list.value.push(item.model_key_id);
+  });
+}
+
 const  deleteRow = async (model_key_id)=>{
   ElMessageBox.confirm("您确定要删除?", "提示", {
     confirmButtonText: "确定",
@@ -319,6 +330,7 @@ const handleClose = (done: () => void) => {
   reset(ruleForm.value);
   done();
 }
+
 
 const deleteRowAll = async () => {
   if (model_key_id_list.value.length == 0) {

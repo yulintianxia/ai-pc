@@ -85,7 +85,7 @@ let form = ref({
     column_id: '',
     image_start: 1001,
     image_end: 1011,
-    image_type: '',
+    image_type: '1',
 });
 
 const emits = defineEmits(["search"]);
@@ -166,7 +166,7 @@ const getColumnOptions = async (value: number) => {
     form.value.column_id = '';
     if (value) {
         let data = {
-            web_id: form.value.web_module_id,
+            web_id: form.value.web_id,
             module_id: value,
         }
         let resp = await WebColList(data);
