@@ -15,7 +15,7 @@
               clearable
             />
           </el-form-item>
-          <el-form-item label="网站类型" prop="web_type">
+          <!-- <el-form-item label="网站类型" prop="web_type">
             <el-select
             filterable
               v-model="formInline.web_type"
@@ -29,7 +29,7 @@
                 :label="listItem.label"
               ></el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
 
           <el-form-item label="时间">
             <el-date-picker
@@ -65,11 +65,11 @@
           <!-- <el-table-column type="selection" width="55" /> -->
           <el-table-column type="index" width="100" label="序号" />
             <el-table-column property="web_name" label="网站名字" />
-            <el-table-column property="web_type" label="网站类型">
+            <!-- <el-table-column property="web_type" label="网站类型">
               <template #default="scope">
                 {{ scope.row.web_type == 1 ? "易优" : "非易优" }}
               </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column property="web_address" label="网址" />
             <el-table-column property="web_user_account" label="后台账户" />
             <el-table-column property="web_password" label="后台密码" />

@@ -11,7 +11,7 @@
         <el-form-item label="网站名字" prop="web_name">
           <el-input v-model="form.web_name" placeholder="请输入网站名字" />
         </el-form-item>
-        <el-form-item label="网站类型" prop="web_type">
+        <!-- <el-form-item label="网站类型" prop="web_type">
           <el-select
             v-model="form.web_type"
             placeholder="请选择网站类型"
@@ -25,7 +25,7 @@
               :label="listItem.label"
             ></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="网址" prop="web_address">
           <el-input v-model="form.web_address" placeholder="请输入网址" />
         </el-form-item>
@@ -63,7 +63,7 @@ import {
 let show = ref(false);
 let form = ref({
   web_name: "",
-  web_type: '1',
+  // web_type: '1',
   web_address: "",
   web_user_account: "",
   web_password: "",
@@ -86,7 +86,7 @@ const dialogShow = async (data) => {
         title.value = "修改";
         const {
           web_name,
-          web_type,
+          // web_type,
           web_address,
           web_user_account,
           web_password,
@@ -94,7 +94,7 @@ const dialogShow = async (data) => {
         } = data;
         form.value = {
           web_name,
-          web_type,
+          // web_type,
           web_address,
           web_user_account,
           web_password,
@@ -112,7 +112,7 @@ const dialogHide = () => {
 
 const rules = ref<FormRules<RuleForm>>({
   web_name: [{ required: true, message: "请填写网站名字" }],
-  web_type: [{ required: true, message: "请选择网站类型" }],
+  // web_type: [{ required: true, message: "请选择网站类型" }],
   web_address: [{ required: true, message: "请填写网址" }],
   web_user_account: [{ required: true, message: "请填写后台账号" }],
   web_password: [{ required: true, message: "请填写后台密码" }],
@@ -131,11 +131,11 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   await formEl.validate(async (valid, fields) => {
     if (valid) {
-      const { web_id, web_name, web_type, web_address, web_user_account,  web_password} =
+      const { web_id, web_name, web_address, web_user_account,  web_password} =
         form.value;
       let data = {
         web_name,
-        web_type,
+        // web_type,
         web_address,
         web_user_account,
         web_password

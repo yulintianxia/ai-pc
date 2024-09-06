@@ -69,5 +69,20 @@ const artcleUpfileOptions = [
   },
 ]
 
+const image_typeOptions = [
+  {  
+    label:'PNG',
+    value:'1',
+  },
+  {  
+    label:'JPEG',
+    value:'2',
+  },
+  {  
+    label:'GIF',
+    value:'3',
+  },
+]
 
-export  {stateOptions, typeOptions, artcleStateOptions,artcleUpfileOptions}
+
+export  {stateOptions, typeOptions, artcleStateOptions,artcleUpfileOptions, image_typeOptions}

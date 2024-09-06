@@ -19,7 +19,9 @@
       <el-main class="el-main-container">
         <div class="header-container">
           <el-button type="primary" @click="addRow">添加</el-button>
+          
         </div>
+        
         <el-table ref="singleTableRef" :data="tableData" highlight-current-row style="width: 100%" border
           class="table-container" header-cell-class-name='table-header-cell-class'>
           <el-table-column type="index" width="100" label="序号" />
@@ -98,14 +100,33 @@ const defaultTime = ref<[Date, Date]>([
 const total = ref(0);
 
 /* 删除文章 */
-const deleteart = async (article_job_id:number) => {
-  let params = {
-    article_job_id
-  }
-  let resp = await deleteArticle(params);
-  if (resp) {
-    search();
-  }
+const deleteart = async (article_job_id: number) => {
+  ElMessageBox.confirm(`您确定要删除文章?`, "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(async () => {
+      let params = {
+        article_job_id
+      }
+      let resp = await deleteArticle(params);
+      if (resp) {
+        ElMessage({
+          message: "成功",
+          type: "success",
+        });
+        search();
+      }
+    })
+    .catch(() => {
+      ElMessage({
+        type: "info",
+        message: "取消",
+      });
+    });
+
+
 }
 
 /* 新增 */
@@ -184,5 +205,9 @@ search();
 
 .header-container {
   margin-top: -10px;
+}
+.tips {
+  margin-left:30px;
+  color:red;
 }
 </style>

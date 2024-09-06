@@ -32,6 +32,7 @@
       <el-main class="el-main-container">
         <div class="header-container">
           <el-button type="primary" @click="addRow">上传</el-button>
+          <span class="tips">同一个【文章生成任务】只能上传一次</span>
         </div>
         <el-table ref="singleTableRef" :data="tableData" highlight-current-row style="width: 100%" border
           class="table-container" header-cell-class-name="table-header-cell-class">
@@ -55,6 +56,10 @@
           <el-table-column property="error_str" label="异常信息" show-overflow-tooltip />
           <el-table-column property="speed_0_7" label="0-7小时上传速速" width="150" show-overflow-tooltip />
           <el-table-column property="speed_7_24" label="7-24小时上传速度" width="150" show-overflow-tooltip />
+
+          <el-table-column property="image_start" label="图片开始序号" width="150" show-overflow-tooltip />
+          <el-table-column property="image_end" label="图片结束序号" width="150" show-overflow-tooltip />
+          <el-table-column property="image_type" label="图片类型" width="150" show-overflow-tooltip />
 
           <el-table-column property="up_status" label="文章进度">
             <template #default="scope">
@@ -187,6 +192,11 @@ search();
 
 .header-container {
   margin-top: -10px;
+}
+
+.tips {
+  margin-left: 30px;
+  color: red;
 }
 </style>
   

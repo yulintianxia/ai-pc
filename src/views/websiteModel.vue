@@ -1,7 +1,7 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header height="90px">
+      <el-header height="45px">
         <el-form
           :inline="true"
           :model="formInline"
@@ -37,8 +37,7 @@
               clearable
             />
           </el-form-item>
-
-          <el-form-item label="时间">
+          <!-- <el-form-item label="时间">
             <el-date-picker
               v-model="formInline.date"
               type="datetimerange"
@@ -49,7 +48,7 @@
               value-fomat="YYYY-MM-DD HH:mm:ss"
               :default-time="defaultTime"
             />
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item>
             <el-button type="primary" @click="search">查询</el-button>
           </el-form-item>
@@ -115,7 +114,7 @@ import { ref } from "vue";
 import MainDialog from "@/components/dialog/websiteMode.vue";
 import {
   webSiteModeEdit,
-  webSiteModeList,
+  WebModeList,
   webSiteModeDel,
   webSettingOptions,
 } from "@/utils/api";
@@ -189,7 +188,7 @@ const deleteRow = async (web_module_id: number) => {
 };
 
 const search = async () => {
-  const { web_name, module_name, module_num, web_id, date, pageSize, pageNum } =
+  const { web_name, module_name, module_num, web_id, pageSize, pageNum } =
     formInline.value;
   let data = {
     web_name,
@@ -198,12 +197,12 @@ const search = async () => {
     module_name,
     module_num,
     web_id,
-    start_time:
-      (date?.length && dayjs(date[0]).format("YYYY-MM-DD HH:mm:ss")) || "",
-    end_time:
-      (date?.length && dayjs(date[1]).format("YYYY-MM-DD HH:mm:ss")) || "",
+    // start_time:
+    //   (date?.length && dayjs(date[0]).format("YYYY-MM-DD HH:mm:ss")) || "",
+    // end_time:
+    //   (date?.length && dayjs(date[1]).format("YYYY-MM-DD HH:mm:ss")) || "",
   };
-  let resp = await webSiteModeList(data);
+  let resp = await WebModeList(data);
   if (resp?.data_list) {
     tableData.value = resp?.data_list || [];
     total.value = resp.total;

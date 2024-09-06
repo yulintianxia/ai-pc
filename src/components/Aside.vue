@@ -47,6 +47,7 @@ const iconColor = ref("color:#F8FAFB");
 
           <el-menu-item index="/webSettings">网站设置</el-menu-item>
           <el-menu-item index="/websiteModel">网站模块设置</el-menu-item>
+          <el-menu-item index="/websiteColumn">网站栏目设置</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="4">
           <template #title>

@@ -76,7 +76,7 @@
             <el-button type="primary" @click="refreshTable()">刷新</el-button>
           </div>
           <el-table ref="singleTableRef"  height="470" :data="tableData" highlight-current-row style="width: 100%" border
-            class="table-container" @selection-change="handleSelectionChange"
+            class="table-container" @selection-change="handleSelectionChange" 
             header-cell-class-name="table-header-cell-class">
             <el-table-column type="selection" width="50" />
             <el-table-column property="model_key_value" label="配置value" show-overflow-tooltip />
