@@ -39,8 +39,8 @@
                 <el-table ref="singleTableRef" :data="tableData" highlight-current-row style="width: 100%" border
                     class="table-container" header-cell-class-name='table-header-cell-class'>
                     <el-table-column type="index" width="50" label="序号" />
-                    <el-table-column property="article_job_name" label="任务名字" />
-                    <el-table-column property="key_word" label="关键词" />
+                    <el-table-column property="article_job_name" label="任务名字" show-overflow-tooltip  />
+                    <el-table-column property="key_word" label="关键词" show-overflow-tooltip  />
                     <el-table-column property="file_path" label="文章文件路径" show-overflow-tooltip />
                     <el-table-column property="file_name" label="文章文件名字" />
                     <el-table-column property="is_success" label="文章生成状态">

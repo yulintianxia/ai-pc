@@ -2,12 +2,7 @@
   <div class="common-layout">
     <el-container>
       <el-header height="35px">
-        <el-form
-          :inline="true"
-          :model="formInline"
-          label-width="auto;"
-          class="form"
-        >
+        <el-form :inline="true" :model="formInline" label-width="auto;" class="form">
           <el-form-item>
             <el-button type="primary" @click="search">查询</el-button>
           </el-form-item>
@@ -15,26 +10,13 @@
       </el-header>
       <el-main class="main-container">
         <div class="table-container">
-          <el-table
-            ref="singleTableRef"
-            :data="tableData"
-            highlight-current-row
-            style="width: 100%"
-            border
-            class="table-container"
-            header-cell-class-name='table-header-cell-class'
-          >
-          <el-table-column type="index" width="80" label="序号" />
+          <el-table ref="singleTableRef" :data="tableData" highlight-current-row style="width: 100%" border
+            class="table-container" header-cell-class-name='table-header-cell-class'>
+            <el-table-column type="index" width="80" label="序号" />
             <el-table-column property="model_name" width="100" label="模型名字" />
-            <el-table-column property="model_host" width="150" label="模型请求域名" />
-            <el-table-column
-              property="create_time"
-              label="创建时间"
-            />
-            <el-table-column
-              property="update_time"
-              label="更新时间"
-            />
+            <el-table-column property="model_host" width="300" show-overflow-tooltip label="模型请求域名" />
+            <el-table-column property="create_time" label="创建时间" />
+            <el-table-column property="update_time" label="更新时间" />
             <el-table-column fixed="right" label="操作" width="200">
               <template #default="scope">
                 <el-button type="primary" size="small" @click.prevent="editRow(scope.row)">
@@ -62,20 +44,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref,nextTick} from "vue";
 import MainDialog from "@/components/dialog/modeSetting.vue";
-import { AImodeListPage,AImodeList } from "@/utils/api";
+import { AImodeListPage, AImodeList } from "@/utils/api";
+
 
 const dialog = ref("dialog");
 const tableData = ref([]);
 const total = ref(0);
 
 
-const  formInline = ref('')
+const formInline = ref('')
 
 let aiTypeOptions = ref([]);
 
-const getOptions = async()=>{
+const getOptions = async () => {
   let resp = await AImodeListPage();
   if (resp?.length) {
     aiTypeOptions.value = resp;
@@ -85,15 +68,17 @@ const getOptions = async()=>{
 getOptions();
 const search = async () => {
   let resp = await AImodeListPage();
-  console.log('resp',resp);
+  console.log('resp', resp);
   if (resp?.length) {
     tableData.value = resp || [];
     total.value = resp.total;
   }
 };
-
 const editRow = (data) => {
-  dialog.value.dialogShow(data);
+  nextTick(() => {
+    dialog.value.dialogShow(data);
+  })
+
 };
 
 search();
@@ -102,19 +87,26 @@ search();
 .table-container {
   margin-top: 10px;
 }
+
 .table-action {
   margin-top: 20px;
   margin-left: 20px;
 }
+
 .header-container {
   margin-top: -10px;
 }
+
 .main-container {
   display: flex;
-  flex-direction: column; /* 垂直方向排列子元素 */
+  flex-direction: column;
+  /* 垂直方向排列子元素 */
 }
+
 .table-container {
-  flex: 1; /* 占据剩余空间 */
-  overflow-y: auto; /* 如果内容过多，出现垂直滚动条 */
+  flex: 1;
+  /* 占据剩余空间 */
+  overflow-y: auto;
+  /* 如果内容过多，出现垂直滚动条 */
 }
 </style>

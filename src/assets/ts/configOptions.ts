@@ -71,16 +71,20 @@ const artcleUpfileOptions = [
 
 const image_typeOptions = [
   {  
-    label:'PNG',
+    label:'png',
     value:'1',
   },
   {  
-    label:'JPEG',
+    label:'jpg',
     value:'2',
   },
   {  
-    label:'GIF',
+    label:'jpeg',
     value:'3',
+  },
+  {  
+    label:'gif',
+    value:'4',
   },
 ]
 

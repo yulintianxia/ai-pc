@@ -37,8 +37,8 @@
         <el-table ref="singleTableRef" :data="tableData" highlight-current-row style="width: 100%" border
           class="table-container" header-cell-class-name="table-header-cell-class">
           <el-table-column type="index" width="80" label="序号" />
-          <el-table-column property="article_up_name" label="文章上传任务名字" />
-          <el-table-column property="article_job_name" label="文章生成任务名字" />
+          <el-table-column property="article_up_name" label="文章上传任务名字" width="150"  show-overflow-tooltip  />
+          <el-table-column property="article_job_name" label="文章生成任务名字" width="150"   show-overflow-tooltip  />
           <el-table-column property="word_lib_name" label="词库名字" />
           <el-table-column property="up_status" label="上传状态">
             <template #default="scope">
@@ -62,13 +62,16 @@
           <el-table-column property="image_type" label="图片类型">
             <template #default="scope">
               <span v-if="scope.row.image_type==1">
-                PNG
+                png
               </span>
               <span v-else-if="scope.row.image_type==2">
-                JPEG
+                jpg
               </span>
               <span v-else-if="scope.row.image_type==3">
-                GIF
+                jpeg
+              </span>
+              <span v-else-if="scope.row.image_type==4">
+                gif
               </span>
             </template>
           </el-table-column>

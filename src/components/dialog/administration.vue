@@ -71,7 +71,7 @@ const addRow = () => {
   dialog.value.dialogShow();
 };
 
-const submitForm = async (foRyyrmEl: FormInstance | undefined) => {
+const submitForm = async (formEl: FormInstance | undefined) => {
   console.log("formEl", formEl);
   if (!formEl) return;
   await formEl.validate(async (valid, fields) => {

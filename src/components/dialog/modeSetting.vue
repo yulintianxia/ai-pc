@@ -1,6 +1,6 @@
 <template>
   <teleport to="body">
-    <el-dialog v-model="show" :before-close="handleClose" title="配置" width="1500">
+    <el-dialog v-model="show" :destroy-on-close="true" :before-close="handleClose" title="配置" width="1500">
       <el-container>
         <el-container> 
         <el-aside width="700px">
@@ -161,13 +161,10 @@ const dialogShow = (data: any) => {
     model_name: data.model_name,
     model_id: data.model_id,
     model_type: data.model_type,
-    // user_times: data.user_times,
-    // model_host: data.model_host
-    // model_host: data.model_type == 1 ? data.model_host:'',
     model_host:  data.model_host
   };
 
- console.log('model_host',  form.value.model_host);
+ console.log('data.model_namedata.model_namedata.model_name',  data.model_name);
 
   modelKey.value = data.model_id;
   setTimeout(() => {

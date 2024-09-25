@@ -31,7 +31,7 @@ defineExpose({
     margin-top:5px;
 }
 .longtext {
-    max-height: 500px;
+    max-height: 900px;
     overflow: auto;
 }
 </style>

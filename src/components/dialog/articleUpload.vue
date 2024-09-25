@@ -51,6 +51,9 @@
                         </el-input>
                     </div>
                 </el-form-item>
+                <el-form-item label="图片路径" prop="image_path">
+                    <el-input v-model="form.image_path" placeholder="图片路径" />
+                </el-form-item>
                 <el-form-item label="图片类型" prop="image_type">
                     <el-select v-model="form.image_type" placeholder="请选择图片类型" clearable filterable>
                         <el-option v-for="(listItem, index) in image_typeOptions" :value="listItem.value"
@@ -86,6 +89,7 @@ let form = ref({
     image_start: 1001,
     image_end: 1011,
     image_type: '1',
+    image_path: 'https://jiangnanx.oss-cn-beijing.aliyuncs.com/chenglid.com/fangcang'
 });
 
 const emits = defineEmits(["search"]);
@@ -129,6 +133,7 @@ interface RuleForm {
     image_start: number | string,
     image_end: number | string,
     image_type: number | string,
+    image_path: string,
 }
 
 const rules = ref<FormRules<RuleForm>>({
@@ -138,6 +143,7 @@ const rules = ref<FormRules<RuleForm>>({
     web_module_id: [{ required: true, message: "请选择网站模块" }],
     column_id: [{ required: true, message: "请选择网站栏目" }],
     image_type: [{ required: true, message: "请选择图片类型" }],
+    image_path: [{ required: true, message: "请填写图片路径" }]
 });
 const webOptions = ref([]);
 
@@ -151,6 +157,7 @@ const getOptions = async () => {
 
 const getModeOptions = async (value: number) => {
     form.value.web_module_id = '';
+    form.value.column_id = '';
     if (value) {
         let data = {
             web_id: value
@@ -159,6 +166,7 @@ const getModeOptions = async (value: number) => {
         webSiteOptions.value = resp?.data_list || [];
     } else {
         webSiteOptions.value = [];
+        columnOptions.value = [];
     }
 }
 
@@ -199,7 +207,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                 image_start,
                 image_end,
                 image_type,
-
+                image_path
             } = form.value;
             let params = {
                 article_job_id,
@@ -212,7 +220,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
                 image_start,
                 image_end,
                 image_type,
-
+                image_path
             }
             let data = await upLoadArticle(params)
             reset(formEl);
